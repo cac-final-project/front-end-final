@@ -7,7 +7,7 @@ import {
   Profile,
   HeaderBackButton,
 } from "@/components/common/header";
-import LoginScreen from "@/components/screens/login/LoginScreen";
+import { LoginScreen, WeatherScreen } from "@/components/screens/index";
 
 const Stack = createStackNavigator();
 
@@ -51,6 +51,11 @@ const MainStackNavigator = () => {
       <Stack.Screen
         name="Login"
         component={LoginScreen}
+        options={{ title: "My Tabs" }}
+      />
+      <Stack.Screen
+        name="Weather"
+        component={WeatherScreen}
         options={{ title: "My Tabs" }}
       />
     </Stack.Navigator>

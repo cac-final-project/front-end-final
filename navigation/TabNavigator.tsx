@@ -1,5 +1,4 @@
-import ResourceScreen from "@/components/screens/resources/ResourceScreen";
-import LoginScreen from "@/components/screens/login/LoginScreen";
+import { ResourceScreen, LoginScreen } from "@/components/screens/index";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 const Tab = createBottomTabNavigator();
