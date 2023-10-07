@@ -26,6 +26,7 @@ const MainStackNavigator = () => {
           headerStyle: {
             backgroundColor: Colors.primary,
           },
+          headerTitleAlign: "center",
           headerTintColor: "#fff",
           headerBackTitleVisible: false,
         };
