@@ -118,7 +118,7 @@ const styles = StyleSheet.create({
     fontWeight: "400",
     lineHeight: 18,
     letterSpacing: 1.2,
-    color: "#2B2B2B",
+    color: Colors.black,
     position: "absolute",
     left: 13,
     top: 4.04,
@@ -129,7 +129,7 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
   },
   tempText: {
-    color: "#2B2B2B",
+    color: Colors.black,
     fontSize: 14,
     fontFamily: "PlusJakartaSans-Regular",
     marginLeft: 4,

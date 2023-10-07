@@ -4,6 +4,7 @@ type RootStackParamList = {
   Tabs: undefined;
   Login: undefined;
   Weather: undefined;
+  Alert: undefined;
   // Add other screen types if you have more than these
 };
 
