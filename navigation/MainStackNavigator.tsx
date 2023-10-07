@@ -1,16 +1,20 @@
+import React from "react";
 import { Text } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
 import TabNavigator from "./TabNavigator";
-import { Colors } from "@/constants/Colors";
+import { commonHeaderStyles } from "./HeaderStyle";
 import {
   Neighborhood,
   Profile,
   HeaderBackButton,
+  Edit,
+  Username,
 } from "@/components/common/header";
 import {
   LoginScreen,
   WeatherScreen,
   AlertScreen,
+  ProfileScreen,
 } from "@/components/screens/index";
 
 const Stack = createStackNavigator();
@@ -22,28 +26,22 @@ const MainStackNavigator = () => {
         console.log(route); // tab, login etc....
 
         return {
-          headerTitle: (props) => <Neighborhood />,
-          headerRight: (props) => <Profile />,
+          ...commonHeaderStyles,
+          headerTitle: (props) => {
+            if (route.name === "Profile") {
+              return <Username />;
+            }
+            return <Neighborhood />;
+          },
+          headerRight: (props) => {
+            if (route.name === "Profile") {
+              return <Edit />;
+            }
+            return <Profile />;
+          },
           headerLeft: (props) => {
             return <>{props.canGoBack && <HeaderBackButton {...props} />}</>;
           },
-          headerStyle: {
-            backgroundColor: Colors.primary,
-          },
-          headerTitleContainerStyle: {
-            paddingBottom: 7,
-          },
-          headerLeftContainerStyle: {
-            paddingBottom: 7,
-            paddingLeft: 5,
-          },
-          headerRightContainerStyle: {
-            paddingBottom: 7,
-            paddingRight: 5,
-          },
-          headerTitleAlign: "center",
-          headerTintColor: "#fff",
-          headerBackTitleVisible: false,
         };
       }}
     >
@@ -65,6 +63,11 @@ const MainStackNavigator = () => {
       <Stack.Screen
         name="Alert"
         component={AlertScreen}
+        options={{ title: "My Tabs" }}
+      />
+      <Stack.Screen
+        name="Profile"
+        component={ProfileScreen}
         options={{ title: "My Tabs" }}
       />
     </Stack.Navigator>
