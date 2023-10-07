@@ -1,4 +1,5 @@
 import ResourceScreen from "@/components/screens/resources/ResourceScreen";
+import LoginScreen from "@/components/screens/login/LoginScreen";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 const Tab = createBottomTabNavigator();
@@ -25,6 +26,16 @@ const TabNavigator = () => {
         component={ResourceScreen}
         options={{
           tabBarLabel: "resource",
+          // tabBarIcon: ({ color, size }) => (
+          //   <YourIconComponent name="home" color={color} size={size} />
+          // ),
+        }}
+      />
+      <Tab.Screen
+        name="login"
+        component={LoginScreen}
+        options={{
+          tabBarLabel: "login",
           // tabBarIcon: ({ color, size }) => (
           //   <YourIconComponent name="home" color={color} size={size} />
           // ),
