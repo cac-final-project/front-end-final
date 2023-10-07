@@ -25,6 +25,7 @@ const TabNavigator = () => {
         name="resource"
         component={ResourceScreen}
         options={{
+          headerShown: false,
           tabBarLabel: "resource",
           // tabBarIcon: ({ color, size }) => (
           //   <YourIconComponent name="home" color={color} size={size} />
@@ -35,6 +36,7 @@ const TabNavigator = () => {
         name="login"
         component={LoginScreen}
         options={{
+          headerShown: false,
           tabBarLabel: "login",
           // tabBarIcon: ({ color, size }) => (
           //   <YourIconComponent name="home" color={color} size={size} />
