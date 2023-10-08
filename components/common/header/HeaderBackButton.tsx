@@ -27,7 +27,7 @@ const HeaderBackButton: React.FC<Props> = ({ routename, ...props }) => {
         />
       </SafeAreaView>
     );
-  } else if (routename === "Weather") {
+  } else if (routename === "Weather" || "Alert") {
     // Customize this section for your "Weather" condition
     return (
       <SafeAreaView style={{ flexDirection: "row", alignItems: "center" }}>

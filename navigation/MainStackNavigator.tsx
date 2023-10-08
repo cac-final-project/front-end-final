@@ -40,7 +40,8 @@ const MainStackNavigator = () => {
               return <EditTitle />;
             } else if (
               route.name === "Weather" ||
-              route.name === "WeatherDetail"
+              route.name === "WeatherDetail" ||
+              route.name === "Alert"
             ) {
               return <></>;
             }
@@ -53,7 +54,8 @@ const MainStackNavigator = () => {
               return <Done />;
             } else if (
               route.name === "Weather" ||
-              route.name === "WeatherDetail"
+              route.name === "WeatherDetail" ||
+              route.name === "Alert"
             ) {
               return <></>;
             }
