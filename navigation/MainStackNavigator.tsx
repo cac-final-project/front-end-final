@@ -1,5 +1,4 @@
 import React from "react";
-import { Text } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
 import TabNavigator from "./TabNavigator";
 import { getCommonHeaderStyles } from "./HeaderStyle";
@@ -19,6 +18,7 @@ import {
   AlertScreen,
   ProfileScreen,
   EditProfileScreen,
+  WeatherDetail,
 } from "@/components/screens/index";
 
 const Stack = createStackNavigator();
@@ -38,7 +38,10 @@ const MainStackNavigator = () => {
               return <Username />;
             } else if (route.name === "EditProfile") {
               return <EditTitle />;
-            } else if (route.name === "Weather") {
+            } else if (
+              route.name === "Weather" ||
+              route.name === "WeatherDetail"
+            ) {
               return <></>;
             }
             return <Neighborhood />;
@@ -48,7 +51,10 @@ const MainStackNavigator = () => {
               return <Edit />;
             } else if (route.name === "EditProfile") {
               return <Done />;
-            } else if (route.name === "Weather") {
+            } else if (
+              route.name === "Weather" ||
+              route.name === "WeatherDetail"
+            ) {
               return <></>;
             }
             return <Profile />;
@@ -94,6 +100,11 @@ const MainStackNavigator = () => {
       <Stack.Screen
         name="EditProfile"
         component={EditProfileScreen}
+        options={{ title: "My Tabs" }}
+      />
+      <Stack.Screen
+        name="WeatherDetail"
+        component={WeatherDetail}
         options={{ title: "My Tabs" }}
       />
     </Stack.Navigator>

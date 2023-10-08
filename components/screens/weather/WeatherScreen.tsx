@@ -17,8 +17,6 @@ const WeatherScreen: React.FC = () => {
 const styles = StyleSheet.create({
   weatherContainer: {
     padding: 16,
-    borderWidth: 1,
-    borderColor: "red",
   },
 });
 

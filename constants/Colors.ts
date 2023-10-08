@@ -5,4 +5,8 @@ export const Colors = {
   black: "#171717",
   lightGrey: "#F0F0F0",
   darkGrey: "#7A7A7A",
+  weather_mild: "#5BA6CD",
+  weather_moderate: "#FFAD07",
+  weather_intense: "#EE6600",
+  weather_extreme: "#990000",
 };

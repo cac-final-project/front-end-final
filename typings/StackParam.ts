@@ -1,4 +1,5 @@
 import { StackNavigationProp } from "@react-navigation/stack";
+import { level } from "@/typings/heatLevels";
 
 type RootStackParamList = {
   Tabs: undefined;
@@ -8,6 +9,7 @@ type RootStackParamList = {
   Profile: undefined;
   EditProfile: undefined;
   Resource: undefined;
+  WeatherDetail: { level: level };
   // Add other screen types if you have more than these
 };
 
