@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { Colors } from "@/constants/Colors";
 
+const bioText =
+  "Hello community! I’m Chani Yang. Good to meet you all. Lorem ipsum dolor sit amet consectetur. At accumsan dui leo arcu sed lectus nam. Mattis vel egestas nulla non sagittis. Sodales justo turpis ac neque eget velit urna sed suscipit. Lorem ipsum dolor sit amet consectetur. At accumsan dui leo arcu sed lectus nam. Mattis vel egestas nulla non sagittis. Sodales justo turpis ac neque eget velit urna sed suscipit.";
+
 const Bio: React.FC = () => {
   const [isSeeMore, setIsSeeMore] = useState(false);
 
@@ -16,12 +19,7 @@ const Bio: React.FC = () => {
       <Text style={styles.bioTitle}>Introduction: </Text>
       <View style={styles.bioTextContainer}>
         <Text style={styles.bioText} numberOfLines={numberOfLines}>
-          Hello community! I’m Chani Yang. Good to meet you all. Lorem ipsum
-          dolor sit amet consectetur. At accumsan dui leo arcu sed lectus nam.
-          Mattis vel egestas nulla non sagittis. Sodales justo turpis ac neque
-          eget velit urna sed suscipit. Lorem ipsum dolor sit amet consectetur.
-          At accumsan dui leo arcu sed lectus nam. Mattis vel egestas nulla non
-          sagittis. Sodales justo turpis ac neque eget velit urna sed suscipit.
+          {bioText ? bioText : "Tell other users about you!"}
         </Text>
         <TouchableOpacity
           onPress={handleSeeMoreClick}

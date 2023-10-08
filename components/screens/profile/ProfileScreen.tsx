@@ -1,7 +1,8 @@
 import React from "react";
-import { SafeAreaView, View, Text, StyleSheet, ScrollView } from "react-native";
+import { SafeAreaView, StyleSheet, ScrollView } from "react-native";
 import { Colors } from "@/constants/Colors";
-import { TopImage, Bio, Activities } from "@/components/layouts/profile/index";
+import { TopImage } from "@/components/common/profile/index";
+import { Bio, Activities } from "@/components/layouts/profile/index";
 
 const ProfileScreen: React.FC = () => {
   return (
