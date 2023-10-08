@@ -1,28 +1,20 @@
 import React from "react";
-import {
-  View,
-  Text,
-  Image,
-  StyleSheet,
-  TouchableOpacity,
-  SafeAreaView,
-} from "react-native";
+import { SafeAreaView, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { ScreenNavigationProp } from "@/typings/StackParam";
 import { Colors } from "@/constants/Colors";
 
-const EditIcon = require("@/assets/images/Edit.png");
-
-const Edit: React.FC = () => {
+const Done: React.FC = () => {
   const navigation = useNavigation<ScreenNavigationProp>();
 
   const handleEditClick = () => {
-    navigation.navigate("EditProfile");
+    navigation.navigate("Profile");
   };
+
   return (
     <TouchableOpacity onPress={handleEditClick}>
       <SafeAreaView style={styles.rightBox}>
-        <Image source={EditIcon} />
+        <Text style={styles.doneText}>Done</Text>
       </SafeAreaView>
     </TouchableOpacity>
   );
@@ -30,13 +22,15 @@ const Edit: React.FC = () => {
 
 const styles = StyleSheet.create({
   rightBox: {
-    backgroundColor: Colors.grey,
-    padding: 8,
-    paddingRight: 6,
-    borderRadius: 8,
+    backgroundColor: Colors.white,
     alignItems: "center", // icon to center
     marginRight: 16,
   },
+  doneText: {
+    color: Colors.primary,
+    fontSize: 14,
+    fontFamily: "PlusJakartaSans-Bold",
+  },
 });
 
-export default Edit;
+export default Done;

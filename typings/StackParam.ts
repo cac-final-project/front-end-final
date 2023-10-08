@@ -6,8 +6,12 @@ type RootStackParamList = {
   Weather: undefined;
   Alert: undefined;
   Profile: undefined;
+  EditProfile: undefined;
+  Resource: undefined;
   // Add other screen types if you have more than these
 };
+
+export type RouteNames = keyof RootStackParamList;
 
 export type ScreenNavigationProp = StackNavigationProp<
   RootStackParamList,

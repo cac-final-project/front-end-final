@@ -2,19 +2,23 @@ import React from "react";
 import { Text } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
 import TabNavigator from "./TabNavigator";
-import { commonHeaderStyles } from "./HeaderStyle";
+import { getCommonHeaderStyles } from "./HeaderStyle";
+import { RouteNames } from "@/typings/StackParam";
 import {
   Neighborhood,
   Profile,
   HeaderBackButton,
   Edit,
   Username,
+  Done,
+  EditTitle,
 } from "@/components/common/header";
 import {
   LoginScreen,
   WeatherScreen,
   AlertScreen,
   ProfileScreen,
+  EditProfileScreen,
 } from "@/components/screens/index";
 
 const Stack = createStackNavigator();
@@ -23,25 +27,38 @@ const MainStackNavigator = () => {
   return (
     <Stack.Navigator
       screenOptions={({ navigation, route }) => {
-        console.log(route); // tab, login etc....
-
+        // console.log(route); // tab, login etc....
+        const dynamicHeaderStyles = getCommonHeaderStyles(
+          route.name as RouteNames
+        );
         return {
-          ...commonHeaderStyles,
+          ...dynamicHeaderStyles,
           headerTitle: (props) => {
             if (route.name === "Profile") {
               return <Username />;
+            } else if (route.name === "EditProfile") {
+              return <EditTitle />;
             }
             return <Neighborhood />;
           },
           headerRight: (props) => {
             if (route.name === "Profile") {
               return <Edit />;
+            } else if (route.name === "EditProfile") {
+              return <Done />;
             }
             return <Profile />;
           },
-          headerLeft: (props) => {
-            return <>{props.canGoBack && <HeaderBackButton {...props} />}</>;
-          },
+          headerLeft: (props) => (
+            <>
+              {props.canGoBack && (
+                <HeaderBackButton
+                  {...props}
+                  routename={route.name as RouteNames}
+                />
+              )}
+            </>
+          ),
         };
       }}
     >
@@ -68,6 +85,11 @@ const MainStackNavigator = () => {
       <Stack.Screen
         name="Profile"
         component={ProfileScreen}
+        options={{ title: "My Tabs" }}
+      />
+      <Stack.Screen
+        name="EditProfile"
+        component={EditProfileScreen}
         options={{ title: "My Tabs" }}
       />
     </Stack.Navigator>

@@ -6,7 +6,7 @@ const Tab = createBottomTabNavigator();
 const TabNavigator = () => {
   return (
     <Tab.Navigator
-      initialRouteName="resource"
+      initialRouteName="Resource"
       screenOptions={{
         tabBarActiveTintColor: "#FFFFFF",
         tabBarInactiveTintColor: "#F8F8F8",
@@ -21,11 +21,11 @@ const TabNavigator = () => {
       }}
     >
       <Tab.Screen
-        name="resource"
+        name="Resource"
         component={ResourceScreen}
         options={{
           headerShown: false,
-          tabBarLabel: "resource",
+          tabBarLabel: "Resource",
           // tabBarIcon: ({ color, size }) => (
           //   <YourIconComponent name="home" color={color} size={size} />
           // ),
