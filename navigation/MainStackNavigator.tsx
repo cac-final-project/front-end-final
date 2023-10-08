@@ -38,6 +38,8 @@ const MainStackNavigator = () => {
               return <Username />;
             } else if (route.name === "EditProfile") {
               return <EditTitle />;
+            } else if (route.name === "Weather") {
+              return <></>;
             }
             return <Neighborhood />;
           },
@@ -46,6 +48,8 @@ const MainStackNavigator = () => {
               return <Edit />;
             } else if (route.name === "EditProfile") {
               return <Done />;
+            } else if (route.name === "Weather") {
+              return <></>;
             }
             return <Profile />;
           },

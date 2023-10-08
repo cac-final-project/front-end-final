@@ -6,6 +6,7 @@ import {
 } from "@react-navigation/elements";
 import { RouteNames } from "@/typings/StackParam";
 import { Colors } from "@/constants/Colors";
+import { Feather } from "@expo/vector-icons";
 
 const backIcon = require("@/assets/images/BackIcon.png");
 
@@ -17,23 +18,40 @@ const HeaderBackButton: React.FC<Props> = ({ routename, ...props }) => {
   // You can use `route` here now with its accurate type
   console.log(routename);
 
-  return (
-    <SafeAreaView style={{ flexDirection: "row", alignItems: "center" }}>
-      {routename === "EditProfile" ? (
+  if (routename === "EditProfile") {
+    return (
+      <SafeAreaView style={{ flexDirection: "row", alignItems: "center" }}>
         <OriginalHeaderBackButton
           {...props}
           backImage={() => <Text style={styles.cancelText}>Cancel</Text>}
         />
-      ) : (
+      </SafeAreaView>
+    );
+  } else if (routename === "Weather") {
+    // Customize this section for your "Weather" condition
+    return (
+      <SafeAreaView style={{ flexDirection: "row", alignItems: "center" }}>
+        <OriginalHeaderBackButton
+          {...props}
+          backImage={() => (
+            // Replace the content in this function with whatever you want for the "Weather" route
+            <Feather name="x" size={24} color={Colors.white} />
+          )}
+        />
+      </SafeAreaView>
+    );
+  } else {
+    return (
+      <SafeAreaView style={{ flexDirection: "row", alignItems: "center" }}>
         <OriginalHeaderBackButton
           {...props}
           backImage={() => (
             <Image source={backIcon} style={{ width: 24, height: 24 }} />
           )}
         />
-      )}
-    </SafeAreaView>
-  );
+      </SafeAreaView>
+    );
+  }
 };
 
 const styles = StyleSheet.create({
@@ -41,6 +59,11 @@ const styles = StyleSheet.create({
     color: Colors.black,
     fontSize: 14,
     fontFamily: "PlusJakartaSans-Regular",
+  },
+  weatherText: {
+    color: Colors.black,
+    fontSize: 14,
+    fontFamily: "PlusJakartaSans-Bold",
   },
 });
 
