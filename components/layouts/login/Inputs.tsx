@@ -6,6 +6,8 @@ import {
   TextInput,
   TouchableOpacity,
 } from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import { ScreenNavigationProp } from "@/typings/StackParam";
 import { Colors } from "@/constants/Colors";
 
 type InputsProps = {
@@ -19,6 +21,10 @@ const Inputs: React.FC<InputsProps> = ({
   password,
   handleLoginInfo,
 }) => {
+  const navigation = useNavigation<ScreenNavigationProp>();
+  const handleForgotPwClick = () => {
+    navigation.navigate("ForgotPw");
+  };
   return (
     <View style={styles.container}>
       <View style={styles.inputBox}>
@@ -40,7 +46,10 @@ const Inputs: React.FC<InputsProps> = ({
           secureTextEntry
         />
       </View>
-      <TouchableOpacity style={styles.forgotPasswordBox}>
+      <TouchableOpacity
+        onPress={handleForgotPwClick}
+        style={styles.forgotPasswordBox}
+      >
         <Text style={styles.forgotPasswordLink}>Forgot Password?</Text>
       </TouchableOpacity>
     </View>

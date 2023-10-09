@@ -6,12 +6,8 @@ import {
   Keyboard,
   View,
 } from "react-native";
-import {
-  Header,
-  Inputs,
-  LoginBtn,
-  SignupLink,
-} from "@/components/layouts/login/index";
+import { Inputs, LoginBtn, SignupLink } from "@/components/layouts/login/index";
+import { Header } from "@/components/common/auth/index";
 import { Colors } from "@/constants/Colors";
 
 const LoginScreen: React.FC = () => {
@@ -55,7 +51,7 @@ const LoginScreen: React.FC = () => {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <SafeAreaView style={styles.container}>
-        <Header />
+        <Header screenType="Login" />
         <Inputs
           userId={userId}
           password={password}

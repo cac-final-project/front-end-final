@@ -1,5 +1,5 @@
 export const Colors = {
-  primary: "#297474",
+  primary: "#0069A4",
   white: "white",
   grey: "#E3E3E3",
   black: "#171717",
@@ -9,4 +9,7 @@ export const Colors = {
   weather_moderate: "#FFAD07",
   weather_intense: "#EE6600",
   weather_extreme: "#990000",
+  linkColor: "#0069A4",
+  phoneInputColor: "#F1F1F1",
+  error: "#DE6464",
 };

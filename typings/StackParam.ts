@@ -10,6 +10,8 @@ type RootStackParamList = {
   EditProfile: undefined;
   Resource: undefined;
   WeatherDetail: { level: level };
+  Signup: undefined;
+  ForgotPw: undefined;
   // Add other screen types if you have more than these
 };
 

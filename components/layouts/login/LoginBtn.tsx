@@ -23,6 +23,7 @@ function getStyles(isFilled: boolean) {
     container: {
       marginTop: 24,
       padding: 16,
+      borderRadius: 8,
       alignItems: "center",
       justifyContent: "center",
       backgroundColor: isFilled ? Colors.primary : Colors.grey,

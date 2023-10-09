@@ -19,6 +19,8 @@ import {
   ProfileScreen,
   EditProfileScreen,
   WeatherDetail,
+  SignupScreen,
+  ForgotPwScreen,
 } from "@/components/screens/index";
 
 const Stack = createStackNavigator();
@@ -42,7 +44,9 @@ const MainStackNavigator = () => {
               route.name === "Weather" ||
               route.name === "WeatherDetail" ||
               route.name === "Alert" ||
-              route.name === "Login"
+              route.name === "Login" ||
+              route.name === "Signup" ||
+              route.name === "ForgotPw"
             ) {
               return <></>;
             }
@@ -57,7 +61,9 @@ const MainStackNavigator = () => {
               route.name === "Weather" ||
               route.name === "WeatherDetail" ||
               route.name === "Alert" ||
-              route.name === "Login"
+              route.name === "Login" ||
+              route.name === "Signup" ||
+              route.name === "ForgotPw"
             ) {
               return <></>;
             }
@@ -109,6 +115,16 @@ const MainStackNavigator = () => {
       <Stack.Screen
         name="WeatherDetail"
         component={WeatherDetail}
+        options={{ title: "My Tabs" }}
+      />
+      <Stack.Screen
+        name="Signup"
+        component={SignupScreen}
+        options={{ title: "My Tabs" }}
+      />
+      <Stack.Screen
+        name="ForgotPw"
+        component={ForgotPwScreen}
         options={{ title: "My Tabs" }}
       />
     </Stack.Navigator>
