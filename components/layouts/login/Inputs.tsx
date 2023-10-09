@@ -46,10 +46,7 @@ const Inputs: React.FC<InputsProps> = ({
           secureTextEntry
         />
       </View>
-      <TouchableOpacity
-        onPress={handleForgotPwClick}
-        style={styles.forgotPasswordBox}
-      >
+      <TouchableOpacity onPress={handleForgotPwClick}>
         <Text style={styles.forgotPasswordLink}>Forgot Password?</Text>
       </TouchableOpacity>
     </View>
@@ -81,9 +78,6 @@ const styles = StyleSheet.create({
     paddingVertical: 16,
     backgroundColor: Colors.lightGrey,
     borderRadius: 8,
-  },
-  forgotPasswordBox: {
-    width: 120,
   },
   forgotPasswordLink: {
     color: Colors.linkColor,
