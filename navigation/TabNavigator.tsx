@@ -31,7 +31,7 @@ const TabNavigator = () => {
           // ),
         }}
       />
-      <Tab.Screen
+      {/* <Tab.Screen
         name="login"
         component={LoginScreen}
         options={{
@@ -41,7 +41,7 @@ const TabNavigator = () => {
           //   <YourIconComponent name="home" color={color} size={size} />
           // ),
         }}
-      />
+      /> */}
     </Tab.Navigator>
   );
 };

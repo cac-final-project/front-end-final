@@ -7,14 +7,14 @@ export const getCommonHeaderStyles = (
 ): StackNavigationOptions => {
   let backgroundColor = Colors.primary;
 
-  // Example dynamic behavior: change header background for "Profile" screen
   if (routeName === "EditProfile") {
-    backgroundColor = Colors.white; // or any other color for Profile screen
+    backgroundColor = Colors.white;
   }
 
   return {
     headerStyle: {
       backgroundColor,
+      elevation: 0,
     },
     headerTitleContainerStyle: {
       paddingBottom: 7,

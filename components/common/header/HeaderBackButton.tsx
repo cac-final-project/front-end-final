@@ -15,9 +15,6 @@ interface Props extends HeaderBackButtonProps {
 }
 
 const HeaderBackButton: React.FC<Props> = ({ routename, ...props }) => {
-  // You can use `route` here now with its accurate type
-  console.log(routename);
-
   if (routename === "EditProfile") {
     return (
       <SafeAreaView style={{ flexDirection: "row", alignItems: "center" }}>
@@ -27,16 +24,12 @@ const HeaderBackButton: React.FC<Props> = ({ routename, ...props }) => {
         />
       </SafeAreaView>
     );
-  } else if (routename === "Weather" || "Alert") {
-    // Customize this section for your "Weather" condition
+  } else if (routename === "Weather" || routename === "Alert") {
     return (
       <SafeAreaView style={{ flexDirection: "row", alignItems: "center" }}>
         <OriginalHeaderBackButton
           {...props}
-          backImage={() => (
-            // Replace the content in this function with whatever you want for the "Weather" route
-            <Feather name="x" size={24} color={Colors.white} />
-          )}
+          backImage={() => <Feather name="x" size={24} color={Colors.white} />}
         />
       </SafeAreaView>
     );

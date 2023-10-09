@@ -8,7 +8,7 @@ import { Colors } from "@/constants/Colors";
 const Profile: React.FC = () => {
   const navigation = useNavigation<ScreenNavigationProp>();
   const handleProfileClick = () => {
-    navigation.navigate("Profile");
+    navigation.navigate("Login");
   };
   return (
     <TouchableOpacity onPress={handleProfileClick}>

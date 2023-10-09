@@ -27,7 +27,7 @@ const MainStackNavigator = () => {
   return (
     <Stack.Navigator
       screenOptions={({ navigation, route }) => {
-        // console.log(route); // tab, login etc....
+        console.log(route); // tab, login etc....
         const dynamicHeaderStyles = getCommonHeaderStyles(
           route.name as RouteNames
         );
@@ -41,7 +41,8 @@ const MainStackNavigator = () => {
             } else if (
               route.name === "Weather" ||
               route.name === "WeatherDetail" ||
-              route.name === "Alert"
+              route.name === "Alert" ||
+              route.name === "Login"
             ) {
               return <></>;
             }
@@ -55,7 +56,8 @@ const MainStackNavigator = () => {
             } else if (
               route.name === "Weather" ||
               route.name === "WeatherDetail" ||
-              route.name === "Alert"
+              route.name === "Alert" ||
+              route.name === "Login"
             ) {
               return <></>;
             }
