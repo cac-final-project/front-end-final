@@ -7,7 +7,7 @@ export const getCommonHeaderStyles = (
 ): StackNavigationOptions => {
   let backgroundColor = Colors.primary;
 
-  if (routeName === "EditProfile") {
+  if (routeName === "EditProfile" || routeName === "PostEdit") {
     backgroundColor = Colors.white;
   }
 

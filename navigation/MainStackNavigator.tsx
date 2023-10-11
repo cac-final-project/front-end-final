@@ -11,6 +11,8 @@ import {
   Username,
   Done,
   EditTitle,
+  WriteOrEdit,
+  EditPost,
 } from "@/components/common/header";
 import {
   LoginScreen,
@@ -21,6 +23,7 @@ import {
   WeatherDetail,
   SignupScreen,
   ForgotPwScreen,
+  PostEditScreen,
 } from "@/components/screens/index";
 
 const Stack = createStackNavigator();
@@ -40,6 +43,8 @@ const MainStackNavigator = () => {
               return <Username />;
             } else if (route.name === "EditProfile") {
               return <EditTitle />;
+            } else if (route.name === "PostEdit") {
+              return <WriteOrEdit />;
             } else if (
               route.name === "Weather" ||
               route.name === "WeatherDetail" ||
@@ -57,6 +62,8 @@ const MainStackNavigator = () => {
               return <Edit />;
             } else if (route.name === "EditProfile") {
               return <Done />;
+            } else if (route.name === "PostEdit") {
+              return <EditPost />;
             } else if (
               route.name === "Weather" ||
               route.name === "WeatherDetail" ||
@@ -125,6 +132,11 @@ const MainStackNavigator = () => {
       <Stack.Screen
         name="ForgotPw"
         component={ForgotPwScreen}
+        options={{ title: "My Tabs" }}
+      />
+      <Stack.Screen
+        name="PostEdit"
+        component={PostEditScreen}
         options={{ title: "My Tabs" }}
       />
     </Stack.Navigator>

@@ -5,3 +5,5 @@ export { default as Edit } from "./Edit";
 export { default as Username } from "./Username";
 export { default as Done } from "./Done";
 export { default as EditTitle } from "./EditTitle";
+export { default as WriteOrEdit } from "./WriteOrEdit";
+export { default as EditPost } from "./EditPost";

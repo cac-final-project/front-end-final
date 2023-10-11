@@ -15,9 +15,11 @@ interface Props extends HeaderBackButtonProps {
 }
 
 const HeaderBackButton: React.FC<Props> = ({ routename, ...props }) => {
-  if (routename === "EditProfile") {
+  if (routename === "EditProfile" || routename === "PostEdit") {
     return (
-      <SafeAreaView style={{ flexDirection: "row", alignItems: "center" }}>
+      <SafeAreaView
+        style={{ flexDirection: "row", alignItems: "center", marginLeft: 16 }}
+      >
         <OriginalHeaderBackButton
           {...props}
           backImage={() => <Text style={styles.cancelText}>Cancel</Text>}

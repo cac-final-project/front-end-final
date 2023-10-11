@@ -7,3 +7,6 @@ export { default as ProfileScreen } from "./profile/ProfileScreen";
 export { default as EditProfileScreen } from "./edit/EditScreen";
 export { default as WeatherDetail } from "./weatherDetail/WeatherDetail";
 export { default as ForgotPwScreen } from "./forgotPw/ForgotPwScreen";
+export { default as PostsScreen } from "./posts/PostsScreen";
+export { default as PostEditScreen } from "./postEdit/PostEditScreen";
+export { default as PostDetailScreen } from "./postDetail/PostDetailScreen";

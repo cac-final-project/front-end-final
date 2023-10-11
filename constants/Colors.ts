@@ -3,8 +3,10 @@ export const Colors = {
   white: "white",
   grey: "#E3E3E3",
   black: "#171717",
+  lightBlack: "#252525",
   lightGrey: "#F0F0F0",
   darkGrey: "#7A7A7A",
+  headerTabGrey: "#F2F8FB",
   weather_mild: "#5BA6CD",
   weather_moderate: "#FFAD07",
   weather_intense: "#EE6600",
@@ -13,4 +15,6 @@ export const Colors = {
   phoneInputColor: "#F1F1F1",
   error: "#DE6464",
   signupBoxBorder: "#DCDDE2",
+  popularTag: "#FFD99F",
+  postBorder: "#F7F8FB",
 };

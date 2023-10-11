@@ -1,9 +1,16 @@
 import React from "react";
-import { TouchableOpacity, SafeAreaView, StyleSheet } from "react-native";
+import {
+  TouchableOpacity,
+  SafeAreaView,
+  StyleSheet,
+  Image,
+} from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { ScreenNavigationProp } from "@/typings/StackParam";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { Colors } from "@/constants/Colors";
+
+const ProfileIcon = require("@/assets/images/Profile.png");
 
 const Profile: React.FC = () => {
   const navigation = useNavigation<ScreenNavigationProp>();
@@ -13,7 +20,7 @@ const Profile: React.FC = () => {
   return (
     <TouchableOpacity onPress={handleProfileClick}>
       <SafeAreaView style={styles.rightBox}>
-        <FontAwesome5 name="user" size={20} color="black" />
+        <Image source={ProfileIcon} />
       </SafeAreaView>
     </TouchableOpacity>
   );
@@ -21,10 +28,6 @@ const Profile: React.FC = () => {
 
 const styles = StyleSheet.create({
   rightBox: {
-    backgroundColor: Colors.grey,
-    padding: 8,
-    borderRadius: 8,
-    alignItems: "center", // icon to center
     marginRight: 16,
   },
 });

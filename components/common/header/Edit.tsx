@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
     padding: 8,
     paddingRight: 6,
     borderRadius: 8,
-    alignItems: "center", // icon to center
+    alignItems: "center",
     marginRight: 16,
   },
 });

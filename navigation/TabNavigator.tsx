@@ -1,5 +1,9 @@
-import { ResourceScreen, LoginScreen } from "@/components/screens/index";
+import { Image } from "react-native";
+import { ResourceScreen, PostsScreen } from "@/components/screens/index";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+
+const TabClickedIcon = require("@/assets/images/TabClicked.png");
+const TabNotClickedIcon = require("@/assets/images/TabNotClicked.png");
 
 const Tab = createBottomTabNavigator();
 
@@ -26,22 +30,30 @@ const TabNavigator = () => {
         options={{
           headerShown: false,
           tabBarLabel: "Resource",
-          // tabBarIcon: ({ color, size }) => (
-          //   <YourIconComponent name="home" color={color} size={size} />
-          // ),
+          tabBarIcon: ({ focused }) => {
+            if (focused) {
+              return <Image source={TabClickedIcon} />;
+            } else {
+              return <Image source={TabNotClickedIcon} />;
+            }
+          },
         }}
       />
-      {/* <Tab.Screen
-        name="login"
-        component={LoginScreen}
+      <Tab.Screen
+        name="posts"
+        component={PostsScreen}
         options={{
           headerShown: false,
-          tabBarLabel: "login",
-          // tabBarIcon: ({ color, size }) => (
-          //   <YourIconComponent name="home" color={color} size={size} />
-          // ),
+          tabBarLabel: "Posts",
+          tabBarIcon: ({ focused }) => {
+            if (focused) {
+              return <Image source={TabClickedIcon} />;
+            } else {
+              return <Image source={TabNotClickedIcon} />;
+            }
+          },
         }}
-      /> */}
+      />
     </Tab.Navigator>
   );
 };
