@@ -12,4 +12,5 @@ export const Colors = {
   linkColor: "#0069A4",
   phoneInputColor: "#F1F1F1",
   error: "#DE6464",
+  signupBoxBorder: "#DCDDE2",
 };

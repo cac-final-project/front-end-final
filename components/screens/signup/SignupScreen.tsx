@@ -6,6 +6,7 @@ import {
   StyleSheet,
   Keyboard,
   TouchableWithoutFeedback,
+  ScrollView,
 } from "react-native";
 import { Colors } from "@/constants/Colors";
 import { Header } from "@/components/common/auth/index";
@@ -22,6 +23,7 @@ import {
   ConfirmNumb,
   ResendLink,
   SignupBtn,
+  ContinueBtn,
 } from "@/components/layouts/signup/index";
 
 export type progress = 0 | 1 | 2 | 3;
@@ -34,9 +36,18 @@ export type pageStatus =
 type UserType = "user" | "volunteer";
 const userTypes: UserType[] = ["user", "volunteer"];
 
+type UserTypeState = "" | UserType;
+
 const SignupScreen: React.FC = () => {
   const [progress, setProgress] = useState<progress>(0);
   const [pageStatus, setPageStatus] = useState<pageStatus>("welcome");
+
+  const [userType, setUserType] = useState<UserTypeState>("");
+  console.log(userType);
+
+  const handleSetUserType = (userType: UserTypeState) => {
+    setUserType(userType);
+  };
 
   const [nickname, setNickname] = useState("");
   const [username, setUsername] = useState("");
@@ -85,74 +96,81 @@ const SignupScreen: React.FC = () => {
   }, [pageStatus]);
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <SafeAreaView style={styles.container}>
-        <Header screenType={"Signup"} pageStatus={pageStatus} />
-        <ProgressBar progress={progress} />
-        {pageStatus === "welcome" && (
-          <View>
-            <WelcomeTitle />
-            {userTypes.map((item) => {
-              return (
-                <WelcomeBox
-                  key={item}
-                  userType={item}
-                  handleMoveProgress={handleMoveProgress}
-                />
-              );
-            })}
-            <WelcomeLink />
-          </View>
-        )}
-        {pageStatus === "set your nickname" && (
-          <View>
-            <NicknameInput nickname={nickname} setNickname={setNickname} />
-          </View>
-        )}
-        {pageStatus === "set your account" && (
-          <View>
-            <AccountInput
-              username={username}
-              password={password}
-              setUsername={setUsername}
-              setPassword={setPassword}
-            />
-          </View>
-        )}
-        {pageStatus === "what's your number" && (
-          <View>
-            <PhoneNumb
-              phoneNo={phoneNo}
-              setPhoneNo={setPhoneNo}
-              handleMoveProgress={handleMoveProgress}
-            />
-          </View>
-        )}
-        {pageStatus === "verify your number" && (
-          <View>
-            <ConfirmNumb
-              phoneNo={phoneNo}
-              confirmNo={confirmNo}
-              setConfirmNo={setConfirmNo}
-            />
-          </View>
-        )}
-        <View style={{ flex: keyboardVisible ? 0 : 1 }} />
-        {pageStatus === "set your nickname" && (
-          <NicknameContinueBtn handleMoveProgress={handleMoveProgress} />
-        )}
-        {pageStatus === "set your account" && (
-          <NicknameContinueBtn handleMoveProgress={handleMoveProgress} />
-        )}
-        {pageStatus === "what's your number" && (
-          <VerifyBtn handleMoveProgress={handleMoveProgress} />
-        )}
-        {pageStatus === "verify your number" && (
-          <View>
-            <ResendLink />
-            <SignupBtn handleMoveProgress={handleMoveProgress} />
-          </View>
-        )}
-      </SafeAreaView>
+      <ScrollView>
+        <SafeAreaView style={styles.container}>
+          <Header screenType={"Signup"} pageStatus={pageStatus} />
+          <ProgressBar progress={progress} />
+          {pageStatus === "welcome" && (
+            <View>
+              <WelcomeTitle />
+              {userTypes.map((item) => {
+                return (
+                  <WelcomeBox
+                    key={item}
+                    title={item}
+                    userType={userType}
+                    handleMoveProgress={handleMoveProgress}
+                    handleSetUserType={handleSetUserType}
+                  />
+                );
+              })}
+              <WelcomeLink />
+            </View>
+          )}
+          {pageStatus === "set your nickname" && (
+            <View>
+              <NicknameInput nickname={nickname} setNickname={setNickname} />
+            </View>
+          )}
+          {pageStatus === "set your account" && (
+            <View>
+              <AccountInput
+                username={username}
+                password={password}
+                setUsername={setUsername}
+                setPassword={setPassword}
+              />
+            </View>
+          )}
+          {pageStatus === "what's your number" && (
+            <View>
+              <PhoneNumb
+                phoneNo={phoneNo}
+                setPhoneNo={setPhoneNo}
+                handleMoveProgress={handleMoveProgress}
+              />
+            </View>
+          )}
+          {pageStatus === "verify your number" && (
+            <View>
+              <ConfirmNumb
+                phoneNo={phoneNo}
+                confirmNo={confirmNo}
+                setConfirmNo={setConfirmNo}
+              />
+            </View>
+          )}
+          <View style={{ flex: keyboardVisible ? 0 : 1 }} />
+          {pageStatus === "welcome" && (
+            <ContinueBtn handleMoveProgress={handleMoveProgress} />
+          )}
+          {pageStatus === "set your nickname" && (
+            <NicknameContinueBtn handleMoveProgress={handleMoveProgress} />
+          )}
+          {pageStatus === "set your account" && (
+            <NicknameContinueBtn handleMoveProgress={handleMoveProgress} />
+          )}
+          {pageStatus === "what's your number" && (
+            <VerifyBtn handleMoveProgress={handleMoveProgress} />
+          )}
+          {pageStatus === "verify your number" && (
+            <View>
+              <ResendLink />
+              <SignupBtn handleMoveProgress={handleMoveProgress} />
+            </View>
+          )}
+        </SafeAreaView>
+      </ScrollView>
     </TouchableWithoutFeedback>
   );
 };

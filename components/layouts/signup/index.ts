@@ -10,3 +10,4 @@ export { default as VerifyBtn } from "./VerifyBtn";
 export { default as ConfirmNumb } from "./ConfirmNumb";
 export { default as ResendLink } from "./ResendLink";
 export { default as SignupBtn } from "./SignupBtn";
+export { default as ContinueBtn } from "./ContinueBtn";
