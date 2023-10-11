@@ -15,7 +15,7 @@ const WelcomeTitle: React.FC = () => {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: Colors.white,
-    paddingTop: 36,
+    paddingTop: 32,
     paddingHorizontal: 30,
     paddingBottom: 32,
   },
