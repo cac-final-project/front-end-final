@@ -5,12 +5,19 @@ import {
   StyleSheet,
   TouchableWithoutFeedback,
   Image,
+  TouchableOpacity,
 } from "react-native";
 import { Colors } from "@/constants/Colors";
+import { useNavigation } from "@react-navigation/native";
+import { ScreenNavigationProp } from "@/typings/StackParam";
 
 const ProfileIcon = require("@/assets/images/Profile.png");
 
 const CommentList: React.FC = () => {
+  const navigation = useNavigation<ScreenNavigationProp>();
+  const handleProfileClick = () => {
+    navigation.navigate("Profile");
+  };
   return [
     { id: 0, profile_img: "" },
     { id: 0, profile_img: "" },
@@ -23,18 +30,20 @@ const CommentList: React.FC = () => {
       <View style={styles.headerArea}>
         <TouchableWithoutFeedback onPress={() => {}}>
           <View style={styles.profileArea}>
-            <View style={styles.profilePictureContainer}>
-              {item?.profile_img ? (
-                <Image
-                  style={styles.profilePlaceholder}
-                  source={{
-                    uri: item.profile_img /*profile picture URI here*/,
-                  }}
-                />
-              ) : (
-                <Image source={ProfileIcon} />
-              )}
-            </View>
+            <TouchableOpacity onPress={handleProfileClick}>
+              <View style={styles.profilePictureContainer}>
+                {item?.profile_img ? (
+                  <Image
+                    style={styles.profilePlaceholder}
+                    source={{
+                      uri: item.profile_img /*profile picture URI here*/,
+                    }}
+                  />
+                ) : (
+                  <Image source={ProfileIcon} />
+                )}
+              </View>
+            </TouchableOpacity>
             <Text style={styles.username}>@JohnDoe</Text>
           </View>
         </TouchableWithoutFeedback>

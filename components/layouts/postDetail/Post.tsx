@@ -32,7 +32,7 @@ const Post: React.FC<PostProps> = ({
 }) => {
   const navigation = useNavigation<ScreenNavigationProp>();
   const handleProfileClick = () => {
-    navigation.navigate("EditProfile");
+    navigation.navigate("Profile");
   };
   return (
     <TouchableWithoutFeedback>
