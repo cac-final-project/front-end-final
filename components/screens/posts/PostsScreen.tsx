@@ -8,12 +8,8 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { Weather, Alert } from "@/components/layouts/resources/index";
-import {
-  HeaderTab,
-  Post,
-  BottomSheetContent,
-} from "@/components/layouts/posts/index";
-import { OverLay } from "@/components/common/post";
+import { HeaderTab, Post } from "@/components/layouts/posts/index";
+import { OverLay, BottomSheetContent } from "@/components/common/post";
 import { Colors } from "@/constants/Colors";
 import BottomSheet from "@gorhom/bottom-sheet";
 import { useNavigation } from "@react-navigation/native";

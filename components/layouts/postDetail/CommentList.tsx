@@ -19,12 +19,16 @@ const CommentList: React.FC = () => {
     navigation.navigate("Profile");
   };
   return [
-    { id: 0, profile_img: "" },
-    { id: 0, profile_img: "" },
+    {
+      id: 0,
+      profile_img:
+        "https://res.cloudinary.com/djehfg3yk/image/upload/v1696151625/file-upload/1696151623996-KakaoTalk_20230218_194526049_02_pedm6t.jpg",
+    },
+    { id: 1, profile_img: "" },
     ,
-    { id: 0, profile_img: "" },
+    { id: 2, profile_img: "" },
     ,
-    { id: 0, profile_img: "" },
+    { id: 3, profile_img: "" },
   ]?.map((item) => (
     <View key={item?.id} style={styles.commentBox}>
       <View style={styles.headerArea}>
@@ -94,6 +98,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: 0,
     left: 0,
+    borderRadius: 8,
   },
   userIcon: {
     fontSize: 20,
