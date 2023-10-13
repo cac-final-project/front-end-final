@@ -21,15 +21,9 @@ interface PostProps {
   profile_img: string;
   post_id: number;
   isAuthor: boolean;
-  onEllipsisPress: () => void; // New prop
 }
 
-const Post: React.FC<PostProps> = ({
-  profile_img,
-  isAuthor,
-  post_id,
-  onEllipsisPress,
-}) => {
+const Post: React.FC<PostProps> = ({ profile_img, isAuthor, post_id }) => {
   const navigation = useNavigation<ScreenNavigationProp>();
   const handleProfileClick = () => {
     navigation.navigate("Profile");

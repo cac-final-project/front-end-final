@@ -11,9 +11,9 @@ import { Weather, Alert } from "@/components/layouts/resources/index";
 import {
   HeaderTab,
   Post,
-  Overlay,
   BottomSheetContent,
 } from "@/components/layouts/posts/index";
+import { OverLay } from "@/components/common/post";
 import { Colors } from "@/constants/Colors";
 import BottomSheet from "@gorhom/bottom-sheet";
 import { useNavigation } from "@react-navigation/native";
@@ -117,7 +117,7 @@ const PostsScreen: React.FC = () => {
       <TouchableOpacity>
         <Image source={AddPostIcon} style={styles.addPostButton} />
       </TouchableOpacity>
-      {isBottomSheetVisible && <Overlay onTap={handleOverlayTap} />}
+      {isBottomSheetVisible && <OverLay onTap={handleOverlayTap} />}
       {isBottomSheetVisible && (
         <BottomSheet
           ref={bottomSheetRef}
