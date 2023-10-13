@@ -15,6 +15,7 @@ type RootStackParamList = {
   Posts: undefined;
   PostDetail: { post_id: number; post_type: post_type };
   PostEdit: { post_id: number; post_type: post_type; write_type: write_type };
+  PostDetailMapView: { lat: number; lon: number; streetname: string };
   // Add other screen types if you have more than these
 };
 

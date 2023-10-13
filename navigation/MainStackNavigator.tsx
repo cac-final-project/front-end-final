@@ -25,6 +25,7 @@ import {
   ForgotPwScreen,
   PostEditScreen,
   PostDetailScreen,
+  PostDetailMapViewScreen,
 } from "@/components/screens/index";
 
 const Stack = createStackNavigator();
@@ -143,6 +144,11 @@ const MainStackNavigator = () => {
       <Stack.Screen
         name="PostDetail"
         component={PostDetailScreen}
+        options={{ title: "My Tabs" }}
+      />
+      <Stack.Screen
+        name="PostDetailMapView"
+        component={PostDetailMapViewScreen}
         options={{ title: "My Tabs" }}
       />
     </Stack.Navigator>

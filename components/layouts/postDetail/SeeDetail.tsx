@@ -1,11 +1,21 @@
 import React from "react";
 import { View, StyleSheet, TouchableOpacity, Text } from "react-native";
 import { Colors } from "@/constants/Colors";
+import { useNavigation } from "@react-navigation/native";
+import { ScreenNavigationProp } from "@/typings/StackParam";
 
 const SeeDetail: React.FC = () => {
+  const navigation = useNavigation<ScreenNavigationProp>();
+  const handleNavigate = () => {
+    navigation.navigate("PostDetailMapView", {
+      lat: 37.78825,
+      lon: -122.4324,
+      streetname: "test street name",
+    });
+  };
   return (
     <View style={styles.buttonWrapper}>
-      <TouchableOpacity>
+      <TouchableOpacity onPress={handleNavigate}>
         <View style={styles.buttonContainer}>
           <Text style={styles.buttonText}>See detail</Text>
         </View>

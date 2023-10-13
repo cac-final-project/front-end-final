@@ -17,14 +17,14 @@ export const getCommonHeaderStyles = (
       elevation: 0,
     },
     headerTitleContainerStyle: {
-      paddingBottom: 7,
+      paddingVertical: 7,
     },
     headerLeftContainerStyle: {
-      paddingBottom: 7,
+      paddingVertical: 7,
       paddingLeft: 5,
     },
     headerRightContainerStyle: {
-      paddingBottom: 7,
+      paddingVertical: 7,
       paddingRight: 5,
     },
     headerTitleAlign: "center",

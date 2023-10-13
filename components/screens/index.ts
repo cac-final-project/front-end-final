@@ -10,3 +10,4 @@ export { default as ForgotPwScreen } from "./forgotPw/ForgotPwScreen";
 export { default as PostsScreen } from "./posts/PostsScreen";
 export { default as PostEditScreen } from "./postEdit/PostEditScreen";
 export { default as PostDetailScreen } from "./postDetail/PostDetailScreen";
+export { default as PostDetailMapViewScreen } from "./postDetailMapView/PostDetailMapView";

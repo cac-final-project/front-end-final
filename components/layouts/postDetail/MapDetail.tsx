@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { View, StyleSheet, Image } from "react-native";
 import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import { Colors } from "@/constants/Colors";
+import { MarkerIcon } from "@/components/common/map/index";
 
 const YellowMarkerIcon = require("@/assets/images/YellowMarker.png");
 const MarkerCampaignIcon = require("@/assets/images/MarkerCampaign.png");
@@ -37,20 +38,9 @@ const MapDetail: React.FC = () => {
                 latitude: 37.78825,
                 longitude: -122.4324,
               }}
+              anchor={{ x: 0.5, y: 0.5 }} // Adjusts the anchor point of the marker
             >
-              <View style={styles.shadowAndMarkerContainer}>
-                <View style={styles.shadowContainer} />
-                <View style={styles.markerContainer}>
-                  <Image
-                    source={YellowMarkerIcon}
-                    style={styles.yellowMarker}
-                  />
-                  <Image
-                    source={MarkerCampaignIcon}
-                    style={styles.markerCampaign}
-                  />
-                </View>
-              </View>
+              <MarkerIcon />
             </Marker>
           </MapView>
         </View>
@@ -72,28 +62,6 @@ const styles = StyleSheet.create({
   map: {
     width: "100%",
     height: "100%",
-  },
-  markerContainer: {
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  yellowMarker: {},
-  markerCampaign: {
-    position: "absolute",
-    top: 7,
-  },
-  shadowAndMarkerContainer: {
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  shadowContainer: {
-    width: 100,
-    height: 70,
-    backgroundColor: "rgba(122.19, 122.19, 122.19, 0.2)",
-    borderRadius: 9999,
-    position: "absolute",
-    bottom: -50,
-    left: -50,
   },
 });
 
