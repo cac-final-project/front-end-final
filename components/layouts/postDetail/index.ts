@@ -1,0 +1,9 @@
+export { default as CommentHeader } from "./CommentHeader";
+export { default as CommentList } from "./CommentList";
+export { default as Header } from "./Header";
+export { default as TagList } from "./TagList";
+export { default as MapDetail } from "./MapDetail";
+export { default as Post } from "./Post";
+export { default as PostContent } from "./PostContent";
+export { default as ImageBox } from "./ImageBox";
+export { default as SeeDetail } from "./SeeDetail";

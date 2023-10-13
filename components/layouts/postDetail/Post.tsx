@@ -26,79 +26,64 @@ interface PostProps {
 
 const Post: React.FC<PostProps> = ({
   profile_img,
-  post_id,
   isAuthor,
+  post_id,
   onEllipsisPress,
 }) => {
   const navigation = useNavigation<ScreenNavigationProp>();
-
-  const handleEditClick = () => {
-    navigation.navigate("PostDetail", { post_id: 0, post_type: "tip" });
-  };
   const handleProfileClick = () => {
     navigation.navigate("EditProfile");
   };
   return (
-    <TouchableWithoutFeedback onPress={handleEditClick}>
-      <View style={styles.container}>
-        <View style={styles.content}>
-          <View style={styles.userSection}>
-            <View style={styles.profileContainer}>
-              <TouchableOpacity onPress={handleProfileClick}>
-                <View style={styles.userIcon}>
-                  {profile_img ? (
-                    <Image
-                      source={{
-                        uri: "https://res.cloudinary.com/djehfg3yk/image/upload/v1696151625/file-upload/1696151623996-KakaoTalk_20230218_194526049_02_pedm6t.jpg",
-                      }}
-                      style={styles.profileImage}
-                    />
-                  ) : (
-                    <Image source={ProfileIcon} />
-                  )}
-                </View>
-              </TouchableOpacity>
-              <View>
-                <TouchableOpacity>
-                  <Text style={styles.username}>@JohnDoe</Text>
-                </TouchableOpacity>
-                {post_id === 0 && (
-                  <View style={styles.popularBadge}>
-                    <Text style={styles.popularText}>Popular</Text>
-                  </View>
+    <TouchableWithoutFeedback>
+      <View style={styles.content}>
+        <View style={styles.userSection}>
+          <View style={styles.profileContainer}>
+            <TouchableOpacity onPress={handleProfileClick}>
+              <View style={styles.userIcon}>
+                {profile_img ? (
+                  <Image
+                    source={{
+                      uri: "https://res.cloudinary.com/djehfg3yk/image/upload/v1696151625/file-upload/1696151623996-KakaoTalk_20230218_194526049_02_pedm6t.jpg",
+                    }}
+                    style={styles.profileImage}
+                  />
+                ) : (
+                  <Image source={ProfileIcon} />
                 )}
               </View>
-            </View>
-            {isAuthor && (
-              <TouchableOpacity
-                onPress={onEllipsisPress}
-                style={styles.ellipsis}
-                hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
-              >
-                <Image source={ElipsisIcon} />
+            </TouchableOpacity>
+            <View>
+              <TouchableOpacity>
+                <Text style={styles.username}>@JohnDoe</Text>
               </TouchableOpacity>
-            )}
+              {post_id === 0 && (
+                <View style={styles.popularBadge}>
+                  <Text style={styles.popularText}>Popular</Text>
+                </View>
+              )}
+            </View>
           </View>
-          <View style={styles.postContent}>
-            <View style={styles.postDetails}>
-              <Text style={styles.postText}>
-                We are distributing bottled water in the city!
-              </Text>
-              <Text style={styles.date}>2023.09.20</Text>
-            </View>
-            <View style={styles.voteContainer}>
-              <TouchableOpacity
-                hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
-              >
-                <Image source={UpVoteIcon} style={styles.voteIcon} />
-              </TouchableOpacity>
-              <Text style={styles.voteCount}>28</Text>
-              <TouchableOpacity
-                hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
-              >
-                <Image source={DownVoteIcon} style={styles.voteIcon} />
-              </TouchableOpacity>
-            </View>
+        </View>
+        <View style={styles.postContent}>
+          <View style={styles.postDetails}>
+            <Text style={styles.postText}>
+              We are distributing bottled water in the city!
+            </Text>
+            <Text style={styles.date}>2023.09.20</Text>
+          </View>
+          <View style={styles.voteContainer}>
+            <TouchableOpacity
+              hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+            >
+              <Image source={UpVoteIcon} style={styles.voteIcon} />
+            </TouchableOpacity>
+            <Text style={styles.voteCount}>28</Text>
+            <TouchableOpacity
+              hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+            >
+              <Image source={DownVoteIcon} style={styles.voteIcon} />
+            </TouchableOpacity>
           </View>
         </View>
       </View>
@@ -107,18 +92,10 @@ const Post: React.FC<PostProps> = ({
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 16,
-    backgroundColor: Colors.white,
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: Colors.signupBoxBorder,
-    marginBottom: 16,
-  },
   profileContainer: {
     flexDirection: "row",
     alignItems: "center",
+    marginTop: 8,
   },
   ellipsis: {
     marginLeft: "auto",
@@ -189,10 +166,9 @@ const styles = StyleSheet.create({
   postText: {
     flex: 1,
     color: Colors.black,
-    fontSize: 15,
+    fontSize: 18,
     fontFamily: "PlusJakartaSans-Bold",
-    lineHeight: 19.5,
-    letterSpacing: 0.3,
+    letterSpacing: 0.54,
   },
   date: {
     color: Colors.black,

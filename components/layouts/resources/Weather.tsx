@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     borderBottomWidth: 1,
-    borderBottomColor: Colors.grey,
+    borderBottomColor: Colors.signupBoxBorder,
     backgroundColor: Colors.white,
     paddingHorizontal: 16,
     paddingVertical: 8,
