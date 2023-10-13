@@ -4,12 +4,8 @@ import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import { Colors } from "@/constants/Colors";
 import { MarkerIcon } from "@/components/common/map/index";
 
-const YellowMarkerIcon = require("@/assets/images/YellowMarker.png");
-const MarkerCampaignIcon = require("@/assets/images/MarkerCampaign.png");
-
 const MapDetail: React.FC = () => {
   const [isMapReady, setIsMapReady] = useState(false);
-  console.log(isMapReady);
 
   const onLayout = () => {
     setIsMapReady(true);
