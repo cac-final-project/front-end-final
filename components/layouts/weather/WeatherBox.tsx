@@ -3,12 +3,12 @@ import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { ScreenNavigationProp } from "@/typings/StackParam";
 import { Colors } from "@/constants/Colors";
-import { level } from "@/typings/heatLevels";
+import { Level } from "@/typings/heatLevels";
 
 const RightIcon = require("@/assets/images/RightArrow.png");
 
 interface WeatherBoxProps {
-  level: level;
+  level: Level;
 }
 
 const WeatherBox: React.FC<WeatherBoxProps> = ({ level }) => {
@@ -30,7 +30,7 @@ const WeatherBox: React.FC<WeatherBoxProps> = ({ level }) => {
   );
 };
 
-function getStyles(level: level) {
+function getStyles(level: Level) {
   let borderColor = "";
   switch (level) {
     case 1:

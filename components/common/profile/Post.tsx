@@ -28,13 +28,13 @@ const Post: React.FC = () => {
         </View>
         <View style={styles.rightBox}>
           <View style={styles.rightBoxVoteContainer}>
-            <TouchableOpacity onPress={(e) => handleVoteClick(e, "up")}>
-              {/* <AntDesign name="up" size={26} color="black" /> */}
-            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={(e) => handleVoteClick(e, "up")}
+            ></TouchableOpacity>
             <Text>28</Text>
-            <TouchableOpacity onPress={(e) => handleVoteClick(e, "down")}>
-              {/* <AntDesign name="down" size={26} color="black" /> */}
-            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={(e) => handleVoteClick(e, "down")}
+            ></TouchableOpacity>
           </View>
         </View>
       </View>

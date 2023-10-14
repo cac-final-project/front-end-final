@@ -1,6 +1,6 @@
 import React from "react";
 import { SafeAreaView, View, Text, StyleSheet } from "react-native";
-import { Weather } from "@/components/layouts/resources/index";
+import { Weather } from "@/components/common/index";
 import { WeatherContent } from "@/components/layouts/weather/index";
 
 const WeatherScreen: React.FC = () => {

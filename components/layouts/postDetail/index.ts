@@ -7,3 +7,5 @@ export { default as Post } from "./Post";
 export { default as PostContent } from "./PostContent";
 export { default as ImageBox } from "./ImageBox";
 export { default as SeeDetail } from "./SeeDetail";
+export { default as BottomSheetContent } from "./BottomSheetContent";
+export { default as OverLay } from "./OverLay";

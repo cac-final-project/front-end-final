@@ -1,10 +1,10 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { Colors } from "@/constants/Colors";
-import { level } from "@/typings/heatLevels";
+import { Level } from "@/typings/heatLevels";
 
 interface TitleProps {
-  level: level;
+  level: Level;
 }
 
 const Title: React.FC<TitleProps> = ({ level }) => {
@@ -17,7 +17,7 @@ const Title: React.FC<TitleProps> = ({ level }) => {
   );
 };
 
-function getStyles(level: level) {
+function getStyles(level: Level) {
   let color = "";
   switch (level) {
     case 1:

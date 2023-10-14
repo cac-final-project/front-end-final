@@ -1,10 +1,11 @@
 import React from "react";
 import { SafeAreaView, View, Text, StyleSheet, ScrollView } from "react-native";
 import { Colors } from "@/constants/Colors";
-import { WeatherBox } from "@/components/common/weather";
-import { level } from "@/typings/heatLevels";
+import { WeatherBox } from "@/components/layouts/weather/index";
+import { Level } from "@/typings/heatLevels";
 
 const WeatherContent: React.FC = () => {
+  console.log("hi");
   return (
     <SafeAreaView>
       <ScrollView>
@@ -14,7 +15,7 @@ const WeatherContent: React.FC = () => {
           </Text>
         </View>
         {[1, 2, 3, 4].map((item) => {
-          return <WeatherBox key={item} level={item as level} />;
+          return <WeatherBox key={item} level={item as Level} />;
         })}
       </ScrollView>
     </SafeAreaView>

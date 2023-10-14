@@ -14,8 +14,9 @@ import {
   TagList,
   CommentHeader,
   CommentList,
+  OverLay,
+  BottomSheetContent,
 } from "@/components/layouts/postDetail/index";
-import { OverLay, BottomSheetContent } from "@/components/common/post";
 import BottomSheet from "@gorhom/bottom-sheet";
 import { PostType } from "@/typings/heatLevels";
 import { useNavigation } from "@react-navigation/native";

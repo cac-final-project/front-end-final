@@ -1,17 +1,17 @@
 import React from "react";
 import { SafeAreaView, View, Text, StyleSheet } from "react-native";
 import { useRoute } from "@react-navigation/native";
-import { Weather } from "@/components/layouts/resources/index";
+import { Weather } from "@/components/common/index";
 import { Title, Information } from "@/components/layouts/weatherDetail/index";
 import { RouteNames } from "@/typings/StackParam";
 import { Colors } from "@/constants/Colors";
-import { level } from "@/typings/heatLevels";
+import { Level } from "@/typings/heatLevels";
 
 type RouteType = {
   key: string;
   name: RouteNames;
   params: {
-    level: level;
+    level: Level;
   };
 };
 
