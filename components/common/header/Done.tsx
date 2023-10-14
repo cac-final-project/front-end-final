@@ -1,9 +1,8 @@
 import React from "react";
 import { SafeAreaView, Text, StyleSheet, TouchableOpacity } from "react-native";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import { ScreenNavigationProp, RouteNames } from "@/typings/StackParam";
 import { Colors } from "@/constants/Colors";
-import { useRoute } from "@react-navigation/native";
 
 type RouteType = {
   key: string;

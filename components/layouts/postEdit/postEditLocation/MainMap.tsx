@@ -1,14 +1,8 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
-import { MarkerIcon } from "@/components/common/map/index";
 
-interface MainMapProps {
-  lat: number;
-  lon: number;
-}
-
-const MainMap: React.FC<MainMapProps> = ({ lat, lon }) => {
+const MainMap: React.FC = () => {
   return (
     <MapView
       initialRegion={{
@@ -19,16 +13,7 @@ const MainMap: React.FC<MainMapProps> = ({ lat, lon }) => {
       }}
       provider={PROVIDER_GOOGLE}
       style={styles.map}
-    >
-      <Marker
-        coordinate={{
-          latitude: 37.78825,
-          longitude: -122.4324,
-        }}
-      >
-        <MarkerIcon />
-      </Marker>
-    </MapView>
+    ></MapView>
   );
 };
 

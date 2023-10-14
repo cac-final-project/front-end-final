@@ -1,7 +1,12 @@
 import React, { useState } from "react";
-import { View, Text } from "react-native";
+import { SafeAreaView, View, StyleSheet } from "react-native";
 import { tagsAtom } from "@/state/atoms/write";
 import { useRecoilState } from "recoil";
+import {
+  TagHeader,
+  TagInput,
+} from "@/components/layouts/postEdit/postEditTags/index";
+import { Colors } from "@/constants/Colors";
 
 const EditTagScreen: React.FC = () => {
   const [tags, setTags] = useRecoilState(tagsAtom);
@@ -21,10 +26,26 @@ const EditTagScreen: React.FC = () => {
     });
   };
   return (
-    <View>
-      <Text>EditTagScreen</Text>
-    </View>
+    <SafeAreaView style={styles.container}>
+      <TagHeader />
+      <TagInput tags={tags} />
+      <View style={styles.line}></View>
+    </SafeAreaView>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: Colors.white,
+    padding: 24,
+  },
+  line: {
+    width: "100%",
+    borderBottomWidth: 1,
+    borderColor: Colors.postBorder,
+    marginBottom: 16,
+  },
+});
 
 export default EditTagScreen;

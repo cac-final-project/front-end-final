@@ -44,7 +44,7 @@ const TabNavigator = () => {
         component={PostsScreen}
         options={{
           headerShown: false,
-          tabBarLabel: "Posts",
+          tabBarLabel: "Community",
           tabBarIcon: ({ focused }) => {
             if (focused) {
               return <Image source={TabClickedIcon} />;
