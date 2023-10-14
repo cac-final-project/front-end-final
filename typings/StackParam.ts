@@ -1,7 +1,7 @@
 import { StackNavigationProp } from "@react-navigation/stack";
-import { level, post_type, write_type } from "@/typings/heatLevels";
+import { Level, PostType, WriteType } from "@/typings/heatLevels";
 
-type RootStackParamList = {
+export type RootStackParamList = {
   Tabs: undefined;
   Login: undefined;
   Weather: undefined;
@@ -9,12 +9,22 @@ type RootStackParamList = {
   Profile: undefined;
   EditProfile: undefined;
   Resource: undefined;
-  WeatherDetail: { level: level };
+  WeatherDetail: { level: Level };
   Signup: undefined;
   ForgotPw: undefined;
   Posts: undefined;
-  PostDetail: { post_id: number; post_type: post_type };
-  PostEdit: { post_id: number; post_type: post_type; write_type: write_type };
+  PostDetail: { post_id: number; post_type: PostType };
+  PostEdit: { post_id?: number; post_type: PostType; write_type: WriteType };
+  PostEditTags: {
+    post_id?: number;
+    post_type: PostType;
+    write_type: WriteType;
+  };
+  PostEditLocation: {
+    post_id?: number;
+    post_type: PostType;
+    write_type: WriteType;
+  };
   PostDetailMapView: { lat: number; lon: number; streetname: string };
   // Add other screen types if you have more than these
 };

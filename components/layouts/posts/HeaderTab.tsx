@@ -13,13 +13,13 @@ const HeaderTab: React.FC<HeaderTabProps> = ({ headerTab, setHeaderTab }) => {
   return (
     <View style={styles.container}>
       <TouchableOpacity
-        onPress={() => setHeaderTab("tips")}
+        onPress={() => setHeaderTab("tip")}
         style={styles.tipBox}
       >
         <Text style={styles.text}>Tips</Text>
       </TouchableOpacity>
       <TouchableOpacity
-        onPress={() => setHeaderTab("campaigns")}
+        onPress={() => setHeaderTab("campaign")}
         style={styles.campaignBox}
       >
         <Text style={styles.text}>Campaigns</Text>
@@ -39,11 +39,11 @@ function getStyles(headerTab: headerTabType) {
       alignItems: "center",
       justifyContent: "center",
       backgroundColor:
-        headerTab === "tips" ? Colors.headerTabGrey : Colors.white,
+        headerTab === "tip" ? Colors.headerTabGrey : Colors.white,
       borderTopColor: Colors.signupBoxBorder,
       borderBottomColor:
-        headerTab === "tips" ? Colors.primary : Colors.signupBoxBorder,
-      borderBottomWidth: headerTab === "tips" ? 2 : 1,
+        headerTab === "tip" ? Colors.primary : Colors.signupBoxBorder,
+      borderBottomWidth: headerTab === "tip" ? 2 : 1,
     },
     campaignBox: {
       paddingVertical: 10,
@@ -51,10 +51,10 @@ function getStyles(headerTab: headerTabType) {
       alignItems: "center",
       justifyContent: "center",
       backgroundColor:
-        headerTab === "campaigns" ? Colors.headerTabGrey : Colors.white,
+        headerTab === "campaign" ? Colors.headerTabGrey : Colors.white,
       borderBottomColor:
-        headerTab === "campaigns" ? Colors.primary : Colors.signupBoxBorder,
-      borderBottomWidth: headerTab === "campaigns" ? 2 : 1,
+        headerTab === "campaign" ? Colors.primary : Colors.signupBoxBorder,
+      borderBottomWidth: headerTab === "campaign" ? 2 : 1,
     },
     text: {
       color: Colors.black,

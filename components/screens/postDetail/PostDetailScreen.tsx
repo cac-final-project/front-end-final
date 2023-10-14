@@ -17,7 +17,7 @@ import {
 } from "@/components/layouts/postDetail/index";
 import { OverLay, BottomSheetContent } from "@/components/common/post";
 import BottomSheet from "@gorhom/bottom-sheet";
-import { post_type } from "@/typings/heatLevels";
+import { PostType } from "@/typings/heatLevels";
 import { useNavigation } from "@react-navigation/native";
 import { ScreenNavigationProp } from "@/typings/StackParam";
 
@@ -26,7 +26,7 @@ type RouteType = {
   name: RouteNames;
   params: {
     post_id: number;
-    post_type: post_type;
+    post_type: PostType;
   };
 };
 
@@ -51,7 +51,6 @@ const PostDetailScreen: React.FC = () => {
   }, []);
 
   const handleShowBottomSheet = useCallback(() => {
-    console.log("hi");
     setIsBottomSheetVisible(true);
     bottomSheetRef.current?.expand(); // Use expand method here
   }, []);

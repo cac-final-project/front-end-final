@@ -1,14 +1,25 @@
 import React from "react";
 import { SafeAreaView, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { ScreenNavigationProp } from "@/typings/StackParam";
+import { ScreenNavigationProp, RouteNames } from "@/typings/StackParam";
 import { Colors } from "@/constants/Colors";
+import { useRoute } from "@react-navigation/native";
+
+type RouteType = {
+  key: string;
+  name: RouteNames;
+};
 
 const Done: React.FC = () => {
+  const route = useRoute<RouteType>();
   const navigation = useNavigation<ScreenNavigationProp>();
 
   const handleEditClick = () => {
-    navigation.navigate("Profile");
+    if (route.name === "PostEditTags") {
+      navigation.goBack();
+    } else {
+      navigation.navigate("Profile");
+    }
   };
 
   return (

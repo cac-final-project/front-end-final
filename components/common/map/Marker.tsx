@@ -5,7 +5,6 @@ import { View, StyleSheet, Image } from "react-native";
 const CampaignIcon = require("@/assets/images/maker/CampaignMarker.png");
 
 const MarkerIcon: React.FC = () => {
-  console.log("hi");
   return (
     <View style={styles.markerContainer}>
       <View style={styles.shadowContainer}>

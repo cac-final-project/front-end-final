@@ -3,6 +3,7 @@ import { enableScreens } from "react-native-screens";
 import useAppFonts from "@/state/hooks/useAppFonts";
 import { NavigationContainer } from "@react-navigation/native";
 import MainStackNavigator from "@/navigation/MainStackNavigator";
+import { RecoilRoot } from "recoil";
 
 enableScreens();
 
@@ -13,8 +14,10 @@ export default function App() {
     return null;
   }
   return (
-    <NavigationContainer>
-      <MainStackNavigator />
-    </NavigationContainer>
+    <RecoilRoot>
+      <NavigationContainer>
+        <MainStackNavigator />
+      </NavigationContainer>
+    </RecoilRoot>
   );
 }

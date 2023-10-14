@@ -17,12 +17,12 @@ import { ScreenNavigationProp } from "@/typings/StackParam";
 
 const AddPostIcon = require("@/assets/images/AddPost.png");
 
-export type headerTabType = "tips" | "campaigns";
+export type headerTabType = "tip" | "campaign";
 
 const PostsScreen: React.FC = () => {
   const navigation = useNavigation<ScreenNavigationProp>();
 
-  const [headerTab, setHeaderTab] = useState<headerTabType>("tips");
+  const [headerTab, setHeaderTab] = useState<headerTabType>("tip");
   const [isBottomSheetVisible, setIsBottomSheetVisible] = useState(false);
 
   const bottomSheetRef = useRef<BottomSheet>(null);
@@ -37,7 +37,6 @@ const PostsScreen: React.FC = () => {
   }, []);
 
   const handleShowBottomSheet = useCallback(() => {
-    console.log("hi");
     setIsBottomSheetVisible(true);
     bottomSheetRef.current?.expand(); // Use expand method here
   }, []);
@@ -63,6 +62,13 @@ const PostsScreen: React.FC = () => {
     // Hide the BottomSheet (and the Overlay)
     setIsBottomSheetVisible(false);
   }, []);
+
+  const handleWritePost = () => {
+    navigation.navigate("PostEdit", {
+      post_type: headerTab,
+      write_type: "write",
+    });
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -110,7 +116,10 @@ const PostsScreen: React.FC = () => {
           })}
         </View>
       </ScrollView>
-      <TouchableOpacity>
+      <TouchableOpacity
+        onPress={handleWritePost}
+        hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+      >
         <Image source={AddPostIcon} style={styles.addPostButton} />
       </TouchableOpacity>
       {isBottomSheetVisible && <OverLay onTap={handleOverlayTap} />}

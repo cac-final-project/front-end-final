@@ -1,8 +1,10 @@
 import React from "react";
+import { RouteProp } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import TabNavigator from "./TabNavigator";
 import { getCommonHeaderStyles } from "./HeaderStyle";
 import { RouteNames } from "@/typings/StackParam";
+import { WriteType } from "@/typings/heatLevels";
 import {
   Neighborhood,
   Profile,
@@ -26,7 +28,11 @@ import {
   PostEditScreen,
   PostDetailScreen,
   PostDetailMapViewScreen,
+  EditTagScreen,
+  EditLocationScreen,
 } from "@/components/screens/index";
+import { RootStackParamList } from "@/typings/StackParam";
+type PostEditRouteProp = RouteProp<RootStackParamList, "PostEdit">;
 
 const Stack = createStackNavigator();
 
@@ -45,7 +51,11 @@ const MainStackNavigator = () => {
               return <Username />;
             } else if (route.name === "EditProfile") {
               return <EditTitle />;
-            } else if (route.name === "PostEdit") {
+            } else if (
+              route.name === "PostEdit" ||
+              route.name === "PostEditTags" ||
+              route.name === "PostEditLocation"
+            ) {
               return <WriteOrEdit />;
             } else if (
               route.name === "Weather" ||
@@ -62,17 +72,24 @@ const MainStackNavigator = () => {
           headerRight: (props) => {
             if (route.name === "Profile") {
               return <Edit />;
-            } else if (route.name === "EditProfile") {
+            } else if (
+              route.name === "EditProfile" ||
+              route.name === "PostEditTags"
+            ) {
               return <Done />;
             } else if (route.name === "PostEdit") {
-              return <EditPost />;
+              const params = route.params as PostEditRouteProp["params"];
+              const { write_type } = params;
+
+              return <EditPost write_type={write_type as WriteType} />;
             } else if (
               route.name === "Weather" ||
               route.name === "WeatherDetail" ||
               route.name === "Alert" ||
               route.name === "Login" ||
               route.name === "Signup" ||
-              route.name === "ForgotPw"
+              route.name === "ForgotPw" ||
+              route.name === "PostEditLocation"
             ) {
               return <></>;
             }
@@ -149,6 +166,16 @@ const MainStackNavigator = () => {
       <Stack.Screen
         name="PostDetailMapView"
         component={PostDetailMapViewScreen}
+        options={{ title: "My Tabs" }}
+      />
+      <Stack.Screen
+        name="PostEditTags"
+        component={EditTagScreen}
+        options={{ title: "My Tabs" }}
+      />
+      <Stack.Screen
+        name="PostEditLocation"
+        component={EditLocationScreen}
         options={{ title: "My Tabs" }}
       />
     </Stack.Navigator>

@@ -3,8 +3,13 @@ import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { Colors } from "@/constants/Colors";
 import { useNavigation } from "@react-navigation/native";
 import { ScreenNavigationProp } from "@/typings/StackParam";
+import { WriteType } from "@/typings/heatLevels";
 
-const EditPost: React.FC = () => {
+interface EditPostProps {
+  write_type: WriteType;
+}
+
+const EditPost: React.FC<EditPostProps> = ({ write_type }) => {
   const navigation = useNavigation<ScreenNavigationProp>();
 
   const handleEdit = () => {
@@ -16,7 +21,9 @@ const EditPost: React.FC = () => {
       onPress={handleEdit}
       hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
     >
-      <Text style={styles.contentText}>Edit</Text>
+      <Text style={styles.contentText}>
+        {write_type === "edit" ? "Edit" : "Post"}
+      </Text>
     </TouchableOpacity>
   );
 };
