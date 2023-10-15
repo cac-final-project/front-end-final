@@ -6,6 +6,6 @@ export const tagsAtom = atom<string[]>({
 });
 
 export const temporaryTagsAtom = atom<string[]>({
-  key: "tagsAtom",
+  key: "temporaryTagsAtom",
   default: [],
 });

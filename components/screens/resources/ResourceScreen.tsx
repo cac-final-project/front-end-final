@@ -1,28 +1,63 @@
-import React, { useMemo } from "react";
-import { SafeAreaView, Text, StyleSheet } from "react-native";
+import React, { useMemo, useState } from "react";
+import { SafeAreaView, Text, StyleSheet, View } from "react-native";
 import { Weather, Alert } from "@/components/common/index";
-import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
-import BottomSheet from "@gorhom/bottom-sheet";
+import {
+  ResourceBottomSheet,
+  TagList,
+  OverLay,
+  FilterBottomSheet,
+  MainMap,
+  BottomSlider,
+  ViewList,
+} from "@/components/layouts/resources/index";
+import { TTagChosen } from "@/typings/heatLevels";
 
 const ResourceScreen: React.FC = () => {
-  const snapPoints = useMemo(() => ["25%", "80%"], []);
+  const snapPoints = useMemo(() => ["43%", "80%"], []);
+  const [tagChosen, setTagChosen] = useState<TTagChosen>(undefined);
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [filterChosen, setFilterChosen] = useState<string[]>([]);
+  const [selectedPlace, setSelectedPlace] = useState<undefined | string>();
+
+  const handleFilterClose = () => {
+    setIsFilterOpen(false);
+  };
   return (
     <SafeAreaView>
       <Weather />
       <Alert />
-      <MapView
-        initialRegion={{
-          latitude: 37.78825,
-          longitude: -122.4324,
-          latitudeDelta: 0.005,
-          longitudeDelta: 0.005,
-        }}
-        provider={PROVIDER_GOOGLE}
-        style={styles.map}
-      ></MapView>
-      <BottomSheet index={1} snapPoints={snapPoints}>
-        <Text>Hello!</Text>
-      </BottomSheet>
+      <MainMap
+        selectedPlace={selectedPlace}
+        setSelectedPlace={setSelectedPlace}
+      />
+      {selectedPlace ? (
+        <>
+          <ViewList setSelectedPlace={setSelectedPlace} />
+          <BottomSlider />
+        </>
+      ) : (
+        <>
+          <TagList
+            tagChosen={tagChosen}
+            setTagChosen={setTagChosen}
+            setIsFilterOpen={setIsFilterOpen}
+          />
+          {isFilterOpen && <OverLay onTap={handleFilterClose} />}
+          {!isFilterOpen ? (
+            <ResourceBottomSheet
+              index={0}
+              snapPoints={snapPoints}
+              tagChosen={tagChosen}
+            />
+          ) : (
+            <FilterBottomSheet
+              handleFilterClose={handleFilterClose}
+              filterChosen={filterChosen}
+              setFilterChosen={setFilterChosen}
+            />
+          )}
+        </>
+      )}
     </SafeAreaView>
   );
 };

@@ -10,12 +10,12 @@ import { Feather } from "@expo/vector-icons";
 
 const CloseIcon = require("@/assets/images/write/Close.png");
 
-interface ImageList {
+interface ImageListProps {
   selectedImages: string[];
   setSelectedImages: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
-const ImageList: React.FC<ImageList> = ({
+const ImageList: React.FC<ImageListProps> = ({
   selectedImages,
   setSelectedImages,
 }) => {

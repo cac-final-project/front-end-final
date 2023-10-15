@@ -1,6 +1,7 @@
 import { Image } from "react-native";
 import { ResourceScreen, PostsScreen } from "@/components/screens/index";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { Colors } from "@/constants/Colors";
 
 const TabClickedIcon = require("@/assets/images/TabClicked.png");
 const TabNotClickedIcon = require("@/assets/images/TabNotClicked.png");
@@ -12,10 +13,10 @@ const TabNavigator = () => {
     <Tab.Navigator
       initialRouteName="Resource"
       screenOptions={{
-        tabBarActiveTintColor: "#FFFFFF",
-        tabBarInactiveTintColor: "#F8F8F8",
+        tabBarActiveTintColor: Colors.white,
+        tabBarInactiveTintColor: Colors.white,
         tabBarStyle: {
-          backgroundColor: "#633689",
+          backgroundColor: Colors.primary,
           borderTopWidth: 0,
           elevation: 0,
         },

@@ -1,6 +1,6 @@
 import React, { useState, useRef, useCallback, useMemo } from "react";
 import { SafeAreaView, View, StyleSheet, ScrollView } from "react-native";
-import { Weather, Alert } from "@/components/layouts/resources/index";
+import { Weather, Alert } from "@/components/common/index";
 import { Colors } from "@/constants/Colors";
 import { RouteNames } from "@/typings/StackParam";
 import { useRoute } from "@react-navigation/native";

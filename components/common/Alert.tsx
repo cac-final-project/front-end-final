@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
+import { useRecoilState } from "recoil";
+import { isAlertOpenAtom } from "@/state/atoms/alert";
 import {
   SafeAreaView,
   View,
@@ -19,12 +21,12 @@ const Alert: React.FC = () => {
   const handleAlertClick = () => {
     navigation.navigate("Alert");
   };
-  const [isOpen, setIsOpen] = useState(true);
+  const [isAlertOpen, setIsAlertOpen] = useRecoilState(isAlertOpenAtom);
 
   const handleClose = () => {
-    setIsOpen(false);
+    setIsAlertOpen(false);
   };
-  if (isOpen) {
+  if (isAlertOpen) {
     return (
       <SafeAreaView style={styles.container}>
         <View style={styles.alertHeader}>

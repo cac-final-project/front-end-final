@@ -8,9 +8,9 @@ import {
   Keyboard,
   TouchableOpacity,
 } from "react-native";
-import { InputBox, LocationItem } from "./index";
+import InputBox from "./InputBox";
+import LocationItem from "./LocationItem";
 import { BottomSheetScrollView } from "@gorhom/bottom-sheet";
-
 import { Colors } from "@/constants/Colors";
 
 const NavIcon = require("@/assets/images/write/location/SmallNav.png");

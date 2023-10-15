@@ -1,7 +1,7 @@
 import React from "react";
 import { SafeAreaView, View, Text, StyleSheet, ScrollView } from "react-native";
 import { Colors } from "@/constants/Colors";
-import { WeatherBox } from "@/components/layouts/weather/index";
+import WeatherBox from "./WeatherBox";
 import { Level } from "@/typings/heatLevels";
 
 const WeatherContent: React.FC = () => {
