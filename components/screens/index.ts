@@ -12,4 +12,4 @@ export { default as PostEditScreen } from "./postEdit/PostEditScreen";
 export { default as EditTagScreen } from "./postEdit/EditTagScreen";
 export { default as EditLocationScreen } from "./postEdit/EditLocationScreen";
 export { default as PostDetailScreen } from "./postDetail/PostDetailScreen";
-export { default as PostDetailMapViewScreen } from "./postDetailMapView/PostDetailMapView";
+export { default as PostDetailMapViewScreen } from "./postDetail/PostDetailMapView";
