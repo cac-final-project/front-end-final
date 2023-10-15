@@ -19,11 +19,27 @@ const WeatherBox: React.FC<WeatherBoxProps> = ({ level }) => {
   };
 
   const styles = getStyles(level);
+
+  let levelText = "";
+  switch (level) {
+    case 1:
+      levelText = "Mild Heat";
+      break;
+    case 2:
+      levelText = "Moderate Heat";
+      break;
+    case 3:
+      levelText = "Intense Heat";
+      break;
+    default:
+      levelText = "Extreme Heat";
+      break;
+  }
   return (
     <TouchableOpacity onPress={handleEditClick} style={styles.container}>
       <View style={styles.levelContainer}>
-        <Text style={styles.levelText}>Lv 1</Text>
-        <Text style={styles.heatLevelText}>Mild Heat</Text>
+        <Text style={styles.levelText}>Lv {level}</Text>
+        <Text style={styles.heatLevelText}>{levelText}</Text>
         <Image source={RightIcon} />
       </View>
     </TouchableOpacity>
@@ -32,18 +48,23 @@ const WeatherBox: React.FC<WeatherBoxProps> = ({ level }) => {
 
 function getStyles(level: Level) {
   let borderColor = "";
+  let textColor = "";
   switch (level) {
     case 1:
       borderColor = Colors.weather_mild;
+      textColor = Colors.weather_mild;
       break;
     case 2:
       borderColor = Colors.weather_moderate;
+      textColor = Colors.weather_moderate;
       break;
     case 3:
       borderColor = Colors.weather_intense;
+      textColor = Colors.weather_intense;
       break;
     default:
       borderColor = Colors.weather_extreme;
+      textColor = Colors.weather_extreme;
       break;
   }
   return StyleSheet.create({
@@ -66,13 +87,13 @@ function getStyles(level: Level) {
       alignItems: "center",
     },
     levelText: {
-      color: "#5BA6CD",
+      color: textColor,
       fontSize: 20,
       letterSpacing: 0.6,
       fontFamily: "PlusJakartaSans-SemiBold",
     },
     heatLevelText: {
-      color: "#5BA6CD",
+      color: textColor,
       fontSize: 20,
       letterSpacing: 0.6,
       fontFamily: "PlusJakartaSans-Bold",

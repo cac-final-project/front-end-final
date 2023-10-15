@@ -1,11 +1,20 @@
 import React from "react";
-import { SafeAreaView, View, Text, StyleSheet } from "react-native";
+import { SafeAreaView, View, Text, StyleSheet, ScrollView } from "react-native";
 import { useRoute } from "@react-navigation/native";
 import { Weather } from "@/components/common/index";
-import { Title, Information } from "@/components/layouts/weatherDetail/index";
+import {
+  Title,
+  Information,
+  Happens,
+  ShouldDoItem,
+} from "@/components/layouts/weatherDetail/index";
 import { RouteNames } from "@/typings/StackParam";
 import { Colors } from "@/constants/Colors";
 import { Level } from "@/typings/heatLevels";
+
+const WaterIcon = require("@/assets/images/weather/Water.png");
+const ClothesIcon = require("@/assets/images/weather/Clothes.png");
+const ShelterIcon = require("@/assets/images/weather/Shelter.png");
 
 type RouteType = {
   key: string;
@@ -17,15 +26,29 @@ type RouteType = {
 
 const WeatherDetail: React.FC = () => {
   const route = useRoute<RouteType>();
-  console.log(route);
+  const {
+    params: { level },
+  } = route;
+  console.log(level);
 
   return (
     <SafeAreaView style={styles.wrapper}>
       <Weather />
-      <View style={styles.container}>
-        <Title level={route.params.level} />
-        <Information />
-      </View>
+      <ScrollView>
+        <View style={styles.container}>
+          <Title level={route.params.level} />
+          <Information />
+          <View style={styles.line} />
+          <Happens />
+          <View style={styles.line} />
+          <View style={styles.shouldDoContainer}>
+            <Text style={styles.shouldDoText}>What you should do is to...</Text>
+            <ShouldDoItem img_url={WaterIcon} />
+            <ShouldDoItem img_url={ClothesIcon} />
+            <ShouldDoItem img_url={ShelterIcon} />
+          </View>
+        </View>
+      </ScrollView>
     </SafeAreaView>
   );
 };
@@ -38,6 +61,19 @@ const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 16,
     paddingTop: 40,
+  },
+  line: {
+    borderWidth: 1,
+    borderColor: Colors.signupBoxBorder,
+    marginVertical: 24,
+  },
+  shouldDoContainer: {},
+  shouldDoText: {
+    color: Colors.black,
+    fontFamily: "PlusJakartaSans-Bold",
+    letterSpacing: 0.64,
+    lineHeight: 24,
+    marginBottom: 8,
   },
 });
 

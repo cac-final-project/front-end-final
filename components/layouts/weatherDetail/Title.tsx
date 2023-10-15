@@ -8,11 +8,29 @@ interface TitleProps {
 }
 
 const Title: React.FC<TitleProps> = ({ level }) => {
+  let levelText = "";
+  switch (level) {
+    case 1:
+      levelText = "Mild Heat";
+      break;
+    case 2:
+      levelText = "Moderate Heat";
+      break;
+    case 3:
+      levelText = "Intense Heat";
+      break;
+    default:
+      levelText = "Extreme Heat";
+      break;
+  }
+
   const styles = getStyles(level);
   return (
-    <View>
-      <Text style={styles.levelText}>Level {level}</Text>
-      <Text style={styles.heatLevelText}>Mild Heat</Text>
+    <View style={styles.container}>
+      <View style={styles.levelTextContainer}>
+        <Text style={styles.levelText}>Level {level}</Text>
+      </View>
+      <Text style={styles.heatLevelText}>{levelText}</Text>
     </View>
   );
 };
@@ -34,17 +52,29 @@ function getStyles(level: Level) {
       break;
   }
   return StyleSheet.create({
+    container: {
+      alignItems: "center",
+      justifyContent: "center",
+      marginBottom: 40,
+    },
+    levelTextContainer: {
+      paddingHorizontal: 16,
+      paddingVertical: 4,
+      backgroundColor: Colors.darkGrey,
+      borderRadius: 8,
+    },
     levelText: {
-      color: Colors.black,
-      fontSize: 16,
-      lineHeight: 30,
-      fontFamily: "PlusJakartaSans-Medium",
+      color: Colors.white,
+      fontSize: 10,
+      lineHeight: 10,
+      letterSpacing: 0.3,
+      fontFamily: "PlusJakartaSans-Bold",
     },
     heatLevelText: {
       color: color,
       fontSize: 35,
       fontFamily: "PlusJakartaSans-Bold",
-      marginTop: 8,
+      marginTop: 16,
       lineHeight: 40,
     },
   });
