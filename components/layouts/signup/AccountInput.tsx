@@ -18,7 +18,7 @@ const AccountInput: React.FC<AccountInputProps> = ({
   return (
     <View style={styles.container}>
       <View style={styles.inputBox}>
-        <Text style={styles.header}>Nickname</Text>
+        <Text style={styles.header}>ID</Text>
         <TextInput
           value={username}
           onChangeText={setUsername}
@@ -28,7 +28,7 @@ const AccountInput: React.FC<AccountInputProps> = ({
         <Text style={styles.errorText}>This ID already exists</Text>
       </View>
       <View style={styles.inputBox}>
-        <Text style={styles.header}>Nickname</Text>
+        <Text style={styles.header}>Password</Text>
         <TextInput
           value={password}
           onChangeText={setPassword}

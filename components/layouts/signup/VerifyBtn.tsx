@@ -4,13 +4,22 @@ import { Colors } from "@/constants/Colors";
 
 interface VerifyBtnProps {
   handleMoveProgress: () => void;
+  phoneNo: string;
 }
 
-const VerifyBtn: React.FC<VerifyBtnProps> = ({ handleMoveProgress }) => {
-  const styles = getStyles(true);
+const VerifyBtn: React.FC<VerifyBtnProps> = ({
+  handleMoveProgress,
+  phoneNo,
+}) => {
+  const styles = getStyles(phoneNo);
+  const handlePressBtn = () => {
+    if (phoneNo) {
+      handleMoveProgress();
+    }
+  };
   return (
     <View style={styles.wrapper}>
-      <TouchableOpacity onPress={handleMoveProgress}>
+      <TouchableOpacity onPress={handlePressBtn}>
         <View style={styles.container}>
           <Text style={styles.text}>Save</Text>
         </View>
@@ -19,7 +28,7 @@ const VerifyBtn: React.FC<VerifyBtnProps> = ({ handleMoveProgress }) => {
   );
 };
 
-function getStyles(isPwConfirm: boolean) {
+function getStyles(phoneNo: string) {
   return StyleSheet.create({
     wrapper: {
       paddingHorizontal: 24,
@@ -31,7 +40,7 @@ function getStyles(isPwConfirm: boolean) {
       borderRadius: 8,
       alignItems: "center",
       justifyContent: "center",
-      backgroundColor: isPwConfirm ? Colors.primary : Colors.grey,
+      backgroundColor: phoneNo ? Colors.primary : Colors.grey,
     },
     text: {
       color: Colors.white,

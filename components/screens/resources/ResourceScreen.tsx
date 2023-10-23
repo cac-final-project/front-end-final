@@ -13,7 +13,7 @@ import {
 import { TTagChosen } from "@/typings/heatLevels";
 
 const ResourceScreen: React.FC = () => {
-  const snapPoints = useMemo(() => ["43%", "80%"], []);
+  const snapPoints = useMemo(() => ["30%", "43%", "80%"], []);
   const [tagChosen, setTagChosen] = useState<TTagChosen>(undefined);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [filterChosen, setFilterChosen] = useState<string[]>([]);
@@ -45,7 +45,7 @@ const ResourceScreen: React.FC = () => {
           {isFilterOpen && <OverLay onTap={handleFilterClose} />}
           {!isFilterOpen ? (
             <ResourceBottomSheet
-              index={0}
+              index={1}
               snapPoints={snapPoints}
               tagChosen={tagChosen}
             />

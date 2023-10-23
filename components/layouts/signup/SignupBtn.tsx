@@ -4,13 +4,22 @@ import { Colors } from "@/constants/Colors";
 
 interface SignupBtnProps {
   handleMoveProgress: () => void;
+  confirmNo: string;
 }
 
-const SignupBtn: React.FC<SignupBtnProps> = ({ handleMoveProgress }) => {
-  const styles = getStyles(true);
+const SignupBtn: React.FC<SignupBtnProps> = ({
+  handleMoveProgress,
+  confirmNo,
+}) => {
+  const styles = getStyles(confirmNo);
+  const handlePressBtn = () => {
+    if (confirmNo.length === 6) {
+      handleMoveProgress();
+    }
+  };
   return (
     <View style={styles.wrapper}>
-      <TouchableOpacity onPress={handleMoveProgress}>
+      <TouchableOpacity onPress={handlePressBtn}>
         <View style={styles.container}>
           <Text style={styles.text}>Save</Text>
         </View>
@@ -19,7 +28,7 @@ const SignupBtn: React.FC<SignupBtnProps> = ({ handleMoveProgress }) => {
   );
 };
 
-function getStyles(isPwConfirm: boolean) {
+function getStyles(confirmNo: string) {
   return StyleSheet.create({
     wrapper: {
       paddingHorizontal: 24,
@@ -31,7 +40,7 @@ function getStyles(isPwConfirm: boolean) {
       borderRadius: 8,
       alignItems: "center",
       justifyContent: "center",
-      backgroundColor: isPwConfirm ? Colors.primary : Colors.grey,
+      backgroundColor: confirmNo.length === 6 ? Colors.primary : Colors.grey,
     },
     text: {
       color: Colors.white,

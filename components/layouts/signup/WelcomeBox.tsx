@@ -5,7 +5,7 @@ import { Colors } from "@/constants/Colors";
 const UserIcon = require("@/assets/images/UserSignUp.png");
 const VolunteerIcon = require("@/assets/images/VolunteerSignup.png");
 
-type UserType = "user" | "volunteer";
+type UserType = "neighbor" | "volunteer";
 type UserTypeState = "" | UserType;
 
 interface WelcomeBoxProps {
@@ -21,8 +21,6 @@ const WelcomeBox: React.FC<WelcomeBoxProps> = ({
   handleMoveProgress,
   handleSetUserType,
 }) => {
-  console.log(userType);
-
   const styles = getStyles(userType, title);
 
   return (
@@ -34,13 +32,23 @@ const WelcomeBox: React.FC<WelcomeBoxProps> = ({
               <Image source={UserIcon} />
             </View>
             <View style={styles.textContainer}>
-              <Text style={styles.header}>Neighbors</Text>
-              <Text style={styles.description}>
-                Share heat-specific tips{"\n"}
-                Engage with community{"\n"}
-                Discover local cooling resources{"\n"}
-                Stay updated with heat alerts
+              <Text style={styles.header}>
+                {title === "neighbor" ? "Neighbors" : "Volunteers"}
               </Text>
+              {title === "neighbor" ? (
+                <Text style={styles.description}>
+                  Share heat-specific tips{"\n"}
+                  Engage with community{"\n"}
+                  Discover local cooling resources{"\n"}
+                  Stay updated with heat alerts
+                </Text>
+              ) : (
+                <Text style={styles.description}>
+                  Launch heat-relief campaigns {"\n"}
+                  Collaborate with fellow volunteers {"\n"}
+                  Extend a hand during emergencies
+                </Text>
+              )}
             </View>
           </View>
         </View>
@@ -57,7 +65,7 @@ function getStyles(userType: UserTypeState, title: UserType) {
     },
     container: {
       padding: 24,
-      backgroundColor: "white",
+      backgroundColor: userType === title ? Colors.headerTabGrey : Colors.white,
       borderRadius: 8,
       borderWidth: 2,
       borderColor: userType === title ? Colors.primary : Colors.signupBoxBorder,

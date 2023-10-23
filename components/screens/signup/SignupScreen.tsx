@@ -33,8 +33,8 @@ export type pageStatus =
   | "set your account"
   | "what's your number"
   | "verify your number";
-type UserType = "user" | "volunteer";
-const userTypes: UserType[] = ["user", "volunteer"];
+type UserType = "neighbor" | "volunteer";
+const userTypes: UserType[] = ["neighbor", "volunteer"];
 
 type UserTypeState = "" | UserType;
 
@@ -42,8 +42,8 @@ const SignupScreen: React.FC = () => {
   const [progress, setProgress] = useState<progress>(0);
   const [pageStatus, setPageStatus] = useState<pageStatus>("welcome");
 
+  // 1.
   const [userType, setUserType] = useState<UserTypeState>("");
-  console.log(userType);
 
   const handleSetUserType = (userType: UserTypeState) => {
     setUserType(userType);
@@ -54,6 +54,8 @@ const SignupScreen: React.FC = () => {
   const [password, setPassword] = useState("");
   const [phoneNo, setPhoneNo] = useState("");
   const [confirmNo, setConfirmNo] = useState("");
+
+  console.log(nickname, username, password, phoneNo);
 
   const handleMoveProgress = () => {
     if (pageStatus === "welcome") {
@@ -152,21 +154,39 @@ const SignupScreen: React.FC = () => {
           )}
           <View style={{ flex: keyboardVisible ? 0 : 1 }} />
           {pageStatus === "welcome" && (
-            <ContinueBtn handleMoveProgress={handleMoveProgress} />
+            <ContinueBtn
+              userType={userType}
+              handleMoveProgress={handleMoveProgress}
+            />
           )}
           {pageStatus === "set your nickname" && (
-            <NicknameContinueBtn handleMoveProgress={handleMoveProgress} />
+            <NicknameContinueBtn
+              pageStatus={pageStatus}
+              nickname={nickname}
+              handleMoveProgress={handleMoveProgress}
+            />
           )}
           {pageStatus === "set your account" && (
-            <NicknameContinueBtn handleMoveProgress={handleMoveProgress} />
+            <NicknameContinueBtn
+              pageStatus={pageStatus}
+              username={username}
+              password={password}
+              handleMoveProgress={handleMoveProgress}
+            />
           )}
           {pageStatus === "what's your number" && (
-            <VerifyBtn handleMoveProgress={handleMoveProgress} />
+            <VerifyBtn
+              phoneNo={phoneNo}
+              handleMoveProgress={handleMoveProgress}
+            />
           )}
           {pageStatus === "verify your number" && (
             <View>
               <ResendLink />
-              <SignupBtn handleMoveProgress={handleMoveProgress} />
+              <SignupBtn
+                confirmNo={confirmNo}
+                handleMoveProgress={handleMoveProgress}
+              />
             </View>
           )}
         </SafeAreaView>
