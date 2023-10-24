@@ -30,7 +30,6 @@ const WeatherDetail: React.FC = () => {
   const {
     params: { level },
   } = route;
-  console.log(level);
 
   const [detail, setDetail] = useState<WeatherDetailType | null>();
 

@@ -1,4 +1,4 @@
-export type WeatherDetail = {
+export type WeatherDetailType = {
   description: string;
   happens: string;
   water: string;
@@ -7,7 +7,7 @@ export type WeatherDetail = {
 };
 
 type WeatherData = {
-  [key: number]: WeatherDetail;
+  [key: number]: WeatherDetailType;
 };
 
 export const weatherData: WeatherData = {

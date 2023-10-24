@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import {
   View,
   Text,
@@ -40,7 +40,6 @@ const Weather: React.FC = () => {
     navigation.navigate("Weather");
   };
 
-  // const [currentLevel, setCurrentLevel] = useState<TLevelBar>(3); // Example level value
   const animatedValue = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {

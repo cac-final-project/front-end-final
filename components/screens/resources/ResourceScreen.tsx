@@ -11,7 +11,6 @@ import {
   ViewList,
 } from "@/components/layouts/resources/index";
 import { TTagChosen } from "@/typings/heatLevels";
-import { OPEN_WEATHER_API_KEY } from "@env";
 
 const ResourceScreen: React.FC = () => {
   const snapPoints = useMemo(() => ["30%", "43%", "80%"], []);
