@@ -21,7 +21,7 @@ const VerifyBtn: React.FC<VerifyBtnProps> = ({
     <View style={styles.wrapper}>
       <TouchableOpacity onPress={handlePressBtn}>
         <View style={styles.container}>
-          <Text style={styles.text}>Save</Text>
+          <Text style={styles.text}>Verify your number</Text>
         </View>
       </TouchableOpacity>
     </View>

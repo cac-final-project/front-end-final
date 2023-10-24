@@ -11,13 +11,13 @@ import { ScreenNavigationProp } from "@/typings/StackParam";
 import { Colors } from "@/constants/Colors";
 
 type InputsProps = {
-  userId: string;
+  username: string;
   password: string;
   handleLoginInfo: (target: "id" | "pw", value: string) => void;
 };
 
 const Inputs: React.FC<InputsProps> = ({
-  userId,
+  username,
   password,
   handleLoginInfo,
 }) => {
@@ -30,7 +30,7 @@ const Inputs: React.FC<InputsProps> = ({
       <View style={styles.inputBox}>
         <Text style={styles.header}>ID</Text>
         <TextInput
-          value={userId}
+          value={username}
           onChangeText={(value) => handleLoginInfo("id", value)}
           style={styles.input}
           placeholder="Enter your ID"

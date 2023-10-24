@@ -7,15 +7,20 @@ import {
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { ScreenNavigationProp } from "@/typings/StackParam";
-import { FontAwesome5 } from "@expo/vector-icons";
-import { Colors } from "@/constants/Colors";
+import { useRecoilValue } from "recoil";
+import { isLoggedInAtom } from "@/state/atoms/login";
 
 const ProfileIcon = require("@/assets/images/Profile.png");
 
 const Profile: React.FC = () => {
+  const isLoggedInValue = useRecoilValue(isLoggedInAtom);
   const navigation = useNavigation<ScreenNavigationProp>();
   const handleProfileClick = () => {
-    navigation.navigate("Login");
+    if (isLoggedInValue) {
+      navigation.navigate("Profile");
+    } else {
+      navigation.navigate("Login");
+    }
   };
   return (
     <TouchableOpacity onPress={handleProfileClick}>

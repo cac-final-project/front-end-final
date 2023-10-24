@@ -8,3 +8,5 @@ export type TTagChosen =
   | "Shower"
   | "Bench"
   | undefined;
+
+export type userType = "neighbor" | "volunteer" | "";

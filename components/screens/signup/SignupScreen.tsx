@@ -25,6 +25,9 @@ import {
   SignupBtn,
   ContinueBtn,
 } from "@/components/layouts/signup/index";
+import { signupApi } from "@/api/signup";
+import { useNavigation } from "@react-navigation/native";
+import { ScreenNavigationProp } from "@/typings/StackParam";
 
 export type progress = 0 | 1 | 2 | 3;
 export type pageStatus =
@@ -33,7 +36,7 @@ export type pageStatus =
   | "set your account"
   | "what's your number"
   | "verify your number";
-type UserType = "neighbor" | "volunteer";
+export type UserType = "neighbor" | "volunteer";
 const userTypes: UserType[] = ["neighbor", "volunteer"];
 
 type UserTypeState = "" | UserType;
@@ -54,6 +57,20 @@ const SignupScreen: React.FC = () => {
   const [password, setPassword] = useState("");
   const [phoneNo, setPhoneNo] = useState("");
   const [confirmNo, setConfirmNo] = useState("");
+
+  const navigation = useNavigation<ScreenNavigationProp>();
+  const handleSignup = async () => {
+    const res = await signupApi({
+      type: userType as UserType,
+      nickname,
+      username,
+      password,
+      phone_no: phoneNo,
+    });
+    if (res !== false) {
+      navigation.navigate("Login");
+    }
+  };
 
   console.log(nickname, username, password, phoneNo);
 
@@ -183,10 +200,7 @@ const SignupScreen: React.FC = () => {
           {pageStatus === "verify your number" && (
             <View>
               <ResendLink />
-              <SignupBtn
-                confirmNo={confirmNo}
-                handleMoveProgress={handleMoveProgress}
-              />
+              <SignupBtn confirmNo={confirmNo} handleSignup={handleSignup} />
             </View>
           )}
         </SafeAreaView>

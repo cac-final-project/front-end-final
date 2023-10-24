@@ -3,25 +3,22 @@ import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { Colors } from "@/constants/Colors";
 
 interface SignupBtnProps {
-  handleMoveProgress: () => void;
   confirmNo: string;
+  handleSignup: () => Promise<void>;
 }
 
-const SignupBtn: React.FC<SignupBtnProps> = ({
-  handleMoveProgress,
-  confirmNo,
-}) => {
+const SignupBtn: React.FC<SignupBtnProps> = ({ confirmNo, handleSignup }) => {
   const styles = getStyles(confirmNo);
-  const handlePressBtn = () => {
+  const handlePressBtn = async () => {
     if (confirmNo.length === 6) {
-      handleMoveProgress();
+      await handleSignup();
     }
   };
   return (
     <View style={styles.wrapper}>
       <TouchableOpacity onPress={handlePressBtn}>
         <View style={styles.container}>
-          <Text style={styles.text}>Save</Text>
+          <Text style={styles.text}>Sign up</Text>
         </View>
       </TouchableOpacity>
     </View>

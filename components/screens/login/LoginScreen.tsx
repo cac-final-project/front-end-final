@@ -5,12 +5,21 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   View,
+  Alert,
 } from "react-native";
 import { Inputs, LoginBtn, SignupLink } from "@/components/layouts/login/index";
 import { Header } from "@/components/common/auth/index";
 import { Colors } from "@/constants/Colors";
+import { loginApi } from "@/api/login";
+import { useNavigation } from "@react-navigation/native";
+import { ScreenNavigationProp } from "@/typings/StackParam";
+import { tokenAtom, isLoggedInAtom, loginInfoAtom } from "@/state/atoms/login";
+import { useSetRecoilState } from "recoil";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { KEYS_AND_DEFAULT } from "@/storage/storageKeys";
 
 const LoginScreen: React.FC = () => {
+  const navigation = useNavigation<ScreenNavigationProp>();
   const [keyboardVisible, setKeyboardVisible] = useState(false);
 
   useEffect(() => {
@@ -29,36 +38,72 @@ const LoginScreen: React.FC = () => {
     };
   }, []);
 
-  const [userId, setUserId] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [isFilled, setIsFilled] = useState(false);
 
+  const setToken = useSetRecoilState(tokenAtom);
+  const setIsLoggedIn = useSetRecoilState(isLoggedInAtom);
+  const setloginInfo = useSetRecoilState(loginInfoAtom);
+  const handleLoginApi = async () => {
+    const res = await loginApi({ username, password });
+    if (res !== false) {
+      const {
+        data: { token, username, nickname, type },
+      } = res;
+      await AsyncStorage.setItem(
+        KEYS_AND_DEFAULT.username[0],
+        JSON.stringify(username)
+      );
+      await AsyncStorage.setItem(
+        KEYS_AND_DEFAULT.password[0],
+        JSON.stringify(password)
+      );
+      setToken(token);
+      setIsLoggedIn(true);
+      setloginInfo({ username: username, nickname: nickname, type });
+      Alert.alert(
+        "Success", // Title
+        "Login is successful.", // Message
+        [
+          {
+            text: "OK",
+            onPress: () => navigation.navigate("Resource"), // Navigate on "OK" press
+          },
+        ],
+        { cancelable: false } // Alert is not dismissible
+      );
+    } else {
+      Alert.alert("Error", "Login failed. Please try again.");
+    }
+  };
+
   const handleLoginInfo = (target: "id" | "pw", value: string) => {
     if (target === "id") {
-      setUserId(value);
+      setUsername(value);
     } else if (target === "pw") {
       setPassword(value);
     }
   };
 
   useEffect(() => {
-    if (userId && password) {
+    if (username && password) {
       setIsFilled(true);
     } else {
       setIsFilled(false);
     }
-  }, [userId, password]);
+  }, [username, password]);
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <SafeAreaView style={styles.container}>
         <Header screenType="Login" />
         <Inputs
-          userId={userId}
+          username={username}
           password={password}
           handleLoginInfo={handleLoginInfo}
         />
         <View style={{ flex: keyboardVisible ? 0 : 1 }} />
-        <LoginBtn isFilled={isFilled} />
+        <LoginBtn isFilled={isFilled} handleLoginApi={handleLoginApi} />
         <SignupLink />
       </SafeAreaView>
     </TouchableWithoutFeedback>
