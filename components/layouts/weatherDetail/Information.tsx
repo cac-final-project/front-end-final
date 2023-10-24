@@ -1,16 +1,20 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { Colors } from "@/constants/Colors";
+import { WeatherDetailType } from "@/mock/weather";
 
-const Information: React.FC = () => {
-  return (
-    <View>
-      <Text style={styles.content}>
-        The temperature is a bit warmer than usual. It’s okay to be outside, but
-        make sure you have some water with you just in case!
-      </Text>
-    </View>
-  );
+interface InformationProps {
+  detail: WeatherDetailType;
+}
+
+const Information: React.FC<InformationProps> = ({ detail }) => {
+  if (detail?.description) {
+    return (
+      <View>
+        <Text style={styles.content}>{detail?.description}</Text>
+      </View>
+    );
+  }
 };
 
 const styles = StyleSheet.create({

@@ -26,6 +26,15 @@
     },
     "experiments": {
       "tsconfigPaths": true
-    }
+    },
+    "plugins": [
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "Allow $(PRODUCT_NAME) to use your location",
+          "locationWhenInUsePermission": "Allow $(PRODUCT_NAME) to use your location when the app is open"
+        }
+      ]
+    ]
   }
 }

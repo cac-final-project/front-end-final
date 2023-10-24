@@ -1,3 +1,5 @@
 import { formatDate } from "./formatDate";
+import { convertFahrenheit } from "./convertFahrenheit";
+import { heatLevel } from "./heatLevel";
 
-export { formatDate };
+export { formatDate, convertFahrenheit, heatLevel };

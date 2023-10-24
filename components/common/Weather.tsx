@@ -10,28 +10,46 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import { ScreenNavigationProp } from "@/typings/StackParam";
 import { Colors } from "@/constants/Colors";
-
-type TLevelBar = 1 | 2 | 3 | 4;
+import { getWeatherData } from "@/api/weather";
+import { useRecoilValue, useRecoilState } from "recoil";
+import { locationAtom } from "@/state/atoms/location";
+import { convertFahrenheit, heatLevel } from "@/utils/index";
+import { weatherInfoAtom } from "@/state/atoms/weather";
 
 const SunIcon = require("@/assets/images/Sun.png");
 const TempIcon = require("@/assets/images/Temp.png");
 
 const Weather: React.FC = () => {
+  const locationValue = useRecoilValue(locationAtom);
+  const [weatherInfo, setWeatherInfo] = useRecoilState(weatherInfoAtom);
+  const handleWeatherApi = async () => {
+    const res = await getWeatherData(locationValue.lat, locationValue.lon);
+    // temperature
+    const fahrenheit = convertFahrenheit(res.main.temp);
+    const level = heatLevel(fahrenheit);
+    setWeatherInfo((prev) => {
+      return { ...prev, temp: fahrenheit, level: level };
+    });
+  };
+  useEffect(() => {
+    handleWeatherApi();
+  }, []);
+
   const navigation = useNavigation<ScreenNavigationProp>();
   const handleWeatherClick = () => {
     navigation.navigate("Weather");
   };
 
-  const [currentLevel, setCurrentLevel] = useState<TLevelBar>(3); // Example level value
+  // const [currentLevel, setCurrentLevel] = useState<TLevelBar>(3); // Example level value
   const animatedValue = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
     Animated.timing(animatedValue, {
-      toValue: currentLevel * 25,
+      toValue: weatherInfo.level * 25,
       duration: 500,
       useNativeDriver: false,
     }).start();
-  }, [currentLevel]);
+  }, [weatherInfo.level]);
 
   const widthInterpolation = animatedValue.interpolate({
     inputRange: [0, 100],
@@ -64,15 +82,15 @@ const Weather: React.FC = () => {
               styles.filledLevel,
               {
                 width: widthInterpolation,
-                backgroundColor: getLevelColor(currentLevel),
+                backgroundColor: getLevelColor(weatherInfo.level),
               },
             ]}
           />
-          <Text style={styles.levelText}>Level {currentLevel}</Text>
+          <Text style={styles.levelText}>Level {weatherInfo.level}</Text>
         </View>
         <View style={styles.tempContainer}>
           <Image source={TempIcon} />
-          <Text style={styles.tempText}>40°C</Text>
+          <Text style={styles.tempText}>{weatherInfo.temp}°F</Text>
         </View>
       </View>
     </TouchableOpacity>
