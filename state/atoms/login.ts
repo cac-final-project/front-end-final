@@ -15,9 +15,10 @@ interface LoginInfoType {
   username: string;
   nickname: string;
   type: userType;
+  phone_no: string;
 }
 
 export const loginInfoAtom = atom<LoginInfoType>({
   key: "loginInfoAtom",
-  default: { username: "", nickname: "", type: "" },
+  default: { username: "", nickname: "", type: "", phone_no: "" },
 });

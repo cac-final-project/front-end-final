@@ -48,7 +48,8 @@ const MainStackNavigator = () => {
           ...dynamicHeaderStyles,
           headerTitle: (props) => {
             if (route.name === "Profile") {
-              return <Username />;
+              // return <Username />;
+              return <></>;
             } else if (route.name === "EditProfile") {
               return <EditTitle />;
             } else if (

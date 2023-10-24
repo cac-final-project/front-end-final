@@ -1,32 +1,63 @@
 import React, { useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { Colors } from "@/constants/Colors";
-
-const bioText =
-  "Hello community! I’m Chani Yang. Good to meet you all. Lorem ipsum dolor sit amet consectetur. At accumsan dui leo arcu sed lectus nam. Mattis vel egestas nulla non sagittis. Sodales justo turpis ac neque eget velit urna sed suscipit. Lorem ipsum dolor sit amet consectetur. At accumsan dui leo arcu sed lectus nam. Mattis vel egestas nulla non sagittis. Sodales justo turpis ac neque eget velit urna sed suscipit.";
+import { useRecoilValue } from "recoil";
+import { profileAtom } from "@/state/atoms/profileEdit";
 
 const Bio: React.FC = () => {
+  const profile = useRecoilValue(profileAtom);
   const [isSeeMore, setIsSeeMore] = useState(false);
+  const [fullHeight, setFullHeight] = useState<number | null>(null);
+  const [truncatedHeight, setTruncatedHeight] = useState<number | null>(null);
 
   const styles = getStyles();
   const handleSeeMoreClick = () => {
     setIsSeeMore((prev) => !prev);
   };
 
-  const numberOfLines = isSeeMore ? undefined : 6; // adjust this value based on your design requirements
+  const numberOfLines = isSeeMore ? undefined : 6;
+
+  const showSeeMore =
+    !isSeeMore &&
+    truncatedHeight !== null &&
+    fullHeight !== null &&
+    fullHeight > truncatedHeight;
+
   return (
     <View style={styles.container}>
       <Text style={styles.bioTitle}>Introduction: </Text>
       <View style={styles.bioTextContainer}>
-        <Text style={styles.bioText} numberOfLines={numberOfLines}>
-          {bioText ? bioText : "Tell other users about you!"}
-        </Text>
-        <TouchableOpacity
-          onPress={handleSeeMoreClick}
-          style={styles.seeMoreTextContainer}
+        <Text
+          style={[styles.bioText, { opacity: 0, position: "absolute" }]}
+          onLayout={(event) => {
+            setFullHeight(event.nativeEvent.layout.height);
+          }}
         >
-          {!isSeeMore && <Text style={styles.seeMoreText}>See More</Text>}
-        </TouchableOpacity>
+          {profile.bio ? profile.bio : "Tell other users about you!"}
+        </Text>
+
+        <Text
+          style={styles.bioText}
+          numberOfLines={numberOfLines}
+          onLayout={
+            isSeeMore
+              ? undefined
+              : (event) => {
+                  setTruncatedHeight(event.nativeEvent.layout.height);
+                }
+          }
+        >
+          {profile.bio ? profile.bio : "Tell other users about you!"}
+        </Text>
+
+        {showSeeMore && (
+          <TouchableOpacity
+            onPress={handleSeeMoreClick}
+            style={styles.seeMoreTextContainer}
+          >
+            <Text style={styles.seeMoreText}>See More</Text>
+          </TouchableOpacity>
+        )}
       </View>
     </View>
   );

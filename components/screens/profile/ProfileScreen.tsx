@@ -1,14 +1,37 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { SafeAreaView, StyleSheet, ScrollView } from "react-native";
 import { Colors } from "@/constants/Colors";
 import { TopImage } from "@/components/common/profile/index";
 import { Bio, Activities } from "@/components/layouts/profile/index";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import { tokenAtom, loginInfoAtom } from "@/state/atoms/login";
+import { getProfileInfoApi } from "@/api/profile";
+import { profileAtom } from "@/state/atoms/profileEdit";
+
+export interface IProfile {
+  bio?: string;
+  profile_img?: string | null;
+}
 
 const ProfileScreen: React.FC = () => {
+  const loginInfoValue = useRecoilValue(loginInfoAtom);
+  const tokenValue = useRecoilValue(tokenAtom);
+  const setProfile = useSetRecoilState(profileAtom);
+
+  const handleProfileApi = async () => {
+    const res = await getProfileInfoApi({ token: tokenValue! });
+    const {
+      data: { bio, profile_img },
+    } = res;
+    setProfile({ bio, profile_img });
+  };
+  useEffect(() => {
+    handleProfileApi();
+  }, []);
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView>
-        <TopImage />
+        <TopImage nickname={loginInfoValue.nickname} />
         <Bio />
         <Activities />
       </ScrollView>

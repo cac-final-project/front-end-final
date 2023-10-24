@@ -47,9 +47,10 @@ const LoginScreen: React.FC = () => {
   const setloginInfo = useSetRecoilState(loginInfoAtom);
   const handleLoginApi = async () => {
     const res = await loginApi({ username, password });
+    console.log(res);
     if (res !== false) {
       const {
-        data: { token, username, nickname, type },
+        data: { token, username, nickname, type, phone_no },
       } = res;
       await AsyncStorage.setItem(
         KEYS_AND_DEFAULT.username[0],
@@ -61,7 +62,7 @@ const LoginScreen: React.FC = () => {
       );
       setToken(token);
       setIsLoggedIn(true);
-      setloginInfo({ username: username, nickname: nickname, type });
+      setloginInfo({ username: username, nickname: nickname, type, phone_no });
       Alert.alert(
         "Success", // Title
         "Login is successful.", // Message

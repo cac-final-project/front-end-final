@@ -1,22 +1,33 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useRoute } from "@react-navigation/native";
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { Colors } from "@/constants/Colors";
 import { RouteNames } from "@/typings/StackParam";
 import * as ImagePicker from "expo-image-picker";
+import { useSetRecoilState, useRecoilValue } from "recoil";
+import { editProfileAtom } from "@/state/atoms/profileEdit";
+import { profileAtom } from "@/state/atoms/profileEdit";
 
 type RouteType = {
   key: string;
   name: RouteNames;
 };
+const defaultImageAsset = require("@/assets/images/DefaultProfile.png");
 
-const image_url =
-  "https://res.cloudinary.com/djehfg3yk/image/upload/v1696151625/file-upload/1696151623996-KakaoTalk_20230218_194526049_02_pedm6t.jpg";
+interface TopImageProps {
+  nickname?: string;
+}
 
-const TopImage: React.FC = () => {
+const TopImage: React.FC<TopImageProps> = ({ nickname }) => {
   const route = useRoute<RouteType>();
 
-  const [selectedImages, setSelectedImages] = useState<string>(image_url);
+  const profileValue = useRecoilValue(profileAtom);
+
+  const [selectedImages, setSelectedImages] = useState<
+    number | string | undefined
+  >(defaultImageAsset);
+
+  const setEditProfile = useSetRecoilState(editProfileAtom);
   const handleEditPicture = async () => {
     let result: ImagePicker.ImagePickerResult =
       await ImagePicker.launchImageLibraryAsync({
@@ -24,12 +35,34 @@ const TopImage: React.FC = () => {
         quality: 1,
       });
     setSelectedImages((result.assets as ImagePicker.ImagePickerAsset[])[0].uri);
+    setEditProfile((prev) => {
+      return {
+        ...prev,
+        file: (result.assets as ImagePicker.ImagePickerAsset[])[0].uri,
+      };
+    });
   };
 
+  const styles = getStyles(selectedImages);
+
+  useEffect(() => {
+    if (profileValue?.profile_img) {
+      setSelectedImages(profileValue.profile_img);
+    } else {
+      setSelectedImages(defaultImageAsset);
+    }
+  }, [profileValue]);
   return (
     <View style={styles.container}>
       <View style={styles.imageContainer}>
-        <Image source={{ uri: selectedImages }} style={styles.image} />
+        <Image
+          source={
+            typeof selectedImages === "string"
+              ? { uri: selectedImages }
+              : selectedImages || defaultImageAsset
+          }
+          style={styles.image}
+        />
       </View>
       <View style={styles.textContainer}>
         {route.name === "EditProfile" ? (
@@ -40,49 +73,54 @@ const TopImage: React.FC = () => {
             <Text style={styles.editButtonText}>Edit picture</Text>
           </TouchableOpacity>
         ) : (
-          <Text style={styles.text}>Chanhwi Yang</Text>
+          <Text style={styles.text}>{nickname}</Text>
         )}
       </View>
     </View>
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    alignItems: "center",
-  },
-  imageContainer: {
-    width: 150,
-    height: 150,
-    borderRadius: 100,
-    overflow: "hidden",
-  },
-  image: {
-    width: "100%",
-    height: "100%",
-    backgroundColor: Colors.grey,
-  },
-  textContainer: {
-    marginTop: 8,
-  },
-  text: {
-    fontSize: 16,
-    fontFamily: "PlusJakartaSans-Bold",
-  },
-  editButtonContainer: {
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#F0F0F0",
-    borderRadius: 8,
-    paddingVertical: 4,
-    paddingHorizontal: 12,
-  },
-  editButtonText: {
-    color: Colors.primary,
-    fontSize: 13,
-    fontFamily: "PlusJakartaSans-Bold", // Assuming "700" weight is "Bold"
-    letterSpacing: 0.39,
-  },
-});
+const getStyles = (selectedImages: number | string | undefined) => {
+  const resizeModeValue =
+    typeof selectedImages === "string" ? "cover" : "center";
+  return StyleSheet.create({
+    container: {
+      alignItems: "center",
+    },
+    imageContainer: {
+      width: 150,
+      height: 150,
+      borderRadius: 100,
+      overflow: "hidden",
+    },
+    image: {
+      width: "100%",
+      height: "100%",
+      resizeMode: resizeModeValue,
+      backgroundColor: Colors.grey,
+    },
+    textContainer: {
+      marginTop: 8,
+    },
+    text: {
+      fontSize: 16,
+      fontFamily: "PlusJakartaSans-Bold",
+    },
+    editButtonContainer: {
+      justifyContent: "center",
+      alignItems: "center",
+      backgroundColor: "#F0F0F0",
+      borderRadius: 8,
+      paddingVertical: 4,
+      paddingHorizontal: 12,
+    },
+    editButtonText: {
+      color: Colors.primary,
+      fontSize: 13,
+      fontFamily: "PlusJakartaSans-Bold", // Assuming "700" weight is "Bold"
+      letterSpacing: 0.39,
+    },
+  });
+};
 
 export default TopImage;

@@ -14,6 +14,8 @@ import { RouteNames, ScreenNavigationProp } from "@/typings/StackParam";
 import { Colors } from "@/constants/Colors";
 import { Feather } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import { useSetRecoilState } from "recoil";
+import { editProfileAtom } from "@/state/atoms/profileEdit";
 
 const backIconWhite = require("@/assets/images/BackIcon.png");
 const backIconBlack = require("@/assets/images/write/BackIcon.png");
@@ -23,14 +25,26 @@ interface Props extends HeaderBackButtonProps {
 }
 
 const HeaderBackButton: React.FC<Props> = ({ routename, ...props }) => {
+  const navigation = useNavigation<ScreenNavigationProp>();
   if (routename === "EditProfile" || routename === "PostEdit") {
+    const setEditProfile = useSetRecoilState(editProfileAtom);
+    const handleCancel = () => {
+      if (routename === "EditProfile") {
+        setEditProfile({});
+        navigation.goBack();
+      }
+    };
     return (
       <SafeAreaView
         style={{ flexDirection: "row", alignItems: "center", marginLeft: 16 }}
       >
         <OriginalHeaderBackButton
           {...props}
-          backImage={() => <Text style={styles.cancelText}>Cancel</Text>}
+          backImage={() => (
+            <TouchableOpacity onPress={handleCancel}>
+              <Text style={styles.cancelText}>Cancel</Text>
+            </TouchableOpacity>
+          )}
         />
       </SafeAreaView>
     );
@@ -44,7 +58,6 @@ const HeaderBackButton: React.FC<Props> = ({ routename, ...props }) => {
       </SafeAreaView>
     );
   } else if (routename === "PostEditTags" || routename === "PostEditLocation") {
-    const navigation = useNavigation<ScreenNavigationProp>();
     const handleGoBack = () => {
       navigation.goBack();
     };

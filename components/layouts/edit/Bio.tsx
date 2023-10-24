@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 import {
   View,
   Text,
@@ -7,12 +7,24 @@ import {
   KeyboardAvoidingView,
 } from "react-native";
 import { Colors } from "@/constants/Colors";
+import { useRecoilState } from "recoil";
+import { editProfileAtom } from "@/state/atoms/profileEdit";
 
-const text =
-  "Hello community! I’m Chani Yang. Good to meet you all. Lorem ipsum dolor sit amet consectetur. At accumsan dui leo arcu sed lectus nam. Mattis vel egestas nulla non sagittis. Sodales justo turpis ac neque eget velit urna sed suscipit. Lorem ipsum dolor sit amet consectetur. At accumsan dui leo arcu sed lectus nam. Mattis vel egestas nulla non sagittis. Sodales justo turpis ac neque eget velit urna sed suscipit.";
+const defaultText = "asdf";
 
 const Bio: React.FC = () => {
-  const [bioText, setBioText] = useState(text);
+  const [editProfile, setEditProfile] = useRecoilState(editProfileAtom);
+  const handleOnChange = (text: string) => {
+    setEditProfile((prev) => {
+      return { ...prev, bio: text };
+    });
+  };
+
+  useEffect(() => {
+    setEditProfile((prev) => {
+      return { ...prev, bio: defaultText };
+    });
+  }, []);
   return (
     <View style={styles.container}>
       <Text style={styles.bioTitle}>Introduction</Text>
@@ -20,8 +32,8 @@ const Bio: React.FC = () => {
         <TextInput
           style={styles.bioText}
           multiline={true}
-          onChangeText={setBioText}
-          value={bioText}
+          onChangeText={handleOnChange} // <-- Use handleOnChange here
+          value={editProfile.bio} // <-- Use editProfile.bio as value here
         />
       </View>
     </View>
