@@ -26,7 +26,6 @@ const TagList: React.FC<TagListProps> = ({
       <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
         <FilterTag setIsFilterOpen={setIsFilterOpen} />
         {tags?.map((item, idx) => {
-          console.log("item", item);
           return (
             <TagItem
               key={idx}

@@ -7,12 +7,14 @@ interface FilterBottomSheetProps {
   setFilterChosen: React.Dispatch<React.SetStateAction<string[]>>;
   handleFilterClose: () => void;
   filterChosen: string[];
+  tags: string[];
 }
 
 const FilterBottomSheet: React.FC<FilterBottomSheetProps> = ({
   setFilterChosen,
   handleFilterClose,
   filterChosen,
+  tags,
 }) => {
   const snapPoints = useMemo(() => ["12%", "50%"], []);
 
@@ -63,16 +65,19 @@ const FilterBottomSheet: React.FC<FilterBottomSheetProps> = ({
       <Text style={styles.heading}>Filter</Text>
       <BottomSheetScrollView style={styles.results}>
         <View style={styles.tagContainer}>
-          <TouchableOpacity onPress={() => handleSetFilterChosen("Free")}>
-            <View style={getTagStyle("Free")}>
-              <Text style={getTagTextStyle("Free")}>Free</Text>
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => handleSetFilterChosen("Unisex")}>
-            <View style={getTagStyle("Unisex")}>
-              <Text style={getTagTextStyle("Unisex")}>Unisex</Text>
-            </View>
-          </TouchableOpacity>
+          {tags?.map((item, idx) => {
+            console.log(item);
+            return (
+              <TouchableOpacity
+                key={idx}
+                onPress={() => handleSetFilterChosen(item)}
+              >
+                <View style={getTagStyle(item)}>
+                  <Text style={getTagTextStyle(item)}>{item}</Text>
+                </View>
+              </TouchableOpacity>
+            );
+          })}
         </View>
       </BottomSheetScrollView>
     </BottomSheet>

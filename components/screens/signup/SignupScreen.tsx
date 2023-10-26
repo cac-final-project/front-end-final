@@ -72,8 +72,6 @@ const SignupScreen: React.FC = () => {
     }
   };
 
-  console.log(nickname, username, password, phoneNo);
-
   const handleMoveProgress = () => {
     if (pageStatus === "welcome") {
       setProgress(1);

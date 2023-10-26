@@ -30,7 +30,7 @@ const ResourceScreen: React.FC = () => {
   const [tags, setTags] = useState<string[]>([]);
 
   // console.log("resources",resources);
-  console.log("resources", resources);
+  console.log("tags", tags);
   // console.log(tags);
 
   const handleFilterClose = () => {
@@ -87,6 +87,7 @@ const ResourceScreen: React.FC = () => {
               handleFilterClose={handleFilterClose}
               filterChosen={filterChosen}
               setFilterChosen={setFilterChosen}
+              tags={tags}
             />
           )}
         </>

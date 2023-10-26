@@ -47,7 +47,6 @@ const LoginScreen: React.FC = () => {
   const setloginInfo = useSetRecoilState(loginInfoAtom);
   const handleLoginApi = async () => {
     const res = await loginApi({ username, password });
-    console.log(res);
     if (res !== false) {
       const {
         data: { token, username, nickname, type, phone_no },
