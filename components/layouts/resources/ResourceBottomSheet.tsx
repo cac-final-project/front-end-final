@@ -3,22 +3,26 @@ import { View, Text, StyleSheet } from "react-native";
 import BottomSheet, { BottomSheetScrollView } from "@gorhom/bottom-sheet";
 import ResourceItem from "./ResourceItem";
 import { Colors } from "@/constants/Colors";
-import { TTagChosen } from "@/typings/heatLevels";
+import { TResource, TAmenities } from "@/typings/resources";
 
 const CampaignIcon = require("@/assets/images/resource/resourceItem/CampaignItem.png");
 const ToiletIcon = require("@/assets/images/resource/resourceItem/ToiletItem.png");
 const WaterIcon = require("@/assets/images/resource/resourceItem/WaterItem.png");
+const BenchIcon = require("@/assets/images/resource/resourceItem/BenchItem.png");
+const ShowerIcon = require("@/assets/images/resource/resourceItem/ShowerItem.png");
 
 interface ResourceBottomSheetProps {
   index: number;
   snapPoints: (string | number)[];
-  tagChosen: TTagChosen;
+  tagChosen: TAmenities;
+  resources: TResource[];
 }
 
 const ResourceBottomSheet: React.FC<ResourceBottomSheetProps> = ({
   index,
   snapPoints,
   tagChosen,
+  resources,
 }) => {
   return (
     <BottomSheet style={styles.container} index={index} snapPoints={snapPoints}>
@@ -26,18 +30,13 @@ const ResourceBottomSheet: React.FC<ResourceBottomSheetProps> = ({
         {tagChosen ? `Nearest ${tagChosen}` : "Find useful resources near you!"}
       </Text>
       <BottomSheetScrollView style={styles.results}>
-        <View style={styles.resourceitem}>
-          <ResourceItem image_url={CampaignIcon} />
-        </View>
-        <View style={styles.resourceitem}>
-          <ResourceItem image_url={WaterIcon} />
-        </View>
-        <View style={styles.resourceitem}>
-          <ResourceItem image_url={CampaignIcon} />
-        </View>
-        <View style={styles.resourceitem}>
-          <ResourceItem image_url={CampaignIcon} />
-        </View>
+        {resources?.map((item) => {
+          return (
+            <View style={styles.resourceitem}>
+              <ResourceItem key={item.id} item={item} />
+            </View>
+          );
+        })}
         <View style={styles.spacer} />
       </BottomSheetScrollView>
     </BottomSheet>
@@ -62,7 +61,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   spacer: {
-    height: 100,
+    height: 200,
   },
 });
 

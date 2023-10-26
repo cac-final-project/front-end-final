@@ -6,6 +6,7 @@ const openWeatherApi = axios.create({
 });
 
 export const getWeatherData = async (lat: number, lon: number) => {
+  console.log("key", OPEN_WEATHER_API_KEY);
   try {
     const response = await openWeatherApi.get("/weather", {
       params: {

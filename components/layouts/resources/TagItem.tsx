@@ -1,17 +1,16 @@
 import React from "react";
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { Colors } from "@/constants/Colors";
-import { TTagChosen } from "@/typings/heatLevels";
+import { TAmenities } from "@/typings/resources";
+import { tagConvert, resourceImageConvert } from "@/utils/index";
 
 interface TagItemProps {
-  image_url: number;
-  tagChosen: TTagChosen;
-  setTagChosen: React.Dispatch<React.SetStateAction<TTagChosen>>;
-  tag_name: TTagChosen;
+  tagChosen: TAmenities;
+  setTagChosen: React.Dispatch<React.SetStateAction<TAmenities>>;
+  tag_name: TAmenities;
 }
 
 const TagItem: React.FC<TagItemProps> = ({
-  image_url,
   tagChosen,
   setTagChosen,
   tag_name,
@@ -27,14 +26,14 @@ const TagItem: React.FC<TagItemProps> = ({
   return (
     <TouchableOpacity style={styles.container} onPress={handleClick}>
       <View style={styles.imageContainer}>
-        <Image source={image_url} />
-        <Text style={styles.text}>{tag_name}</Text>
+        <Image source={resourceImageConvert(tag_name)} />
+        <Text style={styles.text}>{tagConvert(tag_name)}</Text>
       </View>
     </TouchableOpacity>
   );
 };
 
-function getStyles(tag_name: TTagChosen, filterChosen: TTagChosen) {
+function getStyles(tag_name: TAmenities, filterChosen: TAmenities) {
   return StyleSheet.create({
     container: {
       marginRight: 8,

@@ -1,32 +1,38 @@
 import React from "react";
 import { View, Text, StyleSheet, Image } from "react-native";
 import { Colors } from "@/constants/Colors";
+import { resourceItemConvert, formatDistance } from "@/utils/index";
+import { TResource } from "@/typings/resources";
 
 interface ResourceItemProps {
-  image_url: number;
+  item: TResource;
 }
 
-const ResourceItem: React.FC<ResourceItemProps> = ({ image_url }) => {
+const ResourceItem: React.FC<ResourceItemProps> = ({ item }) => {
+  const { amenity, address, distance, tags } = item;
   return (
     <View style={styles.container}>
       <View style={styles.iconInfoContainer}>
         <View style={styles.iconContainer}>
-          <Image source={image_url} />
+          <Image source={resourceItemConvert(amenity)} />
         </View>
         <View style={styles.infoContainer}>
           <View style={styles.streetDistanceContainer}>
             <View style={styles.streetContainer}>
-              <Text style={styles.streetnameText}>Streetname</Text>
-              <Text style={styles.distanceText}>200m</Text>
+              <Text style={styles.streetnameText}>{address}</Text>
+              <Text style={styles.distanceText}>
+                {formatDistance(distance)}m
+              </Text>
             </View>
           </View>
           <View style={styles.tagsContainer}>
-            <View style={styles.tag}>
-              <Text style={styles.tagText}>Free</Text>
-            </View>
-            <View style={styles.tag}>
-              <Text style={styles.tagText}>Wheelchair</Text>
-            </View>
+            {tags?.map((item, idx) => {
+              return (
+                <View key={idx} style={styles.tag}>
+                  <Text style={styles.tagText}>{item}</Text>
+                </View>
+              );
+            })}
           </View>
         </View>
       </View>
@@ -102,6 +108,7 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     alignSelf: "stretch",
     marginTop: 8,
+    minHeight: 30,
   },
   tag: {
     paddingLeft: 12,

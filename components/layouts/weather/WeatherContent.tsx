@@ -5,7 +5,6 @@ import WeatherBox from "./WeatherBox";
 import { Level } from "@/typings/heatLevels";
 
 const WeatherContent: React.FC = () => {
-  console.log("hi");
   return (
     <SafeAreaView>
       <ScrollView>

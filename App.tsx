@@ -4,8 +4,11 @@ import { enableScreens } from "react-native-screens";
 import useAppFonts from "@/state/hooks/useAppFonts";
 import { NavigationContainer } from "@react-navigation/native";
 import MainStackNavigator from "@/navigation/MainStackNavigator";
-import { RecoilRoot, useSetRecoilState } from "recoil";
+import { RecoilRoot, useSetRecoilState, useRecoilValue } from "recoil";
 import { locationAtom } from "@/state/atoms/location";
+import { resourcesIsLoadedAtom } from "./state/atoms/loading";
+import LoadingOverLay from "./components/common/Loading";
+
 import * as Location from "expo-location";
 
 enableScreens();
@@ -13,6 +16,8 @@ enableScreens();
 function AppContent() {
   const setLocation = useSetRecoilState(locationAtom);
   const fontsLoaded = useAppFonts();
+
+  const resourcesIsLoadedValue = useRecoilValue(resourcesIsLoadedAtom);
 
   useEffect(() => {
     if (fontsLoaded) {
@@ -23,6 +28,7 @@ function AppContent() {
         }
 
         let { coords } = await Location.getCurrentPositionAsync({});
+        console.log("real coords", coords);
         setLocation({ lat: coords.latitude, lon: coords.longitude });
       })();
     }
@@ -33,9 +39,12 @@ function AppContent() {
   }
 
   return (
-    <NavigationContainer>
-      <MainStackNavigator />
-    </NavigationContainer>
+    <>
+      <LoadingOverLay isLoaded={resourcesIsLoadedValue} />
+      <NavigationContainer>
+        <MainStackNavigator />
+      </NavigationContainer>
+    </>
   );
 }
 

@@ -4,25 +4,20 @@ import { isAlertOpenAtom } from "@/state/atoms/alert";
 import { View, Text, StyleSheet, ScrollView } from "react-native";
 import TagItem from "./TagItem";
 import FilterTag from "./FilterTag";
-import { TTagChosen } from "@/typings/heatLevels";
-
-const FilterIcon = require("@/assets/images/resource/FilterTag.png");
-const BenchIcon = require("@/assets/images/resource/BenchTag.png");
-const CampaignIcon = require("@/assets/images/resource/CampaignTag.png");
-const ShowerIcon = require("@/assets/images/resource/ShowerTag.png");
-const ToiletIcon = require("@/assets/images/resource/ToiletTag.png");
-const WaterIcon = require("@/assets/images/resource/WaterTag.png");
+import { TAmenities } from "@/typings/resources";
 
 interface TagListProps {
-  tagChosen: TTagChosen;
-  setTagChosen: React.Dispatch<React.SetStateAction<TTagChosen>>;
+  tagChosen: TAmenities;
+  setTagChosen: React.Dispatch<React.SetStateAction<TAmenities>>;
   setIsFilterOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  tags: TAmenities[];
 }
 
 const TagList: React.FC<TagListProps> = ({
   tagChosen,
   setTagChosen,
   setIsFilterOpen,
+  tags,
 }) => {
   const [isAlertOpen, setIsAlertOpen] = useRecoilState(isAlertOpenAtom);
   const styles = getStyles(isAlertOpen);
@@ -30,36 +25,17 @@ const TagList: React.FC<TagListProps> = ({
     <View style={styles.container}>
       <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
         <FilterTag setIsFilterOpen={setIsFilterOpen} />
-        <TagItem
-          tagChosen={tagChosen}
-          setTagChosen={setTagChosen}
-          image_url={BenchIcon}
-          tag_name="Campaign"
-        />
-        <TagItem
-          tagChosen={tagChosen}
-          setTagChosen={setTagChosen}
-          image_url={CampaignIcon}
-          tag_name="Water"
-        />
-        <TagItem
-          tagChosen={tagChosen}
-          setTagChosen={setTagChosen}
-          image_url={ShowerIcon}
-          tag_name="Public toilet"
-        />
-        <TagItem
-          tagChosen={tagChosen}
-          setTagChosen={setTagChosen}
-          image_url={ToiletIcon}
-          tag_name="Shower"
-        />
-        <TagItem
-          tagChosen={tagChosen}
-          setTagChosen={setTagChosen}
-          image_url={WaterIcon}
-          tag_name="Bench"
-        />
+        {tags?.map((item, idx) => {
+          console.log("item", item);
+          return (
+            <TagItem
+              key={idx}
+              tagChosen={tagChosen}
+              setTagChosen={setTagChosen}
+              tag_name={item}
+            />
+          );
+        })}
       </ScrollView>
     </View>
   );
