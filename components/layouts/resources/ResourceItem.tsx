@@ -9,7 +9,7 @@ interface ResourceItemProps {
 }
 
 const ResourceItem: React.FC<ResourceItemProps> = ({ item }) => {
-  const { amenity, address, distance, tags } = item;
+  const { amenity, address, distance, tags } = item ?? {};
   return (
     <View style={styles.container}>
       <View style={styles.iconInfoContainer}>

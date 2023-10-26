@@ -18,7 +18,7 @@ export const resourceImageConvert = (tag: TAmenities) => {
     case "shower":
       return ShowerIcon;
     default:
-      return undefined;
+      return BenchIcon;
   }
 };
 
@@ -40,6 +40,6 @@ export const resourceItemConvert = (item: TAmenities) => {
     case "shower":
       return ShowerItem;
     default:
-      return undefined;
+      return BenchItem;
   }
 };

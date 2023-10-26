@@ -42,12 +42,16 @@ const ResourceScreen: React.FC = () => {
     const res = await findResourcesApi(locationValue);
     if (res !== false) {
       setIsLoaded(true);
-      const amenitiesData = res.data.amenities;
-      const tagsData = res.data.tags;
-      const resourcesData = res.data.data;
+      const amenitiesData = res?.data?.amenities;
+      const tagsData = res?.data?.tags;
+      const resourcesData = res?.data?.data;
       setAmenities(amenitiesData);
       setTags(tagsData);
       setResources(resourcesData);
+    } else {
+      setAmenities([]);
+      setTags([]);
+      setResources([]);
     }
   };
   useEffect(() => {

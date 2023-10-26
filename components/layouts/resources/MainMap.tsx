@@ -14,9 +14,11 @@ const MainMap: React.FC<MainMapProps> = ({
 }) => {
   const handleSelectPlace = (place: string) => {
     if (place === selectedPlace) {
-      setSelectedPlace(undefined);
+      // setSelectedPlace(undefined);
+      console.log("click");
     } else {
-      setSelectedPlace(place);
+      console.log("click");
+      setSelectedPlace("sdf");
     }
   };
   return (

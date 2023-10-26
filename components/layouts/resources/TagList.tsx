@@ -25,16 +25,17 @@ const TagList: React.FC<TagListProps> = ({
     <View style={styles.container}>
       <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
         <FilterTag setIsFilterOpen={setIsFilterOpen} />
-        {tags?.map((item, idx) => {
-          return (
-            <TagItem
-              key={idx}
-              tagChosen={tagChosen}
-              setTagChosen={setTagChosen}
-              tag_name={item}
-            />
-          );
-        })}
+        {tags.length !== 0 &&
+          tags.map((item, idx) => {
+            return (
+              <TagItem
+                key={idx}
+                tagChosen={tagChosen}
+                setTagChosen={setTagChosen}
+                tag_name={item}
+              />
+            );
+          })}
       </ScrollView>
     </View>
   );
