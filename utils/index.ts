@@ -1,4 +1,9 @@
-import { formatDate } from "./formatDate";
+import {
+  formatDate,
+  getDayOfMonth,
+  getFormattedTime,
+  getMonthName,
+} from "./formatDate";
 import { convertFahrenheit } from "./convertFahrenheit";
 import { heatLevel } from "./heatLevel";
 import {
@@ -8,6 +13,7 @@ import {
 } from "./resourceImageConvert";
 import { tagConvert } from "./tagConvert";
 import { formatDistance } from "./formatDistance";
+import { removeNewLines } from "./formatText";
 
 export {
   formatDate,
@@ -18,4 +24,8 @@ export {
   tagConvert,
   formatDistance,
   markerConvert,
+  getDayOfMonth,
+  getFormattedTime,
+  getMonthName,
+  removeNewLines,
 };

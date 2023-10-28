@@ -1,5 +1,5 @@
-import React from "react";
-import { useRecoilState } from "recoil";
+import React, { useEffect } from "react";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { isAlertOpenAtom } from "@/state/atoms/alert";
 import {
   SafeAreaView,
@@ -12,10 +12,30 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import { ScreenNavigationProp } from "@/typings/StackParam";
 import { Colors } from "@/constants/Colors";
+import { countyAtom } from "@/state/atoms/location";
+import { emergencyAtom } from "@/state/atoms/emergency";
+import { getEmergencyApi } from "@/api/emergency";
+import { getDayOfMonth, getFormattedTime, getMonthName } from "@/utils/index";
 
-const TempIcon = require("@/assets/images/Close.png");
+const CloseIcon = require("@/assets/images/Close.png");
 
 const Alert: React.FC = () => {
+  const county = useRecoilValue(countyAtom);
+  const [emergency, setEmergency] = useRecoilState(emergencyAtom);
+
+  const handleEmergencyApi = async () => {
+    const res = await getEmergencyApi({ county: county! });
+    if (res !== false) {
+      setEmergency(res!);
+    }
+  };
+
+  useEffect(() => {
+    if (county) {
+      handleEmergencyApi();
+    }
+  }, [county]);
+
   const navigation = useNavigation<ScreenNavigationProp>();
 
   const handleAlertClick = () => {
@@ -26,22 +46,35 @@ const Alert: React.FC = () => {
   const handleClose = () => {
     setIsAlertOpen(false);
   };
-  if (isAlertOpen) {
+
+  const truncateString = (str: string) => {
+    if (str.length > 50) {
+      return str.slice(0, 50) + "...";
+    } else {
+      return str;
+    }
+  };
+
+  if (emergency && isAlertOpen) {
     return (
       <SafeAreaView style={styles.container}>
         <View style={styles.alertHeader}>
           <View style={styles.alertContent}>
             <View style={styles.dateContainer}>
-              <Text style={styles.dateText}>July 15</Text>
-              <Text style={styles.timeText}>09:35 AM</Text>
+              <Text style={styles.dateText}>
+                {getMonthName(emergency.properties.effective)}{" "}
+                {getDayOfMonth(emergency.properties.effective)}
+              </Text>
+              <Text style={styles.timeText}>
+                {getFormattedTime(emergency.properties.effective)}
+              </Text>
             </View>
             <Text style={styles.alertText}>
-              Extreme Heat warning was issued.{"\n"}Stay out of the sun, Drink
-              plenty water!
+              {truncateString(emergency.properties.headline)}
             </Text>
           </View>
           <TouchableOpacity onPress={handleClose} style={styles.closeContainer}>
-            <Image source={TempIcon} />
+            <Image source={CloseIcon} />
           </TouchableOpacity>
         </View>
         <TouchableOpacity

@@ -1,18 +1,19 @@
 import React from "react";
+import { IAlert } from "@/typings/emergency";
 import { View, Text, StyleSheet } from "react-native";
 import { Colors } from "@/constants/Colors";
 
-const Description: React.FC = () => {
+interface EmergencyProps {
+  emergency: IAlert;
+}
+
+const Description: React.FC<EmergencyProps> = ({ emergency }) => {
   return (
     <View style={styles.container}>
       <Text style={styles.header}>Descriptions</Text>
       <View style={styles.contentContainer}>
         <Text style={styles.contentText}>
-          The National Weather Service in Los Angeles/Oxnard has issued an
-          Extreme Heat Warning, which is in effect from 2 PM this afternoon to 8
-          PM PDT Monday. The Excessive Heat Watch is no longer in effect.
-          Temperatures of 95 to 105 degrees are expected in many valley
-          locations with local temperatures up to 110 degrees possible.
+          {emergency.properties.description}
         </Text>
       </View>
     </View>

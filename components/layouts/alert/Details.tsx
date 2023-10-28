@@ -1,27 +1,37 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { Colors } from "@/constants/Colors";
+import { IAlert } from "@/typings/emergency";
+import { getDayOfMonth, getFormattedTime, getMonthName } from "@/utils/index";
 
-const Details: React.FC = () => {
+interface EmergencyProps {
+  emergency: IAlert;
+}
+
+const Details: React.FC<EmergencyProps> = ({ emergency }) => {
   return (
     <View style={styles.container}>
       <View style={styles.detailContainer}>
         <View style={styles.titleContainer}>
           <Text style={styles.title}>When</Text>
         </View>
-        <Text style={styles.contentText}>July 15, 09:35 AM</Text>
+        <Text style={styles.contentText}>
+          {getMonthName(emergency.properties.effective)}{" "}
+          {getDayOfMonth(emergency.properties.effective)},{" "}
+          {getFormattedTime(emergency.properties.effective)}
+        </Text>
       </View>
       <View style={styles.detailContainer}>
         <View style={styles.titleContainer}>
           <Text style={styles.title}>Urgency</Text>
         </View>
-        <Text style={styles.contentText}>urgency info</Text>
+        <Text style={styles.contentText}>{emergency.properties.urgency}</Text>
       </View>
       <View style={styles.detailContainer}>
         <View style={styles.titleContainer}>
           <Text style={styles.title}>Severity</Text>
         </View>
-        <Text style={styles.contentText}>Severity info</Text>
+        <Text style={styles.contentText}>{emergency.properties.severity}</Text>
       </View>
     </View>
   );

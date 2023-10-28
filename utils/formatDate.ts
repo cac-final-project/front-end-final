@@ -6,3 +6,23 @@ export const formatDate = (dateString: string): string => {
 
   return `${year}.${month}.${day}`;
 };
+
+// format date for emergency
+export const getMonthName = (dateString: string): string => {
+  const date = new Date(dateString);
+  return new Intl.DateTimeFormat("en-US", { month: "long" }).format(date);
+};
+
+export const getDayOfMonth = (dateString: string): string => {
+  const date = new Date(dateString);
+  return date.getDate().toString();
+};
+
+export const getFormattedTime = (dateString: string): string => {
+  const date = new Date(dateString);
+  return new Intl.DateTimeFormat("en-US", {
+    hour: "numeric",
+    minute: "numeric",
+    hour12: true,
+  }).format(date);
+};

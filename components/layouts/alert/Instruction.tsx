@@ -1,18 +1,20 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { Colors } from "@/constants/Colors";
+import { IAlert } from "@/typings/emergency";
+import { removeNewLines } from "@/utils/index";
 
-const Instruction: React.FC = () => {
+interface EmergencyProps {
+  emergency: IAlert;
+}
+
+const Instruction: React.FC<EmergencyProps> = ({ emergency }) => {
   return (
     <View style={styles.container}>
       <Text style={styles.header}>Instructions</Text>
       <View style={styles.contentContainer}>
         <Text style={styles.contentText}>
-          An Extreme Heat Warning means that a prolonged period of dangerously
-          hot temperatures will occur. This will create a dangerous situation in
-          which heat illnesses are likely. Drink plenty of fluids, stay in an
-          air-conditioned room, stay out of the sun, and check up on relatives
-          and neighbors.",
+          {removeNewLines(emergency.properties.instruction)}
         </Text>
       </View>
     </View>
@@ -22,6 +24,7 @@ const Instruction: React.FC = () => {
 const styles = StyleSheet.create({
   container: {
     marginTop: 24,
+    marginBottom: 40,
   },
   header: {
     color: Colors.black,

@@ -1,5 +1,5 @@
 import React from "react";
-import { SafeAreaView, View, Text, StyleSheet, ScrollView } from "react-native";
+import { SafeAreaView, View, StyleSheet, ScrollView } from "react-native";
 import {
   Header,
   Details,
@@ -7,19 +7,24 @@ import {
   Instruction,
 } from "@/components/layouts/alert/index";
 import { Colors } from "@/constants/Colors";
+import { emergencyAtom } from "@/state/atoms/emergency";
+import { useRecoilValue } from "recoil";
 
 const AlertScreen: React.FC = () => {
-  return (
-    <SafeAreaView style={styles.container}>
-      <ScrollView>
-        <Header />
-        <Details />
-        <View style={styles.line} />
-        <Description />
-        <Instruction />
-      </ScrollView>
-    </SafeAreaView>
-  );
+  const emergency = useRecoilValue(emergencyAtom);
+  if (emergency) {
+    return (
+      <SafeAreaView style={styles.container}>
+        <ScrollView>
+          <Header emergency={emergency} />
+          <Details emergency={emergency} />
+          <View style={styles.line} />
+          <Description emergency={emergency} />
+          <Instruction emergency={emergency} />
+        </ScrollView>
+      </SafeAreaView>
+    );
+  }
 };
 
 const styles = StyleSheet.create({

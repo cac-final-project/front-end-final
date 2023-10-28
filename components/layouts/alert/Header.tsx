@@ -1,12 +1,17 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { Colors } from "@/constants/Colors";
+import { IAlert } from "@/typings/emergency";
 
-const Header: React.FC = () => {
+interface EmergencyProps {
+  emergency: IAlert;
+}
+
+const Header: React.FC<EmergencyProps> = ({ emergency }) => {
   return (
     <View>
       <Text style={styles.header}>Event</Text>
-      <Text style={styles.title}>Extreme Heat</Text>
+      <Text style={styles.title}>{emergency.properties.event}</Text>
     </View>
   );
 };
@@ -23,7 +28,7 @@ const styles = StyleSheet.create({
     color: Colors.black,
     fontSize: 35,
     fontFamily: "PlusJakartaSans-ExtraBold",
-    lineHeight: 32,
+    lineHeight: 35,
   },
 });
 

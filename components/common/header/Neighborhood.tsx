@@ -2,25 +2,34 @@ import React, { useState, useEffect } from "react";
 import { SafeAreaView, Text, StyleSheet, Image } from "react-native";
 import { Colors } from "@/constants/Colors";
 import { getNeighborHoodApi } from "@/api/geolocation";
-import { useRecoilValue } from "recoil";
-import { locationAtom } from "@/state/atoms/location";
+import { useRecoilValue, useRecoilState, useSetRecoilState } from "recoil";
+import {
+  locationAtom,
+  neighborhoodAtom,
+  countyAtom,
+} from "@/state/atoms/location";
 
 const MarkerIcon = require("@/assets/images/Marker.png");
 
 const Neighborhood: React.FC = () => {
-  const [neighborhood, setNeighborhood] = useState("Downtown");
+  const [neighborhood, setNeighborhood] = useRecoilState(neighborhoodAtom);
+  const setCounty = useSetRecoilState(countyAtom);
   const locationValue = useRecoilValue(locationAtom);
 
   const handleNeighborhoodApi = async () => {
     const res = await getNeighborHoodApi(locationValue!);
     if (res !== false) {
-      setNeighborhood(res.data.city);
+      setNeighborhood(res.data.city || "Downtown");
+      setCounty(res.data.county || "Ellis");
     }
   };
 
   useEffect(() => {
     if (locationValue) {
       handleNeighborhoodApi();
+    } else {
+      setNeighborhood("Downtown");
+      setCounty("Ellis");
     }
   }, [locationValue]);
   return (
