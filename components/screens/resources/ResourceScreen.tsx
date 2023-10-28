@@ -1,4 +1,10 @@
-import React, { useMemo, useState, useEffect, useRef } from "react";
+import React, {
+  useMemo,
+  useState,
+  useEffect,
+  useRef,
+  useCallback,
+} from "react";
 import { SafeAreaView, StyleSheet } from "react-native";
 import MapView from "react-native-maps";
 import { Weather, Alert } from "@/components/common/index";
@@ -22,11 +28,9 @@ const ResourceScreen: React.FC = () => {
   const snapPoints = useMemo(() => ["30%", "43%", "80%"], []);
   const bottomSheetRef = useRef<BottomSheet>(null);
 
-  const closeSheet = () => {
-    if (bottomSheetRef.current) {
-      bottomSheetRef.current.snapToIndex(0); // Assuming index 0 corresponds to the closed state
-    }
-  };
+  const closeSheet = useCallback(() => {
+    bottomSheetRef.current?.snapToIndex(0);
+  }, []);
 
   const [tagChosen, setTagChosen] = useState<TAmenities>(undefined);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
@@ -39,100 +43,101 @@ const ResourceScreen: React.FC = () => {
   const [amenities, setAmenities] = useState<TAmenities[]>([]);
   const [tags, setTags] = useState<string[]>([]);
 
-  const handleFilterClose = () => {
+  const handleFilterClose = useCallback(() => {
     setIsFilterOpen(false);
-  };
+  }, []);
 
-  const handleFetchResourcesApi = async () => {
+  const handleFetchResourcesApi = useCallback(async () => {
     setIsLoaded(false);
     const res = await findResourcesApi(locationValue);
     if (res !== false) {
       setIsLoaded(true);
-      const amenitiesData = res?.data?.amenities;
-      const tagsData = res?.data?.tags;
-      const resourcesData = res?.data?.data;
-      setAmenities(amenitiesData);
-      setTags(tagsData);
-      setResources(resourcesData);
+      setAmenities(res?.data?.amenities || []);
+      setTags(res?.data?.tags || []);
+      setResources(res?.data?.data || []);
     } else {
       setAmenities([]);
       setTags([]);
       setResources([]);
     }
-  };
+  }, [locationValue, setIsLoaded]);
+
   useEffect(() => {
     handleFetchResourcesApi();
-  }, [locationValue]);
+  }, [handleFetchResourcesApi]);
 
-  // map related
   const mapRef = useRef<MapView>(null);
   const [filteredResources, setFilteredResources] =
     useState<TResource[]>(resources);
-  // Calculate initialRegion directly
-  const maxDistance = Math.max(
-    ...filteredResources.map((resource) => resource.distance || 0)
+
+  const maxDistance = useMemo(
+    () =>
+      Math.max(...filteredResources.map((resource) => resource.distance || 0)),
+    [filteredResources]
   );
   const defaultDelta = 0.05;
   const latitudeDelta = maxDistance > 0 ? maxDistance * 0.00003 : defaultDelta;
   const longitudeDelta = maxDistance > 0 ? maxDistance * 0.00003 : defaultDelta;
 
-  const initialRegion = {
-    latitude: locationValue.lat,
-    longitude: locationValue.lon,
-    latitudeDelta,
-    longitudeDelta,
-  };
+  const initialRegion = useMemo(
+    () => ({
+      latitude: locationValue.lat,
+      longitude: locationValue.lon,
+      latitudeDelta,
+      longitudeDelta,
+    }),
+    [latitudeDelta, longitudeDelta, locationValue]
+  );
 
-  const handleResetSelectPlace = () => {
+  const handleResetSelectPlace = useCallback(() => {
     setSelectedPlace(undefined);
     mapRef.current?.animateToRegion(initialRegion, 1000);
-  };
+  }, [initialRegion]);
 
-  const handleSelectPlaceAbsolute = (
-    type: "sheet" | "slider",
-    id: number,
-    lat: number,
-    lon: number
-  ) => {
-    if (type === "sheet") {
-      closeSheet();
-    } else {
-    }
-    setSelectedPlace(id);
-    const centerOffset = latitudeDelta * 0.003;
-    mapRef.current?.animateToRegion(
-      {
-        latitude: lat + centerOffset,
-        longitude: lon,
-        latitudeDelta: 0.01, // Adjust as needed
-        longitudeDelta: 0.01, // Adjust as needed
-      },
-      1000
-    ); // 1000 milliseconds for animation duratio
-  };
-
-  const handleSelectPlace = (id: number, lat: number, lon: number) => {
-    if (id === selectedPlace) {
-      setSelectedPlace(undefined);
-      mapRef.current?.animateToRegion(initialRegion, 1000);
-    } else {
+  const handleSelectPlaceAbsolute = useCallback(
+    (type: "sheet" | "slider", id: number, lat: number, lon: number) => {
+      if (type === "sheet") {
+        closeSheet();
+      }
       setSelectedPlace(id);
       const centerOffset = latitudeDelta * 0.003;
       mapRef.current?.animateToRegion(
         {
           latitude: lat + centerOffset,
           longitude: lon,
-          latitudeDelta: 0.01, // Adjust as needed
-          longitudeDelta: 0.01, // Adjust as needed
+          latitudeDelta: 0.01,
+          longitudeDelta: 0.01,
         },
         1000
-      ); // 1000 milliseconds for animation duratio
-    }
-  };
+      );
+    },
+    [latitudeDelta, closeSheet]
+  );
+
+  const handleSelectPlace = useCallback(
+    (id: number, lat: number, lon: number) => {
+      if (id === selectedPlace) {
+        setSelectedPlace(undefined);
+        mapRef.current?.animateToRegion(initialRegion, 1000);
+      } else {
+        setSelectedPlace(id);
+        const centerOffset = latitudeDelta * 0.003;
+        mapRef.current?.animateToRegion(
+          {
+            latitude: lat + centerOffset,
+            longitude: lon,
+            latitudeDelta: 0.01,
+            longitudeDelta: 0.01,
+          },
+          1000
+        );
+      }
+    },
+    [selectedPlace, initialRegion, latitudeDelta]
+  );
   return (
     <SafeAreaView>
       <Weather />
-      <Alert />
       <MainMap
         selectedPlace={selectedPlace}
         setSelectedPlace={setSelectedPlace}
@@ -145,6 +150,7 @@ const ResourceScreen: React.FC = () => {
         initialRegion={initialRegion}
         handleSelectPlace={handleSelectPlace}
       />
+      <Alert />
       {selectedPlace ? (
         <>
           <ViewList handleResetSelectPlace={handleResetSelectPlace} />

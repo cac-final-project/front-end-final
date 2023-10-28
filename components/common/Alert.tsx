@@ -59,6 +59,10 @@ const Alert: React.FC = () => {
 
 const styles = StyleSheet.create({
   container: {
+    position: "absolute", // Set position to absolute
+    top: 44, // Align to the top of the screen (you can adjust this)
+    left: 0, // Align to the left of the screen (you can adjust this)
+    right: 0, // Ensuring it stretches across the screen
     backgroundColor: Colors.white,
     borderRadius: 8,
     borderTopRightRadius: 0,
@@ -68,6 +72,8 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
+    elevation: 2000,
+    zIndes: 2000,
   },
   alertHeader: {
     flexDirection: "row",

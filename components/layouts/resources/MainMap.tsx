@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useMemo, useEffect } from "react";
 import { StyleSheet } from "react-native";
 import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import CustomMarker from "./CustomMarker";
@@ -36,7 +36,8 @@ const MainMap: React.FC<MainMapProps> = ({
   initialRegion,
   handleSelectPlace,
 }) => {
-  useEffect(() => {
+  // useMemo to calculate filtered resources
+  const memoFilteredResources = useMemo(() => {
     let tempFilteredResources = resources;
     if (tagChosen) {
       tempFilteredResources = tempFilteredResources.filter(
@@ -48,8 +49,13 @@ const MainMap: React.FC<MainMapProps> = ({
         filterChosen.some((filterTag) => resource.tags.includes(filterTag))
       );
     }
-    setFilteredResources(tempFilteredResources);
+    return tempFilteredResources;
   }, [resources, tagChosen, filterChosen]);
+
+  // Effect to update state of filtered resources
+  useEffect(() => {
+    setFilteredResources(memoFilteredResources);
+  }, [memoFilteredResources]);
 
   return (
     <MapView
@@ -69,7 +75,6 @@ const MainMap: React.FC<MainMapProps> = ({
                 longitude: lon,
               }}
               onPress={() => handleSelectPlace(id, lat, lon)}
-              // anchor={{ x: 0.5, y: 0.5 }}
             >
               <CustomMarker
                 selectedPlace={selectedPlace}

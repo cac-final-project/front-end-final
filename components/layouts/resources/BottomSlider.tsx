@@ -1,14 +1,9 @@
 import React, { useState, useEffect } from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  TouchableOpacity,
-} from "react-native";
-import { Colors } from "@/constants/Colors";
+import { View, StyleSheet, ScrollView, TouchableOpacity } from "react-native";
 import ResourceItem from "./ResourceItem";
 import { TResource } from "@/typings/resources";
+import { useRecoilState } from "recoil";
+import { isAlertOpenAtom } from "@/state/atoms/alert";
 
 interface BottomSliderProps {
   resources: TResource[];
@@ -26,6 +21,8 @@ const BottomSlider: React.FC<BottomSliderProps> = ({
   selectedPlace,
   handleSelectPlaceAbsolute,
 }) => {
+  const [isAlertOpen, setIsAlertOpen] = useRecoilState(isAlertOpenAtom);
+
   const [selectedResource, setSelectedResource] = useState<TResource>();
 
   useEffect(() => {
@@ -34,6 +31,8 @@ const BottomSlider: React.FC<BottomSliderProps> = ({
     });
     setSelectedResource(filtered);
   }, [selectedPlace]);
+
+  const styles = getStyles(isAlertOpen);
   return (
     <View style={styles.container}>
       <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
@@ -62,39 +61,41 @@ const BottomSlider: React.FC<BottomSliderProps> = ({
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    position: "absolute",
-    backgroundColor: "transparent", // Ensure it's transparent
-    bottom: 170,
-  },
-  firstElement: {
-    borderRadius: 8,
-    marginLeft: 45,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 4,
+function getStyles(isAlertOpen: boolean) {
+  return StyleSheet.create({
+    container: {
+      position: "absolute",
+      backgroundColor: "transparent", // Ensure it's transparent
+      bottom: isAlertOpen ? 80 : 100,
     },
-    shadowOpacity: 0.16,
-    shadowRadius: 4,
-    elevation: 4,
-    minWidth: 250,
-  },
-  restElement: {
-    borderRadius: 8,
-    marginLeft: 16,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 4,
+    firstElement: {
+      borderRadius: 8,
+      marginLeft: 45,
+      shadowColor: "#000",
+      shadowOffset: {
+        width: 0,
+        height: 4,
+      },
+      shadowOpacity: 0.16,
+      shadowRadius: 4,
+      elevation: 4,
+      minWidth: 250,
     },
-    shadowOpacity: 0.16,
-    shadowRadius: 4,
-    elevation: 4,
-    minWidth: 250,
-  },
-  scrollContainer: {},
-});
+    restElement: {
+      borderRadius: 8,
+      marginLeft: 16,
+      shadowColor: "#000",
+      shadowOffset: {
+        width: 0,
+        height: 4,
+      },
+      shadowOpacity: 0.16,
+      shadowRadius: 4,
+      elevation: 4,
+      minWidth: 250,
+    },
+    scrollContainer: {},
+  });
+}
 
 export default BottomSlider;
