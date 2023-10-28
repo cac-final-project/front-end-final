@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, RefObject } from "react";
 import { View, StyleSheet, ScrollView, TouchableOpacity } from "react-native";
 import ResourceItem from "./ResourceItem";
-import { TResource } from "@/typings/resources";
+import { TResource, TAmenities } from "@/typings/resources";
 import { useRecoilState } from "recoil";
 import { isAlertOpenAtom } from "@/state/atoms/alert";
 
@@ -14,12 +14,18 @@ interface BottomSliderProps {
     lat: number,
     lon: number
   ) => void;
+  tagChosen: TAmenities;
+  filterChosen: string[];
+  bottomSliderRef: RefObject<ScrollView>;
 }
 
 const BottomSlider: React.FC<BottomSliderProps> = ({
   resources,
   selectedPlace,
   handleSelectPlaceAbsolute,
+  tagChosen,
+  filterChosen,
+  bottomSliderRef,
 }) => {
   const [isAlertOpen, setIsAlertOpen] = useRecoilState(isAlertOpenAtom);
 
@@ -32,17 +38,55 @@ const BottomSlider: React.FC<BottomSliderProps> = ({
     setSelectedResource(filtered);
   }, [selectedPlace]);
 
+  const [filteredResources, setFilteredResources] =
+    useState<TResource[]>(resources);
+  useEffect(() => {
+    let tempFilteredResources = resources;
+
+    if (tagChosen) {
+      tempFilteredResources = tempFilteredResources.filter(
+        (resource) => resource.amenity === tagChosen
+      );
+    }
+
+    if (filterChosen.length > 0) {
+      tempFilteredResources = tempFilteredResources.filter((resource) =>
+        filterChosen.some((filterTag) => resource.tags.includes(filterTag))
+      );
+    }
+
+    setFilteredResources(
+      tempFilteredResources.filter((item) => {
+        return item.id !== selectedPlace;
+      })
+    );
+  }, [resources, tagChosen, filterChosen, selectedPlace]);
+
   const styles = getStyles(isAlertOpen);
   return (
     <View style={styles.container}>
-      <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+      <ScrollView
+        ref={bottomSliderRef}
+        horizontal={true}
+        showsHorizontalScrollIndicator={false}
+      >
         {resources?.length !== 0 && selectedResource && (
-          <View style={styles.firstElement}>
+          <TouchableOpacity
+            style={styles.firstElement}
+            onPress={() =>
+              handleSelectPlaceAbsolute(
+                "slider",
+                selectedResource.id,
+                selectedResource.lat,
+                selectedResource.lon
+              )
+            }
+          >
             <ResourceItem item={selectedResource} />
-          </View>
+          </TouchableOpacity>
         )}
         {resources?.length !== 0 &&
-          resources?.map((item, idx) => {
+          filteredResources?.map((item, idx) => {
             const { id, lat, lon } = item;
             return (
               <TouchableOpacity

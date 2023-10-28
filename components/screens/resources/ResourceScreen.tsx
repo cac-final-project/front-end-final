@@ -5,7 +5,7 @@ import React, {
   useRef,
   useCallback,
 } from "react";
-import { SafeAreaView, StyleSheet } from "react-native";
+import { SafeAreaView, StyleSheet, ScrollView } from "react-native";
 import MapView from "react-native-maps";
 import { Weather, Alert } from "@/components/common/index";
 import BottomSheet from "@gorhom/bottom-sheet";
@@ -111,6 +111,7 @@ const ResourceScreen: React.FC = () => {
     mapRef.current?.animateToRegion(currentRegion, 1000);
   }, [currentRegion]);
 
+  const bottomSliderRef = useRef<ScrollView>(null);
   const handleSelectPlaceAbsolute = useCallback(
     (type: "sheet" | "slider", id: number, lat: number, lon: number) => {
       if (type === "sheet") {
@@ -127,6 +128,7 @@ const ResourceScreen: React.FC = () => {
         },
         1000
       );
+      bottomSliderRef.current?.scrollTo({ x: 0, y: 0, animated: true });
     },
     [latitudeDelta, closeSheet]
   );
@@ -176,6 +178,9 @@ const ResourceScreen: React.FC = () => {
               resources={resources}
               selectedPlace={selectedPlace}
               handleSelectPlaceAbsolute={handleSelectPlaceAbsolute}
+              tagChosen={tagChosen}
+              filterChosen={filterChosen}
+              bottomSliderRef={bottomSliderRef}
             />
           </>
         ) : (
