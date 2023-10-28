@@ -49,7 +49,7 @@ const ResourceScreen: React.FC = () => {
 
   const handleFetchResourcesApi = useCallback(async () => {
     setIsLoaded(false);
-    const res = await findResourcesApi(locationValue);
+    const res = await findResourcesApi(locationValue!);
     if (res !== false) {
       setIsLoaded(true);
       setAmenities(res?.data?.amenities || []);
@@ -63,7 +63,9 @@ const ResourceScreen: React.FC = () => {
   }, [locationValue, setIsLoaded]);
 
   useEffect(() => {
-    handleFetchResourcesApi();
+    if (locationValue) {
+      handleFetchResourcesApi();
+    }
   }, [handleFetchResourcesApi]);
 
   const mapRef = useRef<MapView>(null);
@@ -79,20 +81,35 @@ const ResourceScreen: React.FC = () => {
   const latitudeDelta = maxDistance > 0 ? maxDistance * 0.00003 : defaultDelta;
   const longitudeDelta = maxDistance > 0 ? maxDistance * 0.00003 : defaultDelta;
 
-  const initialRegion = useMemo(
-    () => ({
+  const initialRegion = useMemo(() => {
+    return {
+      latitude: 30.270398,
+      longitude: -97.74285,
+      latitudeDelta: defaultDelta,
+      longitudeDelta: defaultDelta,
+    };
+  }, []);
+
+  const currentRegion = useMemo(() => {
+    if (!locationValue) return initialRegion;
+    return {
       latitude: locationValue.lat,
       longitude: locationValue.lon,
       latitudeDelta,
       longitudeDelta,
-    }),
-    [latitudeDelta, longitudeDelta, locationValue]
-  );
+    };
+  }, [latitudeDelta, longitudeDelta, locationValue]);
+
+  useEffect(() => {
+    if (mapRef.current && locationValue) {
+      mapRef.current.animateToRegion(currentRegion, 1000);
+    }
+  }, [currentRegion, locationValue]);
 
   const handleResetSelectPlace = useCallback(() => {
     setSelectedPlace(undefined);
-    mapRef.current?.animateToRegion(initialRegion, 1000);
-  }, [initialRegion]);
+    mapRef.current?.animateToRegion(currentRegion, 1000);
+  }, [currentRegion]);
 
   const handleSelectPlaceAbsolute = useCallback(
     (type: "sheet" | "slider", id: number, lat: number, lon: number) => {
@@ -118,7 +135,7 @@ const ResourceScreen: React.FC = () => {
     (id: number, lat: number, lon: number) => {
       if (id === selectedPlace) {
         setSelectedPlace(undefined);
-        mapRef.current?.animateToRegion(initialRegion, 1000);
+        mapRef.current?.animateToRegion(currentRegion, 1000);
       } else {
         setSelectedPlace(id);
         const centerOffset = latitudeDelta * 0.003;
@@ -135,65 +152,67 @@ const ResourceScreen: React.FC = () => {
     },
     [selectedPlace, initialRegion, latitudeDelta]
   );
-  return (
-    <SafeAreaView>
-      <Weather />
-      <MainMap
-        selectedPlace={selectedPlace}
-        setSelectedPlace={setSelectedPlace}
-        tagChosen={tagChosen}
-        resources={resources}
-        filterChosen={filterChosen}
-        setFilteredResources={setFilteredResources}
-        filteredResources={filteredResources}
-        mapRef={mapRef}
-        initialRegion={initialRegion}
-        handleSelectPlace={handleSelectPlace}
-      />
-      <Alert />
-      {selectedPlace ? (
-        <>
-          <ViewList handleResetSelectPlace={handleResetSelectPlace} />
-          <BottomSlider
-            resources={resources}
-            selectedPlace={selectedPlace}
-            handleSelectPlaceAbsolute={handleSelectPlaceAbsolute}
-          />
-        </>
-      ) : (
-        <>
-          <TagList
-            tagChosen={tagChosen}
-            setTagChosen={setTagChosen}
-            setIsFilterOpen={setIsFilterOpen}
-            tags={amenities}
-            setFilterChosen={setFilterChosen}
-          />
-          {isFilterOpen && <OverLay onTap={handleFilterClose} />}
-          {!isFilterOpen ? (
-            <ResourceBottomSheet
-              index={1}
-              snapPoints={snapPoints}
-              tagChosen={tagChosen}
+  if (locationValue) {
+    return (
+      <SafeAreaView>
+        <Weather />
+        <MainMap
+          selectedPlace={selectedPlace}
+          setSelectedPlace={setSelectedPlace}
+          tagChosen={tagChosen}
+          resources={resources}
+          filterChosen={filterChosen}
+          setFilteredResources={setFilteredResources}
+          filteredResources={filteredResources}
+          mapRef={mapRef}
+          initialRegion={initialRegion}
+          handleSelectPlace={handleSelectPlace}
+        />
+        <Alert />
+        {selectedPlace ? (
+          <>
+            <ViewList handleResetSelectPlace={handleResetSelectPlace} />
+            <BottomSlider
               resources={resources}
-              filterChosen={filterChosen}
+              selectedPlace={selectedPlace}
               handleSelectPlaceAbsolute={handleSelectPlaceAbsolute}
-              bottomSheetRef={bottomSheetRef}
             />
-          ) : (
-            <FilterBottomSheet
-              handleFilterClose={handleFilterClose}
-              filterChosen={filterChosen}
-              setFilterChosen={setFilterChosen}
-              tags={tags}
+          </>
+        ) : (
+          <>
+            <TagList
               tagChosen={tagChosen}
-              resources={resources}
+              setTagChosen={setTagChosen}
+              setIsFilterOpen={setIsFilterOpen}
+              tags={amenities}
+              setFilterChosen={setFilterChosen}
             />
-          )}
-        </>
-      )}
-    </SafeAreaView>
-  );
+            {isFilterOpen && <OverLay onTap={handleFilterClose} />}
+            {!isFilterOpen ? (
+              <ResourceBottomSheet
+                index={1}
+                snapPoints={snapPoints}
+                tagChosen={tagChosen}
+                resources={resources}
+                filterChosen={filterChosen}
+                handleSelectPlaceAbsolute={handleSelectPlaceAbsolute}
+                bottomSheetRef={bottomSheetRef}
+              />
+            ) : (
+              <FilterBottomSheet
+                handleFilterClose={handleFilterClose}
+                filterChosen={filterChosen}
+                setFilterChosen={setFilterChosen}
+                tags={tags}
+                tagChosen={tagChosen}
+                resources={resources}
+              />
+            )}
+          </>
+        )}
+      </SafeAreaView>
+    );
+  }
 };
 
 const styles = StyleSheet.create({
