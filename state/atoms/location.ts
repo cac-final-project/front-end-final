@@ -5,12 +5,7 @@ interface LocationAtomType {
   lat: number;
 }
 
-export const locationAtom = atom<LocationAtomType>({
+export const locationAtom = atom<LocationAtomType | null>({
   key: "locationAtom",
-  default: { lat: 37.4219983, lon: -122.084 },
-});
-
-export const isLocationGrantedAtom = atom<boolean>({
-  key: "isLocationGrantedAtom",
-  default: false,
+  default: null,
 });

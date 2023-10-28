@@ -1,12 +1,28 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { SafeAreaView, Text, StyleSheet, Image } from "react-native";
 import { Colors } from "@/constants/Colors";
+import { getNeighborHoodApi } from "@/api/geolocation";
+import { useRecoilValue } from "recoil";
+import { locationAtom } from "@/state/atoms/location";
 
 const MarkerIcon = require("@/assets/images/Marker.png");
 
 const Neighborhood: React.FC = () => {
   const [neighborhood, setNeighborhood] = useState("Downtown");
+  const locationValue = useRecoilValue(locationAtom);
 
+  const handleNeighborhoodApi = async () => {
+    const res = await getNeighborHoodApi(locationValue!);
+    if (res !== false) {
+      setNeighborhood(res.data.city);
+    }
+  };
+
+  useEffect(() => {
+    if (locationValue) {
+      handleNeighborhoodApi();
+    }
+  }, [locationValue]);
   return (
     <SafeAreaView style={styles.centerBox}>
       <Image source={MarkerIcon} style={styles.icon} />
