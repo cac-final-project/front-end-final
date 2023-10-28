@@ -1,13 +1,16 @@
-import React, { useMemo, useCallback } from "react";
+import React, { useMemo, useCallback, useState, useEffect } from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import BottomSheet, { BottomSheetScrollView } from "@gorhom/bottom-sheet";
 import { Colors } from "@/constants/Colors";
+import { TAmenities, TResource } from "@/typings/resources";
 
 interface FilterBottomSheetProps {
   setFilterChosen: React.Dispatch<React.SetStateAction<string[]>>;
   handleFilterClose: () => void;
   filterChosen: string[];
   tags: string[];
+  tagChosen: TAmenities;
+  resources: TResource[];
 }
 
 const FilterBottomSheet: React.FC<FilterBottomSheetProps> = ({
@@ -15,11 +18,30 @@ const FilterBottomSheet: React.FC<FilterBottomSheetProps> = ({
   handleFilterClose,
   filterChosen,
   tags,
+  tagChosen,
+  resources,
 }) => {
+  const [relevantTags, setRelevantTags] = useState<string[]>(tags);
+
+  useEffect(() => {
+    if (tagChosen) {
+      const filteredResources = resources.filter((item) => {
+        return item.amenity === tagChosen;
+      });
+      // Extract tags and flatten the array
+      const extractedTags = filteredResources.map((item) => item.tags).flat();
+
+      // Optional: Remove duplicates
+      const uniqueTags = Array.from(new Set(extractedTags));
+      setRelevantTags(uniqueTags);
+    } else {
+      setRelevantTags(tags);
+    }
+  }, []);
+
   const snapPoints = useMemo(() => ["12%", "50%"], []);
 
   const handleSheetChanges = useCallback((index: number) => {
-    console.log("handleSheetChanges", index);
     if (index === 0) {
       handleFilterClose();
     }
@@ -65,8 +87,7 @@ const FilterBottomSheet: React.FC<FilterBottomSheetProps> = ({
       <Text style={styles.heading}>Filter</Text>
       <BottomSheetScrollView style={styles.results}>
         <View style={styles.tagContainer}>
-          {tags?.map((item, idx) => {
-            console.log(item);
+          {relevantTags?.map((item, idx) => {
             return (
               <TouchableOpacity
                 key={idx}

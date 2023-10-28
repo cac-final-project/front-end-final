@@ -43,3 +43,25 @@ export const resourceItemConvert = (item: TAmenities) => {
       return BenchItem;
   }
 };
+
+const CampaignMarker = require("@/assets/images/resource/marker/Campaign.png");
+const WaterMarker = require("@/assets/images/resource/marker/Water.png");
+const ToiletMarker = require("@/assets/images/resource/marker/Toilet.png");
+const ShowerMarker = require("@/assets/images/resource/marker/Shower.png");
+const BenchMarker = require("@/assets/images/resource/marker/Bench.png");
+
+// this is for the marker
+export const markerConvert = (item: TAmenities) => {
+  switch (item) {
+    case "bench":
+      return BenchMarker;
+    case "drinking_water":
+      return WaterMarker;
+    case "toilets":
+      return ToiletMarker;
+    case "shower":
+      return ShowerMarker;
+    default:
+      return CampaignMarker;
+  }
+};

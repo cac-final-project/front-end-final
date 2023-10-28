@@ -1,5 +1,7 @@
 import React from "react";
 import { View, Image, Text, StyleSheet } from "react-native";
+import { TResource } from "@/typings/resources";
+import { markerConvert } from "@/utils/index";
 
 // Import your icons
 const BlueMarkerIcon = require("@/assets/images/resource/marker/BlueMarker.png");
@@ -7,23 +9,24 @@ const YellowMarkerIcon = require("@/assets/images/resource/marker/YellowMarker.p
 const WaterIcon = require("@/assets/images/resource/marker/Water.png");
 
 interface CustomMarkerProps {
-  selectedPlace: undefined | string;
-  setSelectedPlace: React.Dispatch<React.SetStateAction<undefined | string>>;
-  address: string;
+  selectedPlace: undefined | number;
+  setSelectedPlace: React.Dispatch<React.SetStateAction<undefined | number>>;
+  item: TResource;
 }
 
 const CustomMarker: React.FC<CustomMarkerProps> = ({
   selectedPlace,
   setSelectedPlace,
-  address,
+  item,
 }) => {
+  const { amenity, address, distance, tags, id } = item ?? {};
   return (
     <View style={styles.markerContainer}>
       <Image
-        source={selectedPlace === address ? YellowMarkerIcon : BlueMarkerIcon}
+        source={selectedPlace === id ? YellowMarkerIcon : BlueMarkerIcon}
         style={styles.markerIcon}
       />
-      <Image source={WaterIcon} style={styles.waterIcon} />
+      <Image source={markerConvert(amenity)} style={styles.waterIcon} />
     </View>
   );
 };

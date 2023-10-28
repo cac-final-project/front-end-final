@@ -4,6 +4,7 @@ import { heatLevel } from "./heatLevel";
 import {
   resourceImageConvert,
   resourceItemConvert,
+  markerConvert,
 } from "./resourceImageConvert";
 import { tagConvert } from "./tagConvert";
 import { formatDistance } from "./formatDistance";
@@ -16,4 +17,5 @@ export {
   resourceItemConvert,
   tagConvert,
   formatDistance,
+  markerConvert,
 };

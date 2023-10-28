@@ -11,6 +11,7 @@ interface TagListProps {
   setTagChosen: React.Dispatch<React.SetStateAction<TAmenities>>;
   setIsFilterOpen: React.Dispatch<React.SetStateAction<boolean>>;
   tags: TAmenities[];
+  setFilterChosen: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
 const TagList: React.FC<TagListProps> = ({
@@ -18,6 +19,7 @@ const TagList: React.FC<TagListProps> = ({
   setTagChosen,
   setIsFilterOpen,
   tags,
+  setFilterChosen,
 }) => {
   const [isAlertOpen, setIsAlertOpen] = useRecoilState(isAlertOpenAtom);
   const styles = getStyles(isAlertOpen);
@@ -33,6 +35,7 @@ const TagList: React.FC<TagListProps> = ({
                 tagChosen={tagChosen}
                 setTagChosen={setTagChosen}
                 tag_name={item}
+                setFilterChosen={setFilterChosen}
               />
             );
           })}

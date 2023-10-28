@@ -8,19 +8,23 @@ interface TagItemProps {
   tagChosen: TAmenities;
   setTagChosen: React.Dispatch<React.SetStateAction<TAmenities>>;
   tag_name: TAmenities;
+  setFilterChosen: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
 const TagItem: React.FC<TagItemProps> = ({
   tagChosen,
   setTagChosen,
   tag_name,
+  setFilterChosen,
 }) => {
   const styles = getStyles(tag_name, tagChosen);
   const handleClick = () => {
     if (tagChosen === tag_name) {
       setTagChosen(undefined);
+      setFilterChosen([]);
     } else {
       setTagChosen(tag_name);
+      setFilterChosen([]);
     }
   };
   return (

@@ -5,15 +5,12 @@ import { Colors } from "@/constants/Colors";
 const ViewListIcon = require("@/assets/images/resource/ViewList.png");
 
 interface ViewListProps {
-  setSelectedPlace: React.Dispatch<React.SetStateAction<undefined | string>>;
+  handleResetSelectPlace: () => void;
 }
 
-const ViewList: React.FC<ViewListProps> = ({ setSelectedPlace }) => {
+const ViewList: React.FC<ViewListProps> = ({ handleResetSelectPlace }) => {
   return (
-    <TouchableOpacity
-      onPress={() => setSelectedPlace(undefined)}
-      style={styles.container}
-    >
+    <TouchableOpacity onPress={handleResetSelectPlace} style={styles.container}>
       <Image source={ViewListIcon} />
       <Text style={styles.text}>View list</Text>
     </TouchableOpacity>
@@ -23,7 +20,7 @@ const ViewList: React.FC<ViewListProps> = ({ setSelectedPlace }) => {
 const styles = StyleSheet.create({
   container: {
     position: "absolute",
-    bottom: 190,
+    bottom: 280,
     left: 50,
     flexDirection: "row",
     backgroundColor: Colors.white,

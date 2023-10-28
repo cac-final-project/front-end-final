@@ -1,5 +1,5 @@
-import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import React, { useState, useEffect } from "react";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import BottomSheet, { BottomSheetScrollView } from "@gorhom/bottom-sheet";
 import ResourceItem from "./ResourceItem";
 import { Colors } from "@/constants/Colors";
@@ -10,6 +10,14 @@ interface ResourceBottomSheetProps {
   snapPoints: (string | number)[];
   tagChosen: TAmenities;
   resources: TResource[];
+  filterChosen: string[];
+  handleSelectPlaceAbsolute: (
+    type: "sheet" | "slider",
+    id: number,
+    lat: number,
+    lon: number
+  ) => void;
+  bottomSheetRef: React.RefObject<BottomSheet>;
 }
 
 const ResourceBottomSheet: React.FC<ResourceBottomSheetProps> = ({
@@ -17,19 +25,52 @@ const ResourceBottomSheet: React.FC<ResourceBottomSheetProps> = ({
   snapPoints,
   tagChosen,
   resources,
+  filterChosen,
+  handleSelectPlaceAbsolute,
+  bottomSheetRef,
 }) => {
+  const [filteredResources, setFilteredResources] =
+    useState<TResource[]>(resources);
+
+  useEffect(() => {
+    let tempFilteredResources = resources;
+
+    if (tagChosen) {
+      tempFilteredResources = tempFilteredResources.filter(
+        (resource) => resource.amenity === tagChosen
+      );
+    }
+
+    if (filterChosen.length > 0) {
+      tempFilteredResources = tempFilteredResources.filter((resource) =>
+        filterChosen.some((filterTag) => resource.tags.includes(filterTag))
+      );
+    }
+
+    setFilteredResources(tempFilteredResources);
+  }, [resources, tagChosen, filterChosen]);
   return (
-    <BottomSheet style={styles.container} index={index} snapPoints={snapPoints}>
+    <BottomSheet
+      ref={bottomSheetRef}
+      style={styles.container}
+      index={index}
+      snapPoints={snapPoints}
+    >
       <Text style={styles.heading}>
         {tagChosen ? `Nearest ${tagChosen}` : "Find useful resources near you!"}
       </Text>
       <BottomSheetScrollView style={styles.results}>
         {resources.length !== 0 &&
-          resources.map((item) => {
+          filteredResources.map((item, idx) => {
+            const { id, lat, lon } = item;
             return (
-              <View style={styles.resourceitem}>
+              <TouchableOpacity
+                key={idx}
+                style={styles.resourceitem}
+                onPress={() => handleSelectPlaceAbsolute("sheet", id, lat, lon)}
+              >
                 <ResourceItem key={item.id} item={item} />
-              </View>
+              </TouchableOpacity>
             );
           })}
         <View style={styles.spacer} />

@@ -1,51 +1,84 @@
-import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import React, { useEffect } from "react";
+import { StyleSheet } from "react-native";
 import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import CustomMarker from "./CustomMarker";
+import { TAmenities, TResource } from "@/typings/resources";
+
+interface InitialRegion {
+  latitude: number;
+  longitude: number;
+  latitudeDelta: number;
+  longitudeDelta: number;
+}
 
 interface MainMapProps {
-  selectedPlace: undefined | string;
-  setSelectedPlace: React.Dispatch<React.SetStateAction<undefined | string>>;
+  selectedPlace: undefined | number;
+  setSelectedPlace: React.Dispatch<React.SetStateAction<undefined | number>>;
+  tagChosen: TAmenities;
+  resources: TResource[];
+  filterChosen: string[];
+  setFilteredResources: React.Dispatch<React.SetStateAction<TResource[]>>;
+  filteredResources: TResource[];
+  mapRef: React.RefObject<MapView>;
+  initialRegion: InitialRegion;
+  handleSelectPlace: (id: number, lat: number, lon: number) => void;
 }
 
 const MainMap: React.FC<MainMapProps> = ({
   selectedPlace,
   setSelectedPlace,
+  tagChosen,
+  resources,
+  filterChosen,
+  setFilteredResources,
+  filteredResources,
+  mapRef,
+  initialRegion,
+  handleSelectPlace,
 }) => {
-  const handleSelectPlace = (place: string) => {
-    if (place === selectedPlace) {
-      // setSelectedPlace(undefined);
-      console.log("click");
-    } else {
-      console.log("click");
-      setSelectedPlace("sdf");
+  useEffect(() => {
+    let tempFilteredResources = resources;
+    if (tagChosen) {
+      tempFilteredResources = tempFilteredResources.filter(
+        (resource) => resource.amenity === tagChosen
+      );
     }
-  };
+    if (filterChosen.length > 0) {
+      tempFilteredResources = tempFilteredResources.filter((resource) =>
+        filterChosen.some((filterTag) => resource.tags.includes(filterTag))
+      );
+    }
+    setFilteredResources(tempFilteredResources);
+  }, [resources, tagChosen, filterChosen]);
+
   return (
     <MapView
-      initialRegion={{
-        latitude: 37.78825,
-        longitude: -122.4324,
-        latitudeDelta: 0.005,
-        longitudeDelta: 0.005,
-      }}
+      ref={mapRef}
+      initialRegion={initialRegion}
       provider={PROVIDER_GOOGLE}
       style={styles.map}
     >
-      <Marker
-        coordinate={{
-          latitude: 37.78825,
-          longitude: -122.4324,
-        }}
-        onPress={() => handleSelectPlace("streetname")}
-        // anchor={{ x: 0.5, y: 0.5 }} // Adjusts the anchor point of the marker
-      >
-        <CustomMarker
-          selectedPlace={selectedPlace}
-          setSelectedPlace={setSelectedPlace}
-          address={"streetname"}
-        />
-      </Marker>
+      {resources.length !== 0 &&
+        filteredResources.map((item) => {
+          const { address, lat, lon, id } = item;
+          return (
+            <Marker
+              key={id}
+              coordinate={{
+                latitude: lat,
+                longitude: lon,
+              }}
+              onPress={() => handleSelectPlace(id, lat, lon)}
+              // anchor={{ x: 0.5, y: 0.5 }}
+            >
+              <CustomMarker
+                selectedPlace={selectedPlace}
+                setSelectedPlace={setSelectedPlace}
+                item={item}
+              />
+            </Marker>
+          );
+        })}
     </MapView>
   );
 };
