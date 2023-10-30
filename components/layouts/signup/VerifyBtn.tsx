@@ -1,6 +1,9 @@
 import React from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { Colors } from "@/constants/Colors";
+import { sendSmsApi } from "@/api/signup";
+import { useSetRecoilState } from "recoil";
+import { smsCodeAtom } from "@/state/atoms/signup";
 
 interface VerifyBtnProps {
   handleMoveProgress: () => void;
@@ -11,9 +14,13 @@ const VerifyBtn: React.FC<VerifyBtnProps> = ({
   handleMoveProgress,
   phoneNo,
 }) => {
+  const setSmsCode = useSetRecoilState(smsCodeAtom);
   const styles = getStyles(phoneNo);
-  const handlePressBtn = () => {
+  const handlePressBtn = async () => {
     if (phoneNo) {
+      const res = await sendSmsApi({ phone_no: phoneNo });
+      console.log(res);
+      setSmsCode(res.data);
       handleMoveProgress();
     }
   };

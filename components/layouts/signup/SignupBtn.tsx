@@ -1,6 +1,8 @@
 import React from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { Colors } from "@/constants/Colors";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import { smsCodeAtom, isSmsCodeNotValidAtom } from "@/state/atoms/signup";
 
 interface SignupBtnProps {
   confirmNo: string;
@@ -8,10 +10,16 @@ interface SignupBtnProps {
 }
 
 const SignupBtn: React.FC<SignupBtnProps> = ({ confirmNo, handleSignup }) => {
+  const smsCode = useRecoilValue(smsCodeAtom);
+  const setIsSmsCodeNotValid = useSetRecoilState(isSmsCodeNotValidAtom);
   const styles = getStyles(confirmNo);
   const handlePressBtn = async () => {
-    if (confirmNo.length === 6) {
+    const smsCodeString = smsCode?.join("");
+
+    if (confirmNo === smsCodeString) {
       await handleSignup();
+    } else {
+      setIsSmsCodeNotValid(true);
     }
   };
   return (

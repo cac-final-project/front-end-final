@@ -1,6 +1,8 @@
 import React, { useRef } from "react";
 import { View, Text, StyleSheet, TextInput } from "react-native";
 import { Colors } from "@/constants/Colors";
+import { useRecoilValue } from "recoil";
+import { isSmsCodeNotValidAtom } from "@/state/atoms/signup";
 
 interface ConfirmNumbProps {
   phoneNo: string;
@@ -13,6 +15,8 @@ const ConfirmNumb: React.FC<ConfirmNumbProps> = ({
   confirmNo,
   setConfirmNo,
 }) => {
+  const isSmsCodeNotValid = useRecoilValue(isSmsCodeNotValidAtom);
+
   const refs = Array(6)
     .fill(0)
     .map(() => useRef<TextInput>(null));
@@ -46,6 +50,9 @@ const ConfirmNumb: React.FC<ConfirmNumbProps> = ({
           />
         ))}
       </View>
+      {isSmsCodeNotValid && (
+        <Text style={styles.errorText}>The code is incorrect!</Text>
+      )}
     </View>
   );
 };
@@ -82,6 +89,13 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     padding: 16,
     marginRight: 8,
+  },
+  errorText: {
+    color: Colors.error,
+    marginTop: 8,
+    fontSize: 14,
+    fontFamily: "PlusJakartaSans-Regular",
+    letterSpacing: 0.42,
   },
 });
 

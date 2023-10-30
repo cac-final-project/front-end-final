@@ -1,6 +1,8 @@
 import React from "react";
 import { View, Text, StyleSheet, TextInput } from "react-native";
 import { Colors } from "@/constants/Colors";
+import { isUsernameNotValidAtom } from "@/state/atoms/signup";
+import { useRecoilValue } from "recoil";
 
 interface AccountInputProps {
   username: string;
@@ -15,6 +17,8 @@ const AccountInput: React.FC<AccountInputProps> = ({
   setUsername,
   setPassword,
 }) => {
+  const isUsernameNotValid = useRecoilValue(isUsernameNotValidAtom);
+
   return (
     <View style={styles.container}>
       <View style={styles.inputBox}>
@@ -25,7 +29,9 @@ const AccountInput: React.FC<AccountInputProps> = ({
           style={styles.input}
           placeholder="Enter your nickname"
         />
-        <Text style={styles.errorText}>This ID already exists</Text>
+        {isUsernameNotValid && (
+          <Text style={styles.errorText}>This ID already exists</Text>
+        )}
       </View>
       <View style={styles.inputBox}>
         <Text style={styles.header}>Password</Text>

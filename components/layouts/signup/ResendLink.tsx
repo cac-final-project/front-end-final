@@ -3,11 +3,25 @@ import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { ScreenNavigationProp } from "@/typings/StackParam";
 import { Colors } from "@/constants/Colors";
+import { useSetRecoilState } from "recoil";
+import { smsCodeAtom, isSmsCodeNotValidAtom } from "@/state/atoms/signup";
+import { sendSmsApi } from "@/api/signup";
 
-const ResendLink: React.FC = () => {
+interface ResendLinkProps {
+  phoneNo: string;
+}
+
+const ResendLink: React.FC<ResendLinkProps> = ({ phoneNo }) => {
+  const setIsSmsCodeNotValid = useSetRecoilState(isSmsCodeNotValidAtom);
+  const setSmsCode = useSetRecoilState(smsCodeAtom);
+
   const navigation = useNavigation<ScreenNavigationProp>();
-  const handleSignupClick = () => {
+  const handleSignupClick = async () => {
+    const res = await sendSmsApi({ phone_no: phoneNo });
+    console.log(res);
+    setSmsCode(res.data);
     navigation.navigate("Signup");
+    setIsSmsCodeNotValid(false);
   };
   return (
     <View style={styles.container}>

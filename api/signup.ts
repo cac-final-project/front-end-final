@@ -25,7 +25,7 @@ interface checkDupIdApiProps {
 
 export const checkDupIdApi = async (props: checkDupIdApiProps) => {
   try {
-    const res = await api.post("/user", props);
+    const res = await api.post("/user/checkUsername", props);
     return res.data;
   } catch (err) {
     console.log(err);
@@ -33,13 +33,13 @@ export const checkDupIdApi = async (props: checkDupIdApiProps) => {
   }
 };
 
-interface checkPWApiProps {
-  password: string;
+interface checkSmsApiProps {
+  phone_no: string;
 }
 
-export const checkPWApi = async (props: checkPWApiProps) => {
+export const sendSmsApi = async (props: checkSmsApiProps) => {
   try {
-    const res = await api.post("/user", props);
+    const res = await api.post("/user/sendSms", props);
     return res.data;
   } catch (err) {
     console.log(err);

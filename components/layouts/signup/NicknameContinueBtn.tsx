@@ -2,6 +2,9 @@ import React, { useState, useEffect } from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { Colors } from "@/constants/Colors";
 import { pageStatus } from "@/components/screens/signup/SignupScreen";
+import { checkDupIdApi } from "@/api/signup";
+import { useSetRecoilState } from "recoil";
+import { isUsernameNotValidAtom } from "@/state/atoms/signup";
 
 interface NicknameContinueBtnProps {
   handleMoveProgress: () => void;
@@ -19,6 +22,8 @@ const NicknameContinueBtn: React.FC<NicknameContinueBtnProps> = ({
   username,
 }) => {
   const [isActive, setIsActive] = useState<boolean>(false);
+
+  const setIsUsernameNotValid = useSetRecoilState(isUsernameNotValidAtom);
 
   useEffect(() => {
     if (pageStatus === "set your nickname") {
@@ -38,9 +43,21 @@ const NicknameContinueBtn: React.FC<NicknameContinueBtnProps> = ({
 
   const styles = getStyles(isActive);
 
-  const handlePressBtn = () => {
+  const handlePressBtn = async () => {
     if (isActive) {
-      handleMoveProgress();
+      if (pageStatus === "set your account") {
+        const res = await checkDupIdApi({ username: username! });
+        console.log(res);
+        // if it does not exist
+        if (!res.data) {
+          setIsUsernameNotValid(false);
+          handleMoveProgress();
+        } else {
+          setIsUsernameNotValid(true);
+        }
+      } else {
+        handleMoveProgress();
+      }
     }
   };
 

@@ -2,12 +2,11 @@ import React, { useState, useEffect } from "react";
 import {
   View,
   SafeAreaView,
-  Text,
   StyleSheet,
   Keyboard,
   TouchableWithoutFeedback,
   ScrollView,
-  Platform,
+  Alert,
 } from "react-native";
 import { Colors } from "@/constants/Colors";
 import { Header } from "@/components/common/auth/index";
@@ -29,6 +28,11 @@ import {
 import { signupApi } from "@/api/signup";
 import { useNavigation } from "@react-navigation/native";
 import { ScreenNavigationProp } from "@/typings/StackParam";
+import { useSetRecoilState } from "recoil";
+import { isLoggedInAtom, tokenAtom, loginInfoAtom } from "@/state/atoms/login";
+import { loginApi } from "@/api/login";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { KEYS_AND_DEFAULT } from "@/storage/storageKeys";
 
 export type progress = 0 | 1 | 2 | 3;
 export type pageStatus =
@@ -46,7 +50,6 @@ const SignupScreen: React.FC = () => {
   const [progress, setProgress] = useState<progress>(0);
   const [pageStatus, setPageStatus] = useState<pageStatus>("welcome");
 
-  // 1.
   const [userType, setUserType] = useState<UserTypeState>("");
 
   const handleSetUserType = (userType: UserTypeState) => {
@@ -59,7 +62,18 @@ const SignupScreen: React.FC = () => {
   const [phoneNo, setPhoneNo] = useState("");
   const [confirmNo, setConfirmNo] = useState("");
 
+  console.log("userType", userType);
+  console.log("nickname", nickname);
+  console.log("username", username);
+  console.log("password", password);
+  console.log("phoneNo", phoneNo);
+  console.log("confirmNo", confirmNo);
+
   const navigation = useNavigation<ScreenNavigationProp>();
+
+  const setToken = useSetRecoilState(tokenAtom);
+  const setIsLoggedIn = useSetRecoilState(isLoggedInAtom);
+  const setloginInfo = useSetRecoilState(loginInfoAtom);
   const handleSignup = async () => {
     const res = await signupApi({
       type: userType as UserType,
@@ -69,7 +83,37 @@ const SignupScreen: React.FC = () => {
       phone_no: phoneNo,
     });
     if (res !== false) {
-      navigation.navigate("Login");
+      const res = await loginApi({ username, password });
+      const {
+        data: { token, nickname, type, phone_no },
+      } = res;
+      await AsyncStorage.setItem(
+        KEYS_AND_DEFAULT.username[0],
+        JSON.stringify(username)
+      );
+      await AsyncStorage.setItem(
+        KEYS_AND_DEFAULT.password[0],
+        JSON.stringify(password)
+      );
+      setToken(token);
+      setIsLoggedIn(true);
+      setloginInfo({
+        username: username,
+        nickname: nickname,
+        type,
+        phone_no,
+      });
+      Alert.alert(
+        "Success", // Title
+        "Account Created!", // Message
+        [
+          {
+            text: "OK",
+            onPress: () => navigation.navigate("Resource"), // Navigate on "OK" press
+          },
+        ],
+        { cancelable: false } // Alert is not dismissible
+      );
     }
   };
 
@@ -198,7 +242,7 @@ const SignupScreen: React.FC = () => {
           )}
           {pageStatus === "verify your number" && (
             <View>
-              <ResendLink />
+              <ResendLink phoneNo={phoneNo} />
               <SignupBtn confirmNo={confirmNo} handleSignup={handleSignup} />
             </View>
           )}
