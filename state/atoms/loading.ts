@@ -1,6 +1,6 @@
 import { atom } from "recoil";
 
-export const resourcesIsLoadedAtom = atom({
-  key: "resourcesIsLoadedAtom",
+export const isLoadingAtom = atom({
+  key: "isLoadingAtom",
   default: false,
 });

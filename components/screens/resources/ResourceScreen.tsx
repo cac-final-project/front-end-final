@@ -22,7 +22,7 @@ import { findResourcesApi } from "@/api/findResources";
 import { TResource, TAmenities } from "@/typings/resources";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { locationAtom } from "@/state/atoms/location";
-import { resourcesIsLoadedAtom } from "@/state/atoms/loading";
+import { isLoadingAtom } from "@/state/atoms/loading";
 
 const ResourceScreen: React.FC = () => {
   const snapPoints = useMemo(() => ["30%", "43%", "80%"], []);
@@ -37,7 +37,7 @@ const ResourceScreen: React.FC = () => {
   const [filterChosen, setFilterChosen] = useState<string[]>([]);
   const [selectedPlace, setSelectedPlace] = useState<undefined | number>();
 
-  const setIsLoaded = useSetRecoilState(resourcesIsLoadedAtom);
+  const setIsLoading = useSetRecoilState(isLoadingAtom);
   const locationValue = useRecoilValue(locationAtom);
   const [resources, setResources] = useState<TResource[]>([]);
   const [amenities, setAmenities] = useState<TAmenities[]>([]);
@@ -48,10 +48,10 @@ const ResourceScreen: React.FC = () => {
   }, []);
 
   const handleFetchResourcesApi = useCallback(async () => {
-    setIsLoaded(false);
+    setIsLoading(true);
     const res = await findResourcesApi(locationValue!);
     if (res !== false) {
-      setIsLoaded(true);
+      setIsLoading(false);
       setAmenities(res?.data?.amenities || []);
       setTags(res?.data?.tags || []);
       setResources(res?.data?.data || []);
@@ -60,7 +60,7 @@ const ResourceScreen: React.FC = () => {
       setTags([]);
       setResources([]);
     }
-  }, [locationValue, setIsLoaded]);
+  }, [locationValue, setIsLoading]);
 
   useEffect(() => {
     if (locationValue) {

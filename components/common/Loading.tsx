@@ -2,11 +2,11 @@ import React from "react";
 import { View, StyleSheet, ActivityIndicator } from "react-native";
 
 interface LoadingOverLayProps {
-  isLoaded: boolean;
+  isLoading: boolean;
 }
 
-const LoadingOverLay: React.FC<LoadingOverLayProps> = ({ isLoaded }) => {
-  if (!isLoaded) {
+const LoadingOverLay: React.FC<LoadingOverLayProps> = ({ isLoading }) => {
+  if (isLoading) {
     return (
       <View style={styles.overlayContainer}>
         <ActivityIndicator size="large" color="#FFFFFF" />

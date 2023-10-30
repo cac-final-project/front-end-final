@@ -7,13 +7,14 @@ import {
   KeyboardAvoidingView,
 } from "react-native";
 import { Colors } from "@/constants/Colors";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { editProfileAtom } from "@/state/atoms/profileEdit";
-
-const defaultText = "asdf";
+import { profileAtom } from "@/state/atoms/profileEdit";
 
 const Bio: React.FC = () => {
   const [editProfile, setEditProfile] = useRecoilState(editProfileAtom);
+  const profile = useRecoilValue(profileAtom);
+
   const handleOnChange = (text: string) => {
     setEditProfile((prev) => {
       return { ...prev, bio: text };
@@ -21,19 +22,21 @@ const Bio: React.FC = () => {
   };
 
   useEffect(() => {
-    setEditProfile((prev) => {
-      return { ...prev, bio: defaultText };
-    });
+    if (profile.bio) {
+      setEditProfile((prev) => {
+        return { ...prev, bio: profile.bio };
+      });
+    }
   }, []);
   return (
     <View style={styles.container}>
-      <Text style={styles.bioTitle}>Introduction</Text>
+      <Text style={styles.bioTitle}>Bio</Text>
       <View style={styles.bioTextContainer}>
         <TextInput
           style={styles.bioText}
           multiline={true}
-          onChangeText={handleOnChange} // <-- Use handleOnChange here
-          value={editProfile.bio} // <-- Use editProfile.bio as value here
+          onChangeText={handleOnChange}
+          value={editProfile.bio}
         />
       </View>
     </View>

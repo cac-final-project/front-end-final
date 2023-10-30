@@ -7,6 +7,7 @@ import { useRecoilValue, useSetRecoilState } from "recoil";
 import { tokenAtom, loginInfoAtom } from "@/state/atoms/login";
 import { getProfileInfoApi } from "@/api/profile";
 import { profileAtom } from "@/state/atoms/profileEdit";
+import { isLoadingAtom } from "@/state/atoms/loading";
 
 export interface IProfile {
   bio?: string;
@@ -14,12 +15,16 @@ export interface IProfile {
 }
 
 const ProfileScreen: React.FC = () => {
+  const setIsLoading = useSetRecoilState(isLoadingAtom);
+
   const loginInfoValue = useRecoilValue(loginInfoAtom);
   const tokenValue = useRecoilValue(tokenAtom);
   const setProfile = useSetRecoilState(profileAtom);
 
   const handleProfileApi = async () => {
+    setIsLoading(true);
     const res = await getProfileInfoApi({ token: tokenValue! });
+    setIsLoading(false);
     const {
       data: { bio, profile_img },
     } = res;

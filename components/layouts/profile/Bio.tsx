@@ -25,7 +25,7 @@ const Bio: React.FC = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.bioTitle}>Introduction: </Text>
+      <Text style={styles.bioTitle}>Bio: </Text>
       <View style={styles.bioTextContainer}>
         <Text
           style={[styles.bioText, { opacity: 0, position: "absolute" }]}

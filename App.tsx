@@ -4,14 +4,9 @@ import { enableScreens } from "react-native-screens";
 import useAppFonts from "@/state/hooks/useAppFonts";
 import { NavigationContainer } from "@react-navigation/native";
 import MainStackNavigator from "@/navigation/MainStackNavigator";
-import {
-  RecoilRoot,
-  useSetRecoilState,
-  useRecoilValue,
-  useRecoilState,
-} from "recoil";
+import { RecoilRoot, useRecoilValue, useRecoilState } from "recoil";
 import { locationAtom } from "@/state/atoms/location";
-import { resourcesIsLoadedAtom } from "./state/atoms/loading";
+import { isLoadingAtom } from "./state/atoms/loading";
 import LoadingOverLay from "./components/common/Loading";
 
 import * as Location from "expo-location";
@@ -23,7 +18,7 @@ function AppContent() {
 
   const fontsLoaded = useAppFonts();
 
-  const resourcesIsLoadedValue = useRecoilValue(resourcesIsLoadedAtom);
+  const isLoading = useRecoilValue(isLoadingAtom);
   useEffect(() => {
     if (fontsLoaded) {
       (async () => {
@@ -46,7 +41,7 @@ function AppContent() {
 
   return (
     <>
-      <LoadingOverLay isLoaded={resourcesIsLoadedValue} />
+      <LoadingOverLay isLoading={isLoading} />
       <NavigationContainer>
         <MainStackNavigator />
       </NavigationContainer>
