@@ -9,16 +9,18 @@ interface EmergencyProps {
 }
 
 const Instruction: React.FC<EmergencyProps> = ({ emergency }) => {
-  return (
-    <View style={styles.container}>
-      <Text style={styles.header}>Instructions</Text>
-      <View style={styles.contentContainer}>
-        <Text style={styles.contentText}>
-          {removeNewLines(emergency.properties.instruction)}
-        </Text>
+  if (emergency.properties.instruction) {
+    return (
+      <View style={styles.container}>
+        <Text style={styles.header}>Instructions</Text>
+        <View style={styles.contentContainer}>
+          <Text style={styles.contentText}>
+            {removeNewLines(emergency.properties.instruction)}
+          </Text>
+        </View>
       </View>
-    </View>
-  );
+    );
+  }
 };
 
 const styles = StyleSheet.create({

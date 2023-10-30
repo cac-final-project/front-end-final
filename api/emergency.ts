@@ -18,7 +18,6 @@ export const getEmergencyApi = async ({ county }: GetEmergencyApiProps) => {
     const foundAlert = alerts.find((alert) =>
       alert.properties.areaDesc.includes(county)
     );
-
     return foundAlert; // This will be either the first found Alert or undefined
   } catch (err) {
     console.error("Error fetching emergency data:", err);

@@ -21,10 +21,12 @@ const CloseIcon = require("@/assets/images/Close.png");
 
 const Alert: React.FC = () => {
   const county = useRecoilValue(countyAtom);
+
   const [emergency, setEmergency] = useRecoilState(emergencyAtom);
 
   const handleEmergencyApi = async () => {
     const res = await getEmergencyApi({ county: county! });
+    console.log(res);
     if (res !== false) {
       setEmergency(res!);
     }

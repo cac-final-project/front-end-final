@@ -7,6 +7,7 @@ import {
   Keyboard,
   TouchableWithoutFeedback,
   ScrollView,
+  Platform,
 } from "react-native";
 import { Colors } from "@/constants/Colors";
 import { Header } from "@/components/common/auth/index";
@@ -113,10 +114,10 @@ const SignupScreen: React.FC = () => {
   }, [pageStatus]);
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <ScrollView>
-        <SafeAreaView style={styles.container}>
-          <Header screenType={"Signup"} pageStatus={pageStatus} />
-          <ProgressBar progress={progress} />
+      <SafeAreaView style={styles.container}>
+        <Header screenType={"Signup"} pageStatus={pageStatus} />
+        <ProgressBar progress={progress} />
+        <ScrollView>
           {pageStatus === "welcome" && (
             <View>
               <WelcomeTitle />
@@ -201,8 +202,8 @@ const SignupScreen: React.FC = () => {
               <SignupBtn confirmNo={confirmNo} handleSignup={handleSignup} />
             </View>
           )}
-        </SafeAreaView>
-      </ScrollView>
+        </ScrollView>
+      </SafeAreaView>
     </TouchableWithoutFeedback>
   );
 };

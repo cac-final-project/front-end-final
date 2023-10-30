@@ -5,6 +5,9 @@ import { View, Text, StyleSheet, ScrollView } from "react-native";
 import TagItem from "./TagItem";
 import FilterTag from "./FilterTag";
 import { TAmenities } from "@/typings/resources";
+import { useRecoilValue } from "recoil";
+import { emergencyAtom } from "@/state/atoms/emergency";
+import { IAlert } from "@/typings/emergency";
 
 interface TagListProps {
   tagChosen: TAmenities;
@@ -22,7 +25,8 @@ const TagList: React.FC<TagListProps> = ({
   setFilterChosen,
 }) => {
   const [isAlertOpen, setIsAlertOpen] = useRecoilState(isAlertOpenAtom);
-  const styles = getStyles(isAlertOpen);
+  const emergencyData = useRecoilValue(emergencyAtom);
+  const styles = getStyles(isAlertOpen, emergencyData);
   return (
     <View style={styles.container}>
       <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
@@ -44,11 +48,11 @@ const TagList: React.FC<TagListProps> = ({
   );
 };
 
-function getStyles(isAlertOpen: boolean) {
+function getStyles(isAlertOpen: boolean, emergencyData: IAlert | null) {
   return StyleSheet.create({
     container: {
       position: "absolute",
-      top: isAlertOpen ? 150 : 50,
+      top: emergencyData && isAlertOpen ? 150 : 50,
       width: "100%",
       backgroundColor: "transparent", // Ensure it's transparent
     },
