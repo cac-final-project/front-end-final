@@ -46,9 +46,9 @@ const Inputs: React.FC<InputsProps> = ({
           secureTextEntry
         />
       </View>
-      <TouchableOpacity onPress={handleForgotPwClick}>
+      {/* <TouchableOpacity onPress={handleForgotPwClick}>
         <Text style={styles.forgotPasswordLink}>Forgot Password?</Text>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
     </View>
   );
 };
