@@ -8,9 +8,23 @@ import {
 } from "react-native";
 import React from "react";
 import { Colors } from "@/constants/Colors";
+import { IPost } from "@/typings/post";
+import { capitalizeFirstLetter, formatDate } from "@/utils/index";
+import { useNavigation } from "@react-navigation/native";
+import { ScreenNavigationProp } from "@/typings/StackParam";
 
-const Post: React.FC = () => {
-  const handlePostClick = () => {};
+interface PostProps {
+  item: IPost;
+}
+
+const Post: React.FC<PostProps> = ({ item }) => {
+  const { type, title, createdAt, id } = item;
+
+  const navigation = useNavigation<ScreenNavigationProp>();
+
+  const handlePostClick = () => {
+    navigation.navigate("PostDetail", { post_id: id, post_type: type });
+  };
 
   const handleVoteClick = (e: GestureResponderEvent, vote: "up" | "down") => {};
 
@@ -19,15 +33,13 @@ const Post: React.FC = () => {
       <View style={styles.container}>
         <View style={styles.leftBox}>
           <View style={styles.tipContainer}>
-            <Text style={styles.tagText}>Tip</Text>
+            <Text style={styles.tagText}>{capitalizeFirstLetter(type)}</Text>
           </View>
-          <Text style={styles.postTitle}>
-            Staying Cool on the Street: A tip from experience
-          </Text>
-          <Text style={styles.postDate}>2023.09.20</Text>
+          <Text style={styles.postTitle}>{title}</Text>
+          <Text style={styles.postDate}>{formatDate(createdAt)}</Text>
         </View>
         <View style={styles.rightBox}>
-          <View style={styles.rightBoxVoteContainer}>
+          {/* <View style={styles.rightBoxVoteContainer}>
             <TouchableOpacity
               onPress={(e) => handleVoteClick(e, "up")}
             ></TouchableOpacity>
@@ -35,7 +47,7 @@ const Post: React.FC = () => {
             <TouchableOpacity
               onPress={(e) => handleVoteClick(e, "down")}
             ></TouchableOpacity>
-          </View>
+          </View> */}
         </View>
       </View>
     </TouchableWithoutFeedback>

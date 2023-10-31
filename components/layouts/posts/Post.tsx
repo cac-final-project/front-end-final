@@ -34,10 +34,10 @@ const Post: React.FC<PostProps> = ({
 }) => {
   const navigation = useNavigation<ScreenNavigationProp>();
 
-  const { profile_img, author, title, createdAt, voteCount, id } = item;
+  const { profile_img, author, title, createdAt, voteCount, id, type } = item;
 
   const handleEditClick = () => {
-    navigation.navigate("PostDetail", { post_id: 0, post_type: "tip" });
+    navigation.navigate("PostDetail", { post_id: id, post_type: type });
   };
   const handleProfileClick = () => {
     navigation.navigate("EditProfile");

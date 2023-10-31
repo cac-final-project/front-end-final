@@ -13,7 +13,7 @@ import {
 } from "./resourceImageConvert";
 import { tagConvert } from "./tagConvert";
 import { formatDistance } from "./formatDistance";
-import { removeNewLines } from "./formatText";
+import { removeNewLines, capitalizeFirstLetter } from "./formatText";
 
 export {
   formatDate,
@@ -28,4 +28,5 @@ export {
   getFormattedTime,
   getMonthName,
   removeNewLines,
+  capitalizeFirstLetter,
 };

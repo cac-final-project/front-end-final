@@ -39,7 +39,6 @@ const PostsScreen: React.FC = () => {
   const token = useRecoilValue(tokenAtom);
   const setIsLoading = useSetRecoilState(isLoadingAtom);
   const isLoggedIn = useRecoilValue(isLoggedInAtom);
-  console.log("isLoggedIn", isLoggedIn);
   const loginInfo = useRecoilValue(loginInfoAtom);
   const navigation = useNavigation<ScreenNavigationProp>();
   const [headerTab, setHeaderTab] = useState<headerTabType>("tip");
