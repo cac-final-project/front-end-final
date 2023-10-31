@@ -1,4 +1,10 @@
-import React, { useState, useRef, useCallback, useMemo } from "react";
+import React, {
+  useState,
+  useRef,
+  useCallback,
+  useMemo,
+  useEffect,
+} from "react";
 import {
   View,
   StyleSheet,
@@ -19,19 +25,35 @@ import { Colors } from "@/constants/Colors";
 import BottomSheet from "@gorhom/bottom-sheet";
 import { useNavigation } from "@react-navigation/native";
 import { ScreenNavigationProp } from "@/typings/StackParam";
-import { useRecoilValue } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import { isLoggedInAtom, loginInfoAtom } from "@/state/atoms/login";
+import { fetchPosts } from "@/api/post";
+import { IPost } from "@/typings/post";
+import { isLoadingAtom } from "@/state/atoms/loading";
 
 const AddPostIcon = require("@/assets/images/AddPost.png");
 
 export type headerTabType = "tip" | "campaign";
 
 const PostsScreen: React.FC = () => {
+  const setIsLoading = useSetRecoilState(isLoadingAtom);
   const isLoggedIn = useRecoilValue(isLoggedInAtom);
   const loginInfo = useRecoilValue(loginInfoAtom);
   const navigation = useNavigation<ScreenNavigationProp>();
-
   const [headerTab, setHeaderTab] = useState<headerTabType>("tip");
+
+  const [posts, setPosts] = useState<IPost[]>([]);
+
+  const handleFetchPostsApi = async () => {
+    setIsLoading(true);
+    const res = await fetchPosts({ page: 1, limit: 10, type: headerTab });
+    setPosts(res.data);
+    setIsLoading(false);
+  };
+  useEffect(() => {
+    handleFetchPostsApi();
+  }, [headerTab]);
+
   const [isBottomSheetVisible, setIsBottomSheetVisible] = useState(false);
 
   const bottomSheetRef = useRef<BottomSheet>(null);
@@ -118,40 +140,16 @@ const PostsScreen: React.FC = () => {
         <Weather />
         <HeaderTab headerTab={headerTab} setHeaderTab={setHeaderTab} />
         <View style={styles.postContainer}>
-          {[
-            {
-              id: 0,
-              profile_img:
-                "https://res.cloudinary.com/djehfg3yk/image/upload/v1696151625/file-upload/1696151623996-KakaoTalk_20230218_194526049_02_pedm6t.jpg",
-              isAuthor: true,
-            },
-            {
-              id: 1,
-              profile_img: "",
-              isAuthor: false,
-            },
-            {
-              id: 2,
-              profile_img: "",
-              isAuthor: false,
-            },
-            {
-              id: 3,
-              profile_img: "",
-              isAuthor: false,
-            },
-            {
-              id: 4,
-              profile_img: "",
-              isAuthor: false,
-            },
-          ].map((item) => {
+          {posts.map((item, idx) => {
+            const { author, profile_img } = item;
+            console.log(profile_img);
+            const isAuthor = author === loginInfo.username ? true : false;
             return (
               <Post
                 key={item.id}
-                post_id={item.id}
-                profile_img={item.profile_img}
-                isAuthor={item.isAuthor}
+                post_id={idx}
+                item={item}
+                isAuthor={isAuthor}
                 onEllipsisPress={handleShowBottomSheet}
               />
             );

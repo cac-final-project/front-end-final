@@ -11,6 +11,8 @@ import {
 import { Colors } from "@/constants/Colors";
 import { useNavigation } from "@react-navigation/native";
 import { ScreenNavigationProp } from "@/typings/StackParam";
+import { IPost } from "@/typings/post";
+import { formatDate } from "@/utils";
 
 const ProfileIcon = require("@/assets/images/Profile.png");
 const UpVoteIcon = require("@/assets/images/UpVote.png");
@@ -18,19 +20,21 @@ const DownVoteIcon = require("@/assets/images/DownVote.png");
 const ElipsisIcon = require("@/assets/images/elipsis.png");
 
 interface PostProps {
-  profile_img: string;
   post_id: number;
   isAuthor: boolean;
-  onEllipsisPress: () => void; // New prop
+  onEllipsisPress: () => void;
+  item: IPost;
 }
 
 const Post: React.FC<PostProps> = ({
-  profile_img,
   post_id,
   isAuthor,
   onEllipsisPress,
+  item,
 }) => {
   const navigation = useNavigation<ScreenNavigationProp>();
+
+  const { profile_img, author, title, createdAt, voteCount } = item;
 
   const handleEditClick = () => {
     navigation.navigate("PostDetail", { post_id: 0, post_type: "tip" });
@@ -49,7 +53,7 @@ const Post: React.FC<PostProps> = ({
                   {profile_img ? (
                     <Image
                       source={{
-                        uri: "https://res.cloudinary.com/djehfg3yk/image/upload/v1696151625/file-upload/1696151623996-KakaoTalk_20230218_194526049_02_pedm6t.jpg",
+                        uri: profile_img,
                       }}
                       style={styles.profileImage}
                     />
@@ -60,7 +64,7 @@ const Post: React.FC<PostProps> = ({
               </TouchableOpacity>
               <View>
                 <TouchableOpacity>
-                  <Text style={styles.username}>@JohnDoe</Text>
+                  <Text style={styles.username}>@{author}</Text>
                 </TouchableOpacity>
                 {post_id === 0 && (
                   <View style={styles.popularBadge}>
@@ -81,10 +85,8 @@ const Post: React.FC<PostProps> = ({
           </View>
           <View style={styles.postContent}>
             <View style={styles.postDetails}>
-              <Text style={styles.postText}>
-                We are distributing bottled water in the city!
-              </Text>
-              <Text style={styles.date}>2023.09.20</Text>
+              <Text style={styles.postText}>{title}</Text>
+              <Text style={styles.date}>{formatDate(createdAt)}</Text>
             </View>
             <View style={styles.voteContainer}>
               <TouchableOpacity
@@ -92,7 +94,7 @@ const Post: React.FC<PostProps> = ({
               >
                 <Image source={UpVoteIcon} style={styles.voteIcon} />
               </TouchableOpacity>
-              <Text style={styles.voteCount}>28</Text>
+              <Text style={styles.voteCount}>{voteCount}</Text>
               <TouchableOpacity
                 hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
               >

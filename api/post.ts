@@ -49,3 +49,19 @@ export const writeTip = async ({
     return false;
   }
 };
+
+interface FetchPostsProps {
+  page: number;
+  limit: number;
+  type: PostType;
+}
+
+export const fetchPosts = async ({ page, limit, type }: FetchPostsProps) => {
+  try {
+    const res = await api.get(`/post?page=${page}&limit=${limit}&type=${type}`);
+    return res.data;
+  } catch (err) {
+    console.error(err);
+    return false;
+  }
+};
