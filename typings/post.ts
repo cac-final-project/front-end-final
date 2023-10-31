@@ -19,7 +19,7 @@ export interface IPost {
 
 export interface IPostDetail {
   id: number;
-  type: string;
+  type: PostType;
   author: string;
   title: string;
   content: string;

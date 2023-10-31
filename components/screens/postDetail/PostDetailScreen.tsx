@@ -123,7 +123,7 @@ const PostDetailScreen: React.FC = () => {
           {post && (
             <Header onEllipsisPress={handleShowBottomSheet} post={post} />
           )}
-          {post && <Post post={post} />}
+          {post && <Post post={post} setPost={setPost} />}
           {post && <ImageBox post={post} />}
           {post && <PostContent post={post} />}
           {/* {post_type === "tip" && <MapDetail />} */}

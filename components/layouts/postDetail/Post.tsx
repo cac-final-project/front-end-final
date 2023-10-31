@@ -13,17 +13,24 @@ import { useNavigation } from "@react-navigation/native";
 import { ScreenNavigationProp } from "@/typings/StackParam";
 import { IPostDetail } from "@/typings/post";
 import { formatDate } from "@/utils/index";
+import { useSetRecoilState, useRecoilValue } from "recoil";
+import { isLoadingAtom } from "@/state/atoms/loading";
+import { tokenAtom, isLoggedInAtom } from "@/state/atoms/login";
+import { updateVote } from "@/api/vote";
+import { fetchPosts, fetchPost } from "@/api/post";
+import { postsAtom } from "@/state/atoms/post";
 
 const ProfileIcon = require("@/assets/images/Profile.png");
 const UpVoteIcon = require("@/assets/images/UpVote.png");
 const DownVoteIcon = require("@/assets/images/DownVote.png");
 const ElipsisIcon = require("@/assets/images/elipsis.png");
 
-interface PostProps {
+interface IPostProps {
   post: IPostDetail;
+  setPost: React.Dispatch<React.SetStateAction<IPostDetail | undefined>>;
 }
 
-const Post: React.FC<PostProps> = ({ post }) => {
+const Post: React.FC<IPostProps> = ({ post, setPost }) => {
   const {
     profile_img,
     id,
@@ -33,10 +40,43 @@ const Post: React.FC<PostProps> = ({ post }) => {
     createdAt,
     voteCount,
     type,
+    isVoted,
   } = post;
   const navigation = useNavigation<ScreenNavigationProp>();
   const handleProfileClick = () => {
     navigation.navigate("Profile");
+  };
+
+  const token = useRecoilValue(tokenAtom);
+  const isLoggedIn = useRecoilValue(isLoggedInAtom);
+  const setIsLoading = useSetRecoilState(isLoadingAtom);
+  const setPosts = useSetRecoilState(postsAtom);
+
+  const handleVoteClick = async (
+    e: GestureResponderEvent,
+    vote: "up" | "down"
+  ) => {
+    if (!isLoggedIn) {
+      return alert("You must be logged in!");
+    }
+    e.stopPropagation();
+    if (isVoted === vote) {
+      alert("You have voted already!");
+      return;
+    }
+
+    setIsLoading(true);
+    const res = await updateVote({
+      postId: id,
+      token: token!,
+      direction: vote,
+    });
+    const resPosts = await fetchPosts({ page: 1, limit: 10, type: type });
+    setPosts(resPosts.data);
+    const resPost = await fetchPost({ postId: id, token });
+    setPost(resPost.data);
+    navigation.navigate("PostDetail", { post_id: id, post_type: type });
+    setIsLoading(false);
   };
   return (
     <TouchableWithoutFeedback>
@@ -76,12 +116,14 @@ const Post: React.FC<PostProps> = ({ post }) => {
           </View>
           <View style={styles.voteContainer}>
             <TouchableOpacity
+              onPress={(e) => handleVoteClick(e, "up")}
               hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
             >
               <Image source={UpVoteIcon} style={styles.voteIcon} />
             </TouchableOpacity>
             <Text style={styles.voteCount}>{voteCount}</Text>
             <TouchableOpacity
+              onPress={(e) => handleVoteClick(e, "down")}
               hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
             >
               <Image source={DownVoteIcon} style={styles.voteIcon} />
