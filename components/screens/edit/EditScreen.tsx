@@ -15,9 +15,9 @@ const EditProfile: React.FC = () => {
   const handleProfileApi = async () => {
     const res = await getProfileInfoApi({ token: tokenValue! });
     const {
-      data: { bio, profile_img },
+      data: { bio, profile_img, posts },
     } = res;
-    setProfile({ bio, profile_img });
+    setProfile({ bio, profile_img, posts });
   };
   useEffect(() => {
     handleProfileApi();

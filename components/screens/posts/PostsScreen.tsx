@@ -86,8 +86,8 @@ const PostsScreen: React.FC = () => {
     if (isLoggedIn) {
       if (toDo === "edit") {
         navigation.navigate("PostEdit", {
-          post_id: 0,
-          post_type: "tip",
+          post_id: postSelected!,
+          post_type: headerTab,
           write_type: "edit",
         });
       } else {

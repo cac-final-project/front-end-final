@@ -23,7 +23,10 @@ import {
   ImageList,
 } from "@/components/layouts/postEdit/index";
 import { tagsAtom, tipDataAtom } from "@/state/atoms/write";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState, useRecoilValue } from "recoil";
+import { fetchPost } from "@/api/post";
+import { tokenAtom } from "@/state/atoms/login";
+import { IPostDetail } from "@/typings/post";
 
 type RouteType = {
   key: string;
@@ -36,10 +39,13 @@ type RouteType = {
 };
 
 const PostEditScreen: React.FC = () => {
+  const token = useRecoilValue(tokenAtom);
   const route = useRoute<RouteType>();
   const {
     params: { post_id, post_type, write_type },
   } = route;
+
+  console.log(typeof post_id);
 
   // 1. title
   const [title, setTitle] = useState("");
@@ -77,6 +83,21 @@ const PostEditScreen: React.FC = () => {
   // location for campaign
 
   const [addressName, setAddress] = useState("");
+
+  // for edit
+  const handleFetchPostApi = async () => {
+    const res = await fetchPost({ postId: post_id!, token });
+    const post = res.data as IPostDetail;
+    const { title, content, tagItems, imageUrls, addressName } = post;
+    setTitle(title);
+    setTags(tagItems);
+    setContent(content);
+    setSelectedImages(imageUrls);
+    setAddress(addressName ? addressName : "");
+  };
+  useEffect(() => {
+    handleFetchPostApi();
+  }, []);
 
   // write or edit
   const setTipData = useSetRecoilState(tipDataAtom);
