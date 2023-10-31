@@ -13,7 +13,7 @@ export interface IPost {
   createdAt: string;
   updatedAt: string;
   deletedAt: string | null;
-  isVoted: boolean | null;
+  isVoted: "up" | "down" | null;
   profile_img: string;
 }
 
@@ -30,7 +30,7 @@ export interface IPostDetail {
   createdAt: string;
   updatedAt: string;
   deletedAt: string | null;
-  isVoted: boolean | null;
+  isVoted: "up" | "down" | null;
   profile_img: string;
   comments: PostDetailComment[];
   imageUrls: string[];

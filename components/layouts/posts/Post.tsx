@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -13,6 +13,12 @@ import { useNavigation } from "@react-navigation/native";
 import { ScreenNavigationProp } from "@/typings/StackParam";
 import { IPost } from "@/typings/post";
 import { formatDate } from "@/utils";
+import { updateVote } from "@/api/vote";
+import { useSetRecoilState, useRecoilValue } from "recoil";
+import { isLoadingAtom } from "@/state/atoms/loading";
+import { tokenAtom, isLoggedInAtom } from "@/state/atoms/login";
+import { postsAtom } from "@/state/atoms/post";
+import { fetchPosts } from "@/api/post";
 
 const ProfileIcon = require("@/assets/images/Profile.png");
 const UpVoteIcon = require("@/assets/images/UpVote.png");
@@ -34,13 +40,59 @@ const Post: React.FC<PostProps> = ({
 }) => {
   const navigation = useNavigation<ScreenNavigationProp>();
 
-  const { profile_img, author, title, createdAt, voteCount, id, type } = item;
+  const {
+    profile_img,
+    author,
+    title,
+    createdAt,
+    voteCount,
+    id,
+    type,
+    isVoted,
+  } = item;
+
+  const token = useRecoilValue(tokenAtom);
+  const setIsLoading = useSetRecoilState(isLoadingAtom);
+  const setPosts = useSetRecoilState(postsAtom);
+  const isLoggedIn = useRecoilValue(isLoggedInAtom);
 
   const handleEditClick = () => {
     navigation.navigate("PostDetail", { post_id: id, post_type: type });
   };
   const handleProfileClick = () => {
     navigation.navigate("EditProfile");
+  };
+
+  const handleVoteClick = async (
+    e: GestureResponderEvent,
+    vote: "up" | "down"
+  ) => {
+    if (!isLoggedIn) {
+      return alert("You must be logged in!");
+    }
+    e.stopPropagation();
+    // let newVoteCount = voteCount;
+    // if (isVoted === vote) {
+    //   alert("You have voted already!");
+    //   return;
+    // } else if (!isVoted) {
+    //   newVoteCount = vote === "up" ? voteCount + 1 : voteCount - 1;
+    // } else if (isVoted === "up" && vote === "down") {
+    //   newVoteCount = voteCount - 2;
+    // } else if (isVoted === "down" && vote === "up") {
+    //   newVoteCount = voteCount + 2;
+    // }
+    // setVoteCountState(newVoteCount);
+    // setIsVotedState(vote);
+    setIsLoading(true);
+    const res = await updateVote({
+      postId: id,
+      token: token!,
+      direction: vote,
+    });
+    const resPosts = await fetchPosts({ page: 1, limit: 10, type: type });
+    setPosts(resPosts.data);
+    setIsLoading(false);
   };
   return (
     <TouchableWithoutFeedback onPress={handleEditClick}>
@@ -90,13 +142,15 @@ const Post: React.FC<PostProps> = ({
             </View>
             <View style={styles.voteContainer}>
               <TouchableOpacity
-                hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+                onPress={(e) => handleVoteClick(e, "up")}
+                hitSlop={{ top: 40, bottom: 40, left: 40, right: 40 }}
               >
                 <Image source={UpVoteIcon} style={styles.voteIcon} />
               </TouchableOpacity>
               <Text style={styles.voteCount}>{voteCount}</Text>
               <TouchableOpacity
-                hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+                onPress={(e) => handleVoteClick(e, "down")}
+                hitSlop={{ top: 40, bottom: 40, left: 40, right: 40 }}
               >
                 <Image source={DownVoteIcon} style={styles.voteIcon} />
               </TouchableOpacity>
