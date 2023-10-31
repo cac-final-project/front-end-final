@@ -1,6 +1,5 @@
 import api from "./api";
 import { PostType } from "@/typings/heatLevels";
-import RNFetchBlob from "react-native-fetch-blob";
 
 interface WriteTipProps {
   token: string;
@@ -28,13 +27,13 @@ export const writeTip = async ({
 
     selectedImages.forEach((image, index) => {
       const fileType = image.match(/\.(jpeg|jpg|png|gif|bmp)$/i);
-      const fileName = `image_${index}.${fileType ? fileType[1] : "jpg"}`; // Defaulting to 'jpg' if type is not detected
+      const fileName = `image_${index}.${fileType ? fileType[1] : "jpg"}`;
 
       formData.append("files", {
         uri: image,
         type: `image/${fileType ? fileType[1] : "jpeg"}`,
         name: fileName,
-      } as any); // Bypass TypeScript's type checking
+      } as any);
     });
 
     // Make the POST request

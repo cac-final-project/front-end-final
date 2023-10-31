@@ -1,18 +1,35 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { tagsMock } from "@/mock/writeTags";
 import { Colors } from "@/constants/Colors";
 import { useRecoilState } from "recoil";
 import { temporaryTagsAtom } from "@/state/atoms/write";
+import { fetchTags } from "@/api/tags";
 
 const TagList: React.FC = () => {
   const [temporaryTag, setTemporaryTag] = useRecoilState(temporaryTagsAtom);
   const handleTagClick = (tag: string) => {
-    setTemporaryTag((prev) => [...prev, tag]);
+    setTemporaryTag((prev) => {
+      if (!prev.includes(tag)) {
+        return [...prev, tag];
+      } else {
+        alert("tag already exist!");
+      }
+      return prev;
+    });
   };
+  const [tagList, setTagList] = useState<string[]>([]);
+
+  const handleFetchTagsApi = async () => {
+    const res = await fetchTags();
+    setTagList(res.data);
+  };
+  useEffect(() => {
+    handleFetchTagsApi();
+  }, []);
   return (
     <View style={styles.inputTagsContainer}>
-      {tagsMock.map((item, index) => (
+      {tagList.map((item, index) => (
         <TouchableOpacity key={index} onPress={() => handleTagClick(item)}>
           <View key={index} style={styles.tag}>
             <Text style={styles.tagText}>{item}</Text>

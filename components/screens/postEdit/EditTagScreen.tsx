@@ -11,21 +11,7 @@ import { Colors } from "@/constants/Colors";
 
 const EditTagScreen: React.FC = () => {
   const [tags, setTags] = useRecoilState(tagsAtom);
-  const [currentTag, setCurrentTag] = useState("");
-  const handleSetTags = () => {
-    // Ensure the tag isn't empty, and isn't already in the list
-    if (currentTag && !tags.includes(currentTag)) {
-      setTags((prevTags) => [...prevTags, currentTag]);
-    } else {
-      alert("tag already exist!");
-    }
-    setCurrentTag(""); // Reset the input
-  };
-  const deleteTag = (tag: string) => {
-    setTags((prev) => {
-      return prev.filter((item) => item !== tag);
-    });
-  };
+
   return (
     <SafeAreaView style={styles.container}>
       <TagHeader />

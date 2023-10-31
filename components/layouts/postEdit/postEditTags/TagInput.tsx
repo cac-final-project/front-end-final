@@ -24,7 +24,7 @@ const TagInput: React.FC<TagInputProps> = ({ tags }) => {
 
   const handleSetTags = () => {
     // Ensure the tag isn't empty, and isn't already in the list
-    if (currentTagText && !tags.includes(currentTagText)) {
+    if (currentTagText && !temporaryTag.includes(currentTagText)) {
       setTemporaryTag((prevTags) => [...prevTags, currentTagText]);
     } else {
       alert("tag already exist!");
@@ -46,11 +46,9 @@ const TagInput: React.FC<TagInputProps> = ({ tags }) => {
       {temporaryTag.length !== 0 &&
         temporaryTag.map((item, idx) => {
           return (
-            <TouchableOpacity key={item} onPress={() => deleteTag(item)}>
-              <View style={styles.tag}>
-                <Text key={item} style={styles.tagText}>
-                  {item}
-                </Text>
+            <TouchableOpacity key={idx} onPress={() => deleteTag(item)}>
+              <View style={styles.tag} key={idx}>
+                <Text style={styles.tagText}>{item}</Text>
                 <Image source={DeleteIcon} />
               </View>
             </TouchableOpacity>
