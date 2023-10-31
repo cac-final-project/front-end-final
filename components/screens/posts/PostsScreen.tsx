@@ -26,8 +26,8 @@ import BottomSheet from "@gorhom/bottom-sheet";
 import { useNavigation } from "@react-navigation/native";
 import { ScreenNavigationProp } from "@/typings/StackParam";
 import { useRecoilValue, useSetRecoilState, useRecoilState } from "recoil";
-import { isLoggedInAtom, loginInfoAtom } from "@/state/atoms/login";
-import { fetchPosts } from "@/api/post";
+import { isLoggedInAtom, loginInfoAtom, tokenAtom } from "@/state/atoms/login";
+import { fetchPosts, deletePost } from "@/api/post";
 import { isLoadingAtom } from "@/state/atoms/loading";
 import { postsAtom } from "@/state/atoms/post";
 
@@ -36,13 +36,18 @@ const AddPostIcon = require("@/assets/images/AddPost.png");
 export type headerTabType = "tip" | "campaign";
 
 const PostsScreen: React.FC = () => {
+  const token = useRecoilValue(tokenAtom);
   const setIsLoading = useSetRecoilState(isLoadingAtom);
   const isLoggedIn = useRecoilValue(isLoggedInAtom);
+  console.log("isLoggedIn", isLoggedIn);
   const loginInfo = useRecoilValue(loginInfoAtom);
   const navigation = useNavigation<ScreenNavigationProp>();
   const [headerTab, setHeaderTab] = useState<headerTabType>("tip");
 
   const [posts, setPosts] = useRecoilState(postsAtom);
+
+  // edit or delete
+  const [postSelected, setPostSelected] = useState<number | null>(null);
 
   const handleFetchPostsApi = async () => {
     setIsLoading(true);
@@ -67,25 +72,39 @@ const PostsScreen: React.FC = () => {
     }
   }, []);
 
-  const handleShowBottomSheet = useCallback(() => {
+  const handleShowBottomSheet = useCallback((postId: number) => {
+    setPostSelected(postId);
     setIsBottomSheetVisible(true);
     bottomSheetRef.current?.expand(); // Use expand method here
   }, []);
 
-  const handleOptionTap = useCallback((toDo: "edit" | "delete") => {
-    if (toDo === "edit") {
-      navigation.navigate("PostEdit", {
-        post_id: 0,
-        post_type: "tip",
-        write_type: "edit",
-      });
+  const handleOptionTap = async (toDo: "edit" | "delete") => {
+    if (isLoggedIn) {
+      if (toDo === "edit") {
+        navigation.navigate("PostEdit", {
+          post_id: 0,
+          post_type: "tip",
+          write_type: "edit",
+        });
+      } else {
+        setIsLoading(true);
+        const res = await deletePost({ postId: postSelected!, token: token! });
+        const resPosts = await fetchPosts({
+          page: 1,
+          limit: 10,
+          type: headerTab,
+        });
+        setPosts(resPosts.data);
+        setIsLoading(false);
+      }
+      // Close the BottomSheet
+      bottomSheetRef.current?.collapse(); // Use collapse method here
+      // Hide the BottomSheet (and the Overlay)
+      setIsBottomSheetVisible(false);
     } else {
+      alert("you must be logged in!");
     }
-    // Close the BottomSheet
-    bottomSheetRef.current?.collapse(); // Use collapse method here
-    // Hide the BottomSheet (and the Overlay)
-    setIsBottomSheetVisible(false);
-  }, []);
+  };
 
   const handleOverlayTap = useCallback(() => {
     // Close the BottomSheet
@@ -141,8 +160,7 @@ const PostsScreen: React.FC = () => {
         <HeaderTab headerTab={headerTab} setHeaderTab={setHeaderTab} />
         <View style={styles.postContainer}>
           {posts.map((item, idx) => {
-            const { author, profile_img } = item;
-            console.log(profile_img);
+            const { author } = item;
             const isAuthor = author === loginInfo.username ? true : false;
             return (
               <Post
@@ -168,7 +186,10 @@ const PostsScreen: React.FC = () => {
           onChange={handleSheetChanges}
           enablePanDownToClose={true} // This allows users to close the sheet
         >
-          <BottomSheetContent onOptionTap={handleOptionTap} />
+          <BottomSheetContent
+            onOptionTap={handleOptionTap}
+            postSelected={postSelected}
+          />
         </BottomSheet>
       )}
     </SafeAreaView>

@@ -22,7 +22,7 @@ const ElipsisIcon = require("@/assets/images/elipsis.png");
 interface PostProps {
   post_id: number;
   isAuthor: boolean;
-  onEllipsisPress: () => void;
+  onEllipsisPress: (postId: number) => void;
   item: IPost;
 }
 
@@ -34,7 +34,7 @@ const Post: React.FC<PostProps> = ({
 }) => {
   const navigation = useNavigation<ScreenNavigationProp>();
 
-  const { profile_img, author, title, createdAt, voteCount } = item;
+  const { profile_img, author, title, createdAt, voteCount, id } = item;
 
   const handleEditClick = () => {
     navigation.navigate("PostDetail", { post_id: 0, post_type: "tip" });
@@ -75,7 +75,7 @@ const Post: React.FC<PostProps> = ({
             </View>
             {isAuthor && (
               <TouchableOpacity
-                onPress={onEllipsisPress}
+                onPress={() => onEllipsisPress(id)}
                 style={styles.ellipsis}
                 hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
               >

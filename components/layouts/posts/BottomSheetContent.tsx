@@ -7,10 +7,12 @@ const DeleteIcon = require("@/assets/images/Delete.png");
 
 interface BottomSheetContentProps {
   onOptionTap: (toDo: "edit" | "delete") => void;
+  postSelected: number | null;
 }
 
 const BottomSheetContent: React.FC<BottomSheetContentProps> = ({
   onOptionTap,
+  postSelected,
 }) => {
   return (
     <View style={styles.container}>

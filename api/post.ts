@@ -65,3 +65,22 @@ export const fetchPosts = async ({ page, limit, type }: FetchPostsProps) => {
     return false;
   }
 };
+
+interface DeletePostProps {
+  token: string;
+  postId: number;
+}
+
+export const deletePost = async ({ token, postId }: DeletePostProps) => {
+  try {
+    const res = await api.delete(`/post?postId=${postId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return res.data;
+  } catch (err) {
+    console.error(err);
+    return false;
+  }
+};
