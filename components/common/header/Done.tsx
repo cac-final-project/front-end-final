@@ -8,6 +8,7 @@ import { useRecoilValue, useSetRecoilState, useRecoilState } from "recoil";
 import { editProfileAtom, profileAtom } from "@/state/atoms/profileEdit";
 import { tokenAtom } from "@/state/atoms/login";
 import { isLoadingAtom } from "@/state/atoms/loading";
+import { tagsAtom, temporaryTagsAtom } from "@/state/atoms/write";
 
 type RouteType = {
   key: string;
@@ -20,14 +21,18 @@ const Done: React.FC = () => {
   const navigation = useNavigation<ScreenNavigationProp>();
 
   const [editProfileValue, setEditProfile] = useRecoilState(editProfileAtom);
-  console.log("test", editProfileValue);
   const tokenValue = useRecoilValue(tokenAtom);
 
   const setProfile = useSetRecoilState(profileAtom);
 
+  const temporaryTags = useRecoilValue(temporaryTagsAtom);
+  console.log(temporaryTags);
+  const setTags = useSetRecoilState(tagsAtom);
+
   const handleEditClick = async () => {
     if (route.name === "PostEditTags") {
       navigation.goBack();
+      setTags(temporaryTags);
     } else {
       setIsLoading(true);
       console.log("editprofile file", editProfileValue?.file);
@@ -43,9 +48,9 @@ const Done: React.FC = () => {
         setIsLoading(false);
         console.log(res);
         const {
-          data: { bio, profile_img },
+          data: { bio, profile_img, posts },
         } = res;
-        setProfile({ bio, profile_img });
+        setProfile({ bio, profile_img, posts });
         setIsLoading(false);
         navigation.navigate("Profile");
       }

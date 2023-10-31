@@ -13,7 +13,7 @@ const TagList: React.FC = () => {
   return (
     <View style={styles.inputTagsContainer}>
       {tagsMock.map((item, index) => (
-        <TouchableOpacity onPress={() => handleTagClick(item)}>
+        <TouchableOpacity key={index} onPress={() => handleTagClick(item)}>
           <View key={index} style={styles.tag}>
             <Text style={styles.tagText}>{item}</Text>
           </View>

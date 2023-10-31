@@ -13,9 +13,10 @@ export const editProfileAtom = atom<EditProfileApiProps>({
 export interface IProfile {
   bio?: string;
   profile_img?: string | null;
+  posts: [];
 }
 
 export const profileAtom = atom<IProfile>({
   key: "profileAtom",
-  default: {},
+  default: { posts: [] },
 });

@@ -6,8 +6,9 @@ import {
   ScrollView,
   Image,
   TouchableOpacity,
+  Alert,
 } from "react-native";
-import { Weather, Alert } from "@/components/common/index";
+import { Weather } from "@/components/common/index";
 import {
   HeaderTab,
   Post,
@@ -18,12 +19,16 @@ import { Colors } from "@/constants/Colors";
 import BottomSheet from "@gorhom/bottom-sheet";
 import { useNavigation } from "@react-navigation/native";
 import { ScreenNavigationProp } from "@/typings/StackParam";
+import { useRecoilValue } from "recoil";
+import { isLoggedInAtom, loginInfoAtom } from "@/state/atoms/login";
 
 const AddPostIcon = require("@/assets/images/AddPost.png");
 
 export type headerTabType = "tip" | "campaign";
 
 const PostsScreen: React.FC = () => {
+  const isLoggedIn = useRecoilValue(isLoggedInAtom);
+  const loginInfo = useRecoilValue(loginInfoAtom);
   const navigation = useNavigation<ScreenNavigationProp>();
 
   const [headerTab, setHeaderTab] = useState<headerTabType>("tip");
@@ -68,10 +73,43 @@ const PostsScreen: React.FC = () => {
   }, []);
 
   const handleWritePost = () => {
-    navigation.navigate("PostEdit", {
-      post_type: headerTab,
-      write_type: "write",
-    });
+    if (isLoggedIn) {
+      if (loginInfo.type === "neighbor" && headerTab === "campaign") {
+        Alert.alert(
+          "Restricted Access",
+          "Only volunteers can create campaigns.",
+          [
+            {
+              text: "OK",
+              onPress: () => console.log("OK Pressed"),
+            },
+          ],
+          { cancelable: false }
+        );
+      } else {
+        navigation.navigate("PostEdit", {
+          post_type: headerTab,
+          write_type: "write",
+        });
+      }
+    } else {
+      Alert.alert(
+        "Login Required",
+        "You need to login to continue. Move to login page?",
+        [
+          {
+            text: "Yes",
+            onPress: () => navigation.navigate("Login"),
+          },
+          {
+            text: "Cancel",
+            onPress: () => console.log("Cancel Pressed"),
+            style: "cancel",
+          },
+        ],
+        { cancelable: false }
+      );
+    }
   };
 
   return (
@@ -120,11 +158,8 @@ const PostsScreen: React.FC = () => {
           })}
         </View>
       </ScrollView>
-      <TouchableOpacity
-        onPress={handleWritePost}
-        hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
-      >
-        <Image source={AddPostIcon} style={styles.addPostButton} />
+      <TouchableOpacity onPress={handleWritePost} style={styles.addPostButton}>
+        <Image source={AddPostIcon} />
       </TouchableOpacity>
       {isBottomSheetVisible && <OverLay onTap={handleOverlayTap} />}
       {isBottomSheetVisible && (

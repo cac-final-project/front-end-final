@@ -34,7 +34,7 @@ const TagList: React.FC<TagListProps> = ({ tags }) => {
     <TouchableOpacity onPress={handleTagsOpen}>
       <View style={styles.InputWrapper}>
         <Image source={TagIcon} />
-        <Text style={styles.categoryLocationTitle}>Tag</Text>
+        <Text style={styles.categoryLocationTitle}>Tags</Text>
         <View style={styles.tagContainer}>
           {tags.length !== 0 ? (
             tags.map((item, idx) => {

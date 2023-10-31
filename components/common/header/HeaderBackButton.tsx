@@ -16,6 +16,7 @@ import { Feather } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { useSetRecoilState } from "recoil";
 import { editProfileAtom } from "@/state/atoms/profileEdit";
+import { tagsAtom, temporaryTagsAtom, tipDataAtom } from "@/state/atoms/write";
 
 const backIconWhite = require("@/assets/images/BackIcon.png");
 const backIconBlack = require("@/assets/images/write/BackIcon.png");
@@ -25,12 +26,21 @@ interface Props extends HeaderBackButtonProps {
 }
 
 const HeaderBackButton: React.FC<Props> = ({ routename, ...props }) => {
+  const setTipData = useSetRecoilState(tipDataAtom);
+  const setTags = useSetRecoilState(tagsAtom);
+  const setTemporaryTags = useSetRecoilState(temporaryTagsAtom);
+
   const navigation = useNavigation<ScreenNavigationProp>();
   if (routename === "EditProfile" || routename === "PostEdit") {
     const setEditProfile = useSetRecoilState(editProfileAtom);
     const handleCancel = () => {
       if (routename === "EditProfile") {
         setEditProfile({});
+        navigation.goBack();
+      } else {
+        setTags([]);
+        setTemporaryTags([]);
+        setTipData(null);
         navigation.goBack();
       }
     };
@@ -59,6 +69,9 @@ const HeaderBackButton: React.FC<Props> = ({ routename, ...props }) => {
     );
   } else if (routename === "PostEditTags" || routename === "PostEditLocation") {
     const handleGoBack = () => {
+      if (routename === "PostEditTags") {
+        setTemporaryTags([]);
+      }
       navigation.goBack();
     };
     return (

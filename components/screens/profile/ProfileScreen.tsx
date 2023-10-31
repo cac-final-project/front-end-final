@@ -26,9 +26,9 @@ const ProfileScreen: React.FC = () => {
     const res = await getProfileInfoApi({ token: tokenValue! });
     setIsLoading(false);
     const {
-      data: { bio, profile_img },
+      data: { bio, profile_img, posts },
     } = res;
-    setProfile({ bio, profile_img });
+    setProfile({ bio, profile_img, posts });
   };
   useEffect(() => {
     handleProfileApi();

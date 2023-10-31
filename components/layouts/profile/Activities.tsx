@@ -2,8 +2,12 @@ import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { Colors } from "@/constants/Colors";
 import { Post } from "@/components/common/profile/index";
+import { profileAtom } from "@/state/atoms/profileEdit";
+import { useRecoilValue } from "recoil";
 
 const Activities: React.FC = () => {
+  const profile = useRecoilValue(profileAtom);
+  console.log("test", profile);
   return (
     <View style={styles.container}>
       <Text style={styles.activityTitle}>Activities</Text>

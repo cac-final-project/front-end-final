@@ -22,8 +22,8 @@ import {
   StickyMenu,
   ImageList,
 } from "@/components/layouts/postEdit/index";
-import { tagsAtom } from "@/state/atoms/write";
-import { useRecoilState } from "recoil";
+import { tagsAtom, tipDataAtom } from "@/state/atoms/write";
+import { useRecoilState, useSetRecoilState } from "recoil";
 
 type RouteType = {
   key: string;
@@ -77,6 +77,13 @@ const PostEditScreen: React.FC = () => {
   // location for campaign
 
   const [addressName, setAddress] = useState("");
+
+  // write or edit
+  const setTipData = useSetRecoilState(tipDataAtom);
+
+  useEffect(() => {
+    setTipData({ title, tags, content, selectedImages, type: post_type });
+  }, [title, tags, content, selectedImages, post_type]);
 
   return (
     <SafeAreaView style={styles.container}>

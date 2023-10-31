@@ -26,7 +26,6 @@ const Alert: React.FC = () => {
 
   const handleEmergencyApi = async () => {
     const res = await getEmergencyApi({ county: county! });
-    console.log(res);
     if (res !== false) {
       setEmergency(res!);
     }
