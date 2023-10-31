@@ -39,7 +39,7 @@ const TagList: React.FC<TagListProps> = ({ tags }) => {
           {tags.length !== 0 ? (
             tags.map((item, idx) => {
               return (
-                <View style={styles.tag}>
+                <View key={idx} style={styles.tag}>
                   <Text key={item} style={styles.tagText}>
                     {item}
                   </Text>

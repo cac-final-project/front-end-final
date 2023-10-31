@@ -50,7 +50,12 @@ const PostsScreen: React.FC = () => {
 
   const handleFetchPostsApi = async () => {
     setIsLoading(true);
-    const res = await fetchPosts({ page: 1, limit: 10, type: headerTab });
+    const res = await fetchPosts({
+      page: 1,
+      limit: 10,
+      type: headerTab,
+      token,
+    });
     setPosts(res.data);
     setIsLoading(false);
   };

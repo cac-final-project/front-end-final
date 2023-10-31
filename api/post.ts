@@ -54,11 +54,24 @@ interface FetchPostsProps {
   page: number;
   limit: number;
   type: PostType;
+  token?: string | null;
 }
 
-export const fetchPosts = async ({ page, limit, type }: FetchPostsProps) => {
+export const fetchPosts = async ({
+  page,
+  limit,
+  type,
+  token,
+}: FetchPostsProps) => {
   try {
-    const res = await api.get(`/post?page=${page}&limit=${limit}&type=${type}`);
+    const res = await api.get(
+      `/post?page=${page}&limit=${limit}&type=${type}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
     return res.data;
   } catch (err) {
     console.error(err);

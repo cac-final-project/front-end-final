@@ -71,6 +71,7 @@ const Post: React.FC<PostProps> = ({
       return alert("You must be logged in!");
     }
     e.stopPropagation();
+    console.log(isVoted);
     if (isVoted === vote) {
       alert("You have voted already!");
       return;
@@ -94,7 +95,12 @@ const Post: React.FC<PostProps> = ({
       token: token!,
       direction: vote,
     });
-    const resPosts = await fetchPosts({ page: 1, limit: 10, type: type });
+    const resPosts = await fetchPosts({
+      page: 1,
+      limit: 10,
+      type: type,
+      token,
+    });
     setPosts(resPosts.data);
     setIsLoading(false);
   };
