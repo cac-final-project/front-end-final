@@ -10,26 +10,22 @@ import {
 import { Colors } from "@/constants/Colors";
 import { useNavigation } from "@react-navigation/native";
 import { ScreenNavigationProp } from "@/typings/StackParam";
+import { IPostDetail } from "@/typings/post";
+import { formatDate } from "@/utils/index";
 
 const ProfileIcon = require("@/assets/images/Profile.png");
 
-const CommentList: React.FC = () => {
+interface CommentListProps {
+  post: IPostDetail;
+}
+
+const CommentList: React.FC<CommentListProps> = ({ post }) => {
+  const { comments } = post;
   const navigation = useNavigation<ScreenNavigationProp>();
   const handleProfileClick = () => {
     navigation.navigate("Profile");
   };
-  return [
-    {
-      id: 0,
-      profile_img:
-        "https://res.cloudinary.com/djehfg3yk/image/upload/v1696151625/file-upload/1696151623996-KakaoTalk_20230218_194526049_02_pedm6t.jpg",
-    },
-    { id: 1, profile_img: "" },
-    ,
-    { id: 2, profile_img: "" },
-    ,
-    { id: 3, profile_img: "" },
-  ]?.map((item) => (
+  return comments?.map((item) => (
     <View key={item?.id} style={styles.commentBox}>
       <View style={styles.headerArea}>
         <TouchableWithoutFeedback onPress={() => {}}>
@@ -40,7 +36,7 @@ const CommentList: React.FC = () => {
                   <Image
                     style={styles.profilePlaceholder}
                     source={{
-                      uri: item.profile_img /*profile picture URI here*/,
+                      uri: item.profile_img,
                     }}
                   />
                 ) : (
@@ -48,20 +44,12 @@ const CommentList: React.FC = () => {
                 )}
               </View>
             </TouchableOpacity>
-            <Text style={styles.username}>@JohnDoe</Text>
+            <Text style={styles.username}>@{item.username}</Text>
           </View>
         </TouchableWithoutFeedback>
-        <Text style={styles.date}>2023.09.20</Text>
+        <Text style={styles.date}>{formatDate(item.createdAt)}</Text>
       </View>
-      <Text style={styles.commentText}>
-        Lorem ipsum dolor sit amet consectetur. Sag it tis sit massa id
-        duis.Lorem ipsum dolor sit amet consectetur. Sag it tis sit massa id
-        duis.Lorem ipsum dolor sit amet consectetur. Sag it tis sit massa id
-        duis.Lorem ipsum dolor sit amet consectetur. Sag it tis sit massa id
-        duis.Lorem ipsum dolor sit amet consectetur. Sag it tis sit massa id
-        duis.Lorem ipsum dolor sit amet consectetur. Sag it tis sit massa id
-        duis.
-      </Text>
+      <Text style={styles.commentText}>{item.content}</Text>
     </View>
   ));
 };

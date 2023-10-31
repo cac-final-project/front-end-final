@@ -1,4 +1,10 @@
-import React, { useState, useRef, useCallback, useMemo } from "react";
+import React, {
+  useState,
+  useRef,
+  useCallback,
+  useMemo,
+  useEffect,
+} from "react";
 import { SafeAreaView, View, StyleSheet, ScrollView } from "react-native";
 import { Weather, Alert } from "@/components/common/index";
 import { Colors } from "@/constants/Colors";
@@ -21,6 +27,13 @@ import BottomSheet from "@gorhom/bottom-sheet";
 import { PostType } from "@/typings/heatLevels";
 import { useNavigation } from "@react-navigation/native";
 import { ScreenNavigationProp } from "@/typings/StackParam";
+import { IPostDetail } from "@/typings/post";
+import { fetchPost } from "@/api/post";
+import { tokenAtom } from "@/state/atoms/login";
+import { useRecoilValue, useSetRecoilState, useRecoilState } from "recoil";
+import { isLoadingAtom } from "@/state/atoms/loading";
+import { postsAtom } from "@/state/atoms/post";
+import { fetchPosts, deletePost } from "@/api/post";
 
 type RouteType = {
   key: string;
@@ -32,11 +45,26 @@ type RouteType = {
 };
 
 const PostDetailScreen: React.FC = () => {
+  const token = useRecoilValue(tokenAtom);
   const navigation = useNavigation<ScreenNavigationProp>();
   const route = useRoute<RouteType>();
   const {
     params: { post_id, post_type },
   } = route;
+
+  const setIsLoading = useSetRecoilState(isLoadingAtom);
+  const [posts, setPosts] = useRecoilState(postsAtom);
+
+  const [post, setPost] = useState<IPostDetail>();
+
+  const handleFetchPostApi = async () => {
+    const res = await fetchPost({ token, postId: post_id });
+    setPost(res.data);
+  };
+
+  useEffect(() => {
+    handleFetchPostApi();
+  }, []);
 
   const [isBottomSheetVisible, setIsBottomSheetVisible] = useState(false);
 
@@ -56,7 +84,7 @@ const PostDetailScreen: React.FC = () => {
     bottomSheetRef.current?.expand(); // Use expand method here
   }, []);
 
-  const handleOptionTap = useCallback((toDo: "edit" | "delete") => {
+  const handleOptionTap = async (toDo: "edit" | "delete") => {
     if (toDo === "edit") {
       navigation.navigate("PostEdit", {
         post_id: 0,
@@ -64,12 +92,22 @@ const PostDetailScreen: React.FC = () => {
         write_type: "edit",
       });
     } else {
+      setIsLoading(true);
+      const res = await deletePost({ postId: post?.id!, token: token! });
+      const resPosts = await fetchPosts({
+        page: 1,
+        limit: 10,
+        type: post_type,
+      });
+      setPosts(resPosts.data);
+      navigation.goBack();
+      setIsLoading(false);
     }
     // Close the BottomSheet
     bottomSheetRef.current?.collapse(); // Use collapse method here
     // Hide the BottomSheet (and the Overlay)
     setIsBottomSheetVisible(false);
-  }, []);
+  };
 
   const handleOverlayTap = useCallback(() => {
     // Close the BottomSheet
@@ -82,16 +120,18 @@ const PostDetailScreen: React.FC = () => {
       <ScrollView>
         <Weather />
         <View style={styles.content}>
-          <Header onEllipsisPress={handleShowBottomSheet} />
-          <Post profile_img={""} post_id={0} isAuthor={true} />
-          <ImageBox />
-          <PostContent />
+          {post && (
+            <Header onEllipsisPress={handleShowBottomSheet} post={post} />
+          )}
+          {post && <Post post={post} />}
+          {post && <ImageBox post={post} />}
+          {post && <PostContent post={post} />}
           {/* {post_type === "tip" && <MapDetail />} */}
           <MapDetail />
           <SeeDetail />
-          <TagList />
-          <CommentHeader />
-          <CommentList />
+          {post && <TagList post={post} />}
+          {post && <CommentHeader post={post} />}
+          {post && <CommentList post={post} />}
         </View>
       </ScrollView>
       {isBottomSheetVisible && <OverLay onTap={handleOverlayTap} />}

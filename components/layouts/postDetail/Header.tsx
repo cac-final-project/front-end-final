@@ -3,12 +3,16 @@ import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { Colors } from "@/constants/Colors";
 import { RouteNames } from "@/typings/StackParam";
 import { useRoute } from "@react-navigation/native";
-import { post_type } from "@/typings/heatLevels";
+import { PostType } from "@/typings/heatLevels";
+import { IPostDetail } from "@/typings/post";
+import { useRecoilValue } from "recoil";
+import { loginInfoAtom } from "@/state/atoms/login";
 
 const ElipsisIcon = require("@/assets/images/elipsis.png");
 
 interface HeaderProps {
   onEllipsisPress: () => void; // New prop
+  post: IPostDetail;
 }
 
 type RouteType = {
@@ -16,28 +20,33 @@ type RouteType = {
   name: RouteNames;
   params: {
     post_id: number;
-    post_type: post_type;
+    post_type: PostType;
   };
 };
 
-const Header: React.FC<HeaderProps> = ({ onEllipsisPress }) => {
+const Header: React.FC<HeaderProps> = ({ onEllipsisPress, post }) => {
   const route = useRoute<RouteType>();
   const {
     params: { post_id, post_type },
   } = route;
+  const loginInfo = useRecoilValue(loginInfoAtom);
+  const { author, type } = post;
+  const isAuthor = loginInfo.username === author ? true : false;
   return (
     <View style={styles.container}>
       <View style={styles.tag}>
         <Text style={styles.tagText}>
-          {post_type === "tip" ? "Tip" : "Campaign"}
+          {type === "tip" ? "Tip" : "Campaign"}
         </Text>
       </View>
-      <TouchableOpacity
-        onPress={onEllipsisPress}
-        hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
-      >
-        <Image source={ElipsisIcon} />
-      </TouchableOpacity>
+      {isAuthor && (
+        <TouchableOpacity
+          onPress={onEllipsisPress}
+          hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+        >
+          <Image source={ElipsisIcon} />
+        </TouchableOpacity>
+      )}
     </View>
   );
 };

@@ -1,16 +1,23 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { Colors } from "@/constants/Colors";
+import { IPostDetail } from "@/typings/post";
 
-const TagList: React.FC = () => {
+interface TagListProps {
+  post: IPostDetail;
+}
+
+const TagList: React.FC<TagListProps> = ({ post }) => {
+  const { tagItems } = post;
   return (
     <View style={styles.container}>
-      <View style={styles.tagContainer}>
-        <Text>Free</Text>
-      </View>
-      <View style={styles.tagContainer}>
-        <Text>Wheelchair</Text>
-      </View>
+      {tagItems.map((item, idx) => {
+        return (
+          <View key={idx} style={styles.tagContainer}>
+            <Text>{item}</Text>
+          </View>
+        );
+      })}
     </View>
   );
 };

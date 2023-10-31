@@ -1,16 +1,29 @@
 import React from "react";
 import { View, Text, StyleSheet, Image } from "react-native";
 import { Colors } from "@/constants/Colors";
+import { IPostDetail } from "@/typings/post";
 
-const ImageBox: React.FC = () => {
+interface ImageBoxProps {
+  post: IPostDetail;
+}
+
+const ImageBox: React.FC<ImageBoxProps> = ({ post }) => {
+  const { imageUrls } = post;
+  console.log(imageUrls);
   return (
-    <View style={styles.container}>
-      <Image
-        source={{
-          uri: "https://res.cloudinary.com/djehfg3yk/image/upload/v1697047297/file-upload/q7fpy7hu8rflrec8qkmp.jpg",
-        }}
-        style={styles.image}
-      />
+    <View>
+      {imageUrls.map((item, idx) => {
+        return (
+          <View key={idx} style={styles.container}>
+            <Image
+              source={{
+                uri: item,
+              }}
+              style={styles.image}
+            />
+          </View>
+        );
+      })}
     </View>
   );
 };
@@ -19,7 +32,7 @@ const styles = StyleSheet.create({
   container: {
     height: 164,
     width: 343,
-    marginTop: 24,
+
     marginBottom: 16,
   },
   image: {

@@ -84,3 +84,22 @@ export const deletePost = async ({ token, postId }: DeletePostProps) => {
     return false;
   }
 };
+
+interface FetchPostProps {
+  postId: number;
+  token?: string | null;
+}
+
+export const fetchPost = async ({ postId, token }: FetchPostProps) => {
+  try {
+    const res = await api.get(`post/single?postId=${postId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return res.data;
+  } catch (err) {
+    console.error(err);
+    return false;
+  }
+};
