@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -13,7 +13,7 @@ import { useNavigation } from "@react-navigation/native";
 import { ScreenNavigationProp } from "@/typings/StackParam";
 import { IPostDetail } from "@/typings/post";
 import { formatDate } from "@/utils/index";
-import { useSetRecoilState, useRecoilValue } from "recoil";
+import { useSetRecoilState, useRecoilValue, useRecoilState } from "recoil";
 import { isLoadingAtom } from "@/state/atoms/loading";
 import { tokenAtom, isLoggedInAtom } from "@/state/atoms/login";
 import { updateVote } from "@/api/vote";
@@ -47,10 +47,16 @@ const Post: React.FC<IPostProps> = ({ post, setPost }) => {
     navigation.navigate("Profile");
   };
 
+  const [posts, setPosts] = useRecoilState(postsAtom);
+  const [isPopular, setIsPopular] = useState(false);
   const token = useRecoilValue(tokenAtom);
   const isLoggedIn = useRecoilValue(isLoggedInAtom);
   const setIsLoading = useSetRecoilState(isLoadingAtom);
-  const setPosts = useSetRecoilState(postsAtom);
+
+  useEffect(() => {
+    const isFirstPost = posts.length > 0 && posts[0].id === post.id;
+    setIsPopular(isFirstPost);
+  }, [posts, post]);
 
   const handleVoteClick = async (
     e: GestureResponderEvent,
@@ -101,7 +107,7 @@ const Post: React.FC<IPostProps> = ({ post, setPost }) => {
               <TouchableOpacity>
                 <Text style={styles.username}>@{author}</Text>
               </TouchableOpacity>
-              {id === 0 && (
+              {isPopular && (
                 <View style={styles.popularBadge}>
                   <Text style={styles.popularText}>Popular</Text>
                 </View>

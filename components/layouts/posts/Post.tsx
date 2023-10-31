@@ -153,7 +153,7 @@ const Post: React.FC<PostProps> = ({
             <View style={styles.voteContainer}>
               <TouchableOpacity
                 onPress={(e) => handleVoteClick(e, "up")}
-                hitSlop={{ top: 40, bottom: 40, left: 40, right: 40 }}
+                hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }}
               >
                 <Image source={UpVoteIcon} style={styles.voteIcon} />
               </TouchableOpacity>
