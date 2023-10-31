@@ -25,11 +25,11 @@ import { Colors } from "@/constants/Colors";
 import BottomSheet from "@gorhom/bottom-sheet";
 import { useNavigation } from "@react-navigation/native";
 import { ScreenNavigationProp } from "@/typings/StackParam";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilValue, useSetRecoilState, useRecoilState } from "recoil";
 import { isLoggedInAtom, loginInfoAtom } from "@/state/atoms/login";
 import { fetchPosts } from "@/api/post";
-import { IPost } from "@/typings/post";
 import { isLoadingAtom } from "@/state/atoms/loading";
+import { postsAtom } from "@/state/atoms/post";
 
 const AddPostIcon = require("@/assets/images/AddPost.png");
 
@@ -42,7 +42,7 @@ const PostsScreen: React.FC = () => {
   const navigation = useNavigation<ScreenNavigationProp>();
   const [headerTab, setHeaderTab] = useState<headerTabType>("tip");
 
-  const [posts, setPosts] = useState<IPost[]>([]);
+  const [posts, setPosts] = useRecoilState(postsAtom);
 
   const handleFetchPostsApi = async () => {
     setIsLoading(true);

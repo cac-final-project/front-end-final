@@ -8,26 +8,38 @@ import { useRecoilValue, useSetRecoilState, useRecoilState } from "recoil";
 import { tipDataAtom, tagsAtom, temporaryTagsAtom } from "@/state/atoms/write";
 import { tokenAtom } from "@/state/atoms/login";
 import { writeTip } from "@/api/post";
+import { isLoadingAtom } from "@/state/atoms/loading";
+import { postsAtom } from "@/state/atoms/post";
+import { fetchPosts } from "@/api/post";
 
 interface EditPostProps {
   write_type: WriteType;
 }
 
 const EditPost: React.FC<EditPostProps> = ({ write_type }) => {
+  const setIsLoading = useSetRecoilState(isLoadingAtom);
   const token = useRecoilValue(tokenAtom);
   const [tipData, setTipData] = useRecoilState(tipDataAtom);
   const setTags = useSetRecoilState(tagsAtom);
   const setTemporaryTags = useSetRecoilState(temporaryTagsAtom);
-  console.log(tipData);
+  const setPosts = useSetRecoilState(postsAtom);
 
   const navigation = useNavigation<ScreenNavigationProp>();
 
   const handleEdit = async () => {
     if (tipData) {
-      const res = await writeTip({ token: token!, ...tipData });
+      setIsLoading(true);
+      await writeTip({ token: token!, ...tipData });
+      const resPosts = await fetchPosts({
+        page: 1,
+        limit: 10,
+        type: tipData.type,
+      });
+      setPosts(resPosts.data);
       setTags([]);
       setTemporaryTags([]);
       setTipData(null);
+      setIsLoading(false);
       navigation.goBack();
     }
   };

@@ -35,7 +35,6 @@ const Done: React.FC = () => {
       setTags(temporaryTags);
     } else {
       setIsLoading(true);
-      console.log("editprofile file", editProfileValue?.file);
       const res = await editProfileApi({
         token: tokenValue!,
         file: editProfileValue?.file,
