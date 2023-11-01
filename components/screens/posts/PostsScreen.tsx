@@ -165,15 +165,8 @@ const PostsScreen: React.FC = () => {
         <View style={styles.postContainer}>
           {posts.map((item, idx) => {
             const { author } = item;
-            console.log(typeof author, "author", author.length);
-            console.log(
-              typeof loginInfo.username,
-              "username",
-              loginInfo.username.length
-            );
             const isAuthor =
               author.trim() === loginInfo.username.trim() ? true : false;
-            console.log(isAuthor);
             return (
               <Post
                 key={item.id}
