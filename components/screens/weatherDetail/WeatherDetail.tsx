@@ -1,5 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { SafeAreaView, View, Text, StyleSheet, ScrollView } from "react-native";
+import {
+  SafeAreaView,
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  TouchableOpacity,
+} from "react-native";
 import { useRoute } from "@react-navigation/native";
 import { Weather } from "@/components/common/index";
 import {
@@ -12,6 +19,8 @@ import { RouteNames } from "@/typings/StackParam";
 import { Colors } from "@/constants/Colors";
 import { Level } from "@/typings/heatLevels";
 import { weatherData, WeatherDetailType } from "@/mock/weather";
+import { useNavigation } from "@react-navigation/native";
+import { ScreenNavigationProp } from "@/typings/StackParam";
 
 const WaterIcon = require("@/assets/images/weather/Water.png");
 const ClothesIcon = require("@/assets/images/weather/Clothes.png");
@@ -26,6 +35,7 @@ type RouteType = {
 };
 
 const WeatherDetail: React.FC = () => {
+  const navigation = useNavigation<ScreenNavigationProp>();
   const route = useRoute<RouteType>();
   const {
     params: { level },
@@ -37,6 +47,10 @@ const WeatherDetail: React.FC = () => {
     const selectedDetail = weatherData[level];
     setDetail(selectedDetail);
   }, [level]);
+
+  const handleMoreLevelsClick = () => {
+    navigation.navigate("Weather");
+  };
 
   return (
     <SafeAreaView style={styles.wrapper}>
@@ -66,6 +80,11 @@ const WeatherDetail: React.FC = () => {
               detailType="shelter"
             />
           </View>
+          <View style={styles.otherLevelContaier}>
+            <TouchableOpacity onPress={handleMoreLevelsClick}>
+              <Text style={styles.otherLevelText}>See other levels</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -93,6 +112,14 @@ const styles = StyleSheet.create({
     letterSpacing: 0.64,
     lineHeight: 24,
     marginBottom: 8,
+  },
+  otherLevelContaier: {
+    alignItems: "center",
+    marginTop: 40,
+    marginBottom: 40,
+  },
+  otherLevelText: {
+    color: Colors.primary,
   },
 });
 

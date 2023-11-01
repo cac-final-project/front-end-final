@@ -23,13 +23,15 @@ const Weather: React.FC = () => {
   const locationValue = useRecoilValue(locationAtom);
   const [weatherInfo, setWeatherInfo] = useRecoilState(weatherInfoAtom);
   const handleWeatherApi = async () => {
-    const res = await getWeatherData(locationValue.lat, locationValue.lon);
-    // temperature
-    const fahrenheit = convertFahrenheit(res.main.temp);
-    const level = heatLevel(fahrenheit);
-    setWeatherInfo((prev) => {
-      return { ...prev, temp: fahrenheit, level: level };
-    });
+    if (locationValue) {
+      const res = await getWeatherData(locationValue.lat, locationValue.lon);
+      // temperature
+      const fahrenheit = convertFahrenheit(res.main.temp);
+      const level = heatLevel(fahrenheit);
+      setWeatherInfo((prev) => {
+        return { ...prev, temp: fahrenheit, level: level };
+      });
+    }
   };
   useEffect(() => {
     handleWeatherApi();
@@ -37,7 +39,7 @@ const Weather: React.FC = () => {
 
   const navigation = useNavigation<ScreenNavigationProp>();
   const handleWeatherClick = () => {
-    navigation.navigate("Weather");
+    navigation.navigate("WeatherDetail", { level: weatherInfo.level });
   };
 
   const animatedValue = useRef(new Animated.Value(0)).current;

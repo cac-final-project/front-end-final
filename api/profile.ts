@@ -32,39 +32,31 @@ export const editProfileApi = async ({
 }: EditProfileApiProps) => {
   try {
     const formData = new FormData();
+    console.log(file);
     if (file) {
-      // Determine the file type based on the URI.
-      const fileType = file.substring(file.lastIndexOf(".") + 1);
-
-      // Extract the filename from the path
-      const fileName = file.substring(file.lastIndexOf("/") + 1);
+      const fileType = file.match(/\.(jpeg|jpg|png|gif|bmp)$/i);
+      // Using a default file name in case the original name isn't available
+      const fileName = `profile_picture.${fileType ? fileType[1] : "jpg"}`;
 
       formData.append("file", {
         uri: file,
-        type: `image/${fileType}`,
+        type: `image/${fileType ? fileType[1] : "jpeg"}`,
         name: fileName,
       } as any);
     }
     if (bio) {
       formData.append("bio", bio);
     }
+
     const res = await api.put("/profile", formData, {
       headers: {
-        Authorization: `Bearer ${token}`,
         "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${token}`,
       },
     });
     return res.data;
   } catch (err) {
-    const axiosError = err as AxiosError;
-    if (axiosError.isAxiosError) {
-      console.error(
-        axiosError.message,
-        axiosError?.response?.data,
-        axiosError?.response?.headers,
-        axiosError.request
-      );
-    }
+    console.error(err);
     return false;
   }
 };

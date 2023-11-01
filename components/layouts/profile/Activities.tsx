@@ -32,9 +32,10 @@ const Activities: React.FC = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.activityTitle}>Activities</Text>
-      {activities.map((item, idx) => {
-        return <Post key={idx} item={item} />;
-      })}
+      {profile.posts.length !== 0 &&
+        profile.posts.map((item, idx) => {
+          return <Post key={idx} item={item} />;
+        })}
     </View>
   );
 };
