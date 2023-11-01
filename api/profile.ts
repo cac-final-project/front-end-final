@@ -48,7 +48,7 @@ export const editProfileApi = async ({
       formData.append("bio", bio);
     }
 
-    const res = await api.put("/profile", formData, {
+    const res = await api.post("/profile", formData, {
       headers: {
         "Content-Type": "multipart/form-data",
         Authorization: `Bearer ${token}`,
