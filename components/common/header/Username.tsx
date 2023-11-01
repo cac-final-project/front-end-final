@@ -6,7 +6,7 @@ const Username: React.FC = () => {
   const [username, setUsername] = useState("Username");
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.nameText}>{username}</Text>
+      <Text style={styles.nameText}>See user Profile</Text>
     </SafeAreaView>
   );
 };

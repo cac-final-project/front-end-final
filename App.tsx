@@ -25,7 +25,7 @@ function AppContent() {
         let { status } = await Location.requestForegroundPermissionsAsync();
         if (status === "granted") {
           let { coords } = await Location.getCurrentPositionAsync({});
-          // console.log(status);
+          console.log(status);
           // setLocation({ lat: coords.latitude, lon: coords.longitude });
           setLocation({ lat: 30.270398, lon: -97.74285 });
         } else {

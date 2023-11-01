@@ -26,6 +26,7 @@ export type RootStackParamList = {
     write_type: WriteType;
   };
   PostDetailMapView: { lat: number; lon: number; streetname: string };
+  OtherProfile: { author: string };
   // Add other screen types if you have more than these
 };
 

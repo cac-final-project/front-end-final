@@ -32,7 +32,6 @@ export const editProfileApi = async ({
 }: EditProfileApiProps) => {
   try {
     const formData = new FormData();
-    console.log(file);
     if (file) {
       const fileType = file.match(/\.(jpeg|jpg|png|gif|bmp)$/i);
       // Using a default file name in case the original name isn't available
@@ -54,6 +53,20 @@ export const editProfileApi = async ({
         Authorization: `Bearer ${token}`,
       },
     });
+    return res.data;
+  } catch (err) {
+    console.error(err);
+    return false;
+  }
+};
+
+interface GetAuthorProfileProps {
+  author: string;
+}
+
+export const getAuthorProfile = async ({ author }: GetAuthorProfileProps) => {
+  try {
+    const res = await api.get(`/profile/author?author=${author}`);
     return res.data;
   } catch (err) {
     console.error(err);

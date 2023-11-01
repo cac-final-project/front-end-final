@@ -30,6 +30,7 @@ import {
   PostDetailMapViewScreen,
   EditTagScreen,
   EditLocationScreen,
+  OtherProfileScreen,
 } from "@/components/screens/index";
 import { RootStackParamList } from "@/typings/StackParam";
 type PostEditRouteProp = RouteProp<RootStackParamList, "PostEdit">;
@@ -50,6 +51,8 @@ const MainStackNavigator = () => {
             if (route.name === "Profile") {
               // return <Username />;
               return <></>;
+            } else if (route.name === "OtherProfile") {
+              return <Username />;
             } else if (route.name === "EditProfile") {
               return <EditTitle />;
             } else if (
@@ -177,6 +180,12 @@ const MainStackNavigator = () => {
       <Stack.Screen
         name="PostEditLocation"
         component={EditLocationScreen}
+        options={{ title: "My Tabs" }}
+      />
+
+      <Stack.Screen
+        name="OtherProfile"
+        component={OtherProfileScreen}
         options={{ title: "My Tabs" }}
       />
     </Stack.Navigator>

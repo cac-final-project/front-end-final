@@ -60,7 +60,7 @@ const Post: React.FC<PostProps> = ({
     navigation.navigate("PostDetail", { post_id: id, post_type: type });
   };
   const handleProfileClick = () => {
-    navigation.navigate("EditProfile");
+    navigation.navigate("OtherProfile", { author: author });
   };
 
   const handleVoteClick = async (
