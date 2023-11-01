@@ -22,7 +22,7 @@ const CustomOverlay: React.FC<CustomOverlayProps> = ({
         <View style={styles.detailContainer}>
           <View>
             <Text style={styles.streetName}>{streetname}</Text>
-            <Text style={styles.distance}>{distance}m</Text>
+            {/* <Text style={styles.distance}>{distance}m</Text> */}
           </View>
         </View>
       </View>

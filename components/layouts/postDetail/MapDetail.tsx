@@ -3,22 +3,27 @@ import { View, StyleSheet, Image } from "react-native";
 import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import { Colors } from "@/constants/Colors";
 import { MarkerIcon } from "@/components/common/map/index";
+import { useRecoilState } from "recoil";
+import { postAtom } from "@/state/atoms/post";
 
 const MapDetail: React.FC = () => {
+  const [post, setPost] = useRecoilState(postAtom);
   const [isMapReady, setIsMapReady] = useState(false);
 
   const onLayout = () => {
     setIsMapReady(true);
   };
 
+  const latitudeOffset = 0.001; // Adjust this value as needed for offset
+
   return (
     <View style={styles.container} onLayout={onLayout}>
-      {isMapReady && (
+      {isMapReady && post && (
         <View style={styles.mapContainer}>
           <MapView
             initialRegion={{
-              latitude: 37.78825,
-              longitude: -122.4324,
+              latitude: (post.lat || 37.78825) + latitudeOffset,
+              longitude: post.lon || -122.4324,
               latitudeDelta: 0.005,
               longitudeDelta: 0.005,
             }}
@@ -31,8 +36,8 @@ const MapDetail: React.FC = () => {
           >
             <Marker
               coordinate={{
-                latitude: 37.78825,
-                longitude: -122.4324,
+                latitude: post.lat || 37.78825,
+                longitude: post.lon || -122.4324,
               }}
               anchor={{ x: 0.5, y: 0.5 }} // Adjusts the anchor point of the marker
             >

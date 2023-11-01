@@ -3,14 +3,17 @@ import { View, StyleSheet, TouchableOpacity, Text } from "react-native";
 import { Colors } from "@/constants/Colors";
 import { useNavigation } from "@react-navigation/native";
 import { ScreenNavigationProp } from "@/typings/StackParam";
+import { useRecoilState } from "recoil";
+import { postAtom } from "@/state/atoms/post";
 
 const SeeDetail: React.FC = () => {
   const navigation = useNavigation<ScreenNavigationProp>();
+  const [post, setPost] = useRecoilState(postAtom);
   const handleNavigate = () => {
     navigation.navigate("PostDetailMapView", {
-      lat: 37.78825,
-      lon: -122.4324,
-      streetname: "test street name",
+      lat: post?.lat || 37.78825,
+      lon: post?.lon || -122.4324,
+      streetname: post?.addressName || "test street name",
     });
   };
   return (
