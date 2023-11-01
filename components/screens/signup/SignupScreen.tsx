@@ -62,12 +62,12 @@ const SignupScreen: React.FC = () => {
   const [phoneNo, setPhoneNo] = useState("");
   const [confirmNo, setConfirmNo] = useState("");
 
-  console.log("userType", userType);
-  console.log("nickname", nickname);
-  console.log("username", username);
-  console.log("password", password);
-  console.log("phoneNo", phoneNo);
-  console.log("confirmNo", confirmNo);
+  // console.log("userType", userType);
+  // console.log("nickname", nickname);
+  // console.log("username", username);
+  // console.log("password", password);
+  // console.log("phoneNo", phoneNo);
+  // console.log("confirmNo", confirmNo);
 
   const navigation = useNavigation<ScreenNavigationProp>();
 

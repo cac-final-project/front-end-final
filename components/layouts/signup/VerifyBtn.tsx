@@ -19,7 +19,6 @@ const VerifyBtn: React.FC<VerifyBtnProps> = ({
   const handlePressBtn = async () => {
     if (phoneNo) {
       const res = await sendSmsApi({ phone_no: phoneNo });
-      console.log(res);
       setSmsCode(res.data);
       handleMoveProgress();
     }

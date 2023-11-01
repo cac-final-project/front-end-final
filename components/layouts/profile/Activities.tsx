@@ -19,7 +19,6 @@ const Activities: React.FC = () => {
     });
     const tips = tipRes.data;
     const campaigns = campaignRes.data;
-    console.log(tips);
     const total = [...tips, ...campaigns];
     setActivities(total);
   };

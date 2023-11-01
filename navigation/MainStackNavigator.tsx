@@ -40,7 +40,7 @@ const MainStackNavigator = () => {
   return (
     <Stack.Navigator
       screenOptions={({ navigation, route }) => {
-        console.log(route); // tab, login etc....
+        // console.log(route); // tab, login etc....
         const dynamicHeaderStyles = getCommonHeaderStyles(
           route.name as RouteNames
         );

@@ -44,7 +44,6 @@ const Done: React.FC = () => {
         setEditProfile({});
         const res = await getProfileInfoApi({ token: tokenValue! });
         setIsLoading(false);
-        console.log(res);
         const {
           data: { bio, profile_img, posts },
         } = res;

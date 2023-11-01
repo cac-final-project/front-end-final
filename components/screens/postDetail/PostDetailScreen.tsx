@@ -46,7 +46,6 @@ type RouteType = {
 
 const PostDetailScreen: React.FC = () => {
   const token = useRecoilValue(tokenAtom);
-  console.log(token);
   const navigation = useNavigation<ScreenNavigationProp>();
   const route = useRoute<RouteType>();
   const {
@@ -74,7 +73,6 @@ const PostDetailScreen: React.FC = () => {
   const snapPoints = useMemo(() => ["25%"], []);
 
   const handleSheetChanges = useCallback((index: number) => {
-    console.log("handleSheetChanges", index);
     if (index === -1) {
       setIsBottomSheetVisible(false);
     }

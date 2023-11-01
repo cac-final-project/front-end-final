@@ -18,7 +18,6 @@ const ResendLink: React.FC<ResendLinkProps> = ({ phoneNo }) => {
   const navigation = useNavigation<ScreenNavigationProp>();
   const handleSignupClick = async () => {
     const res = await sendSmsApi({ phone_no: phoneNo });
-    console.log(res);
     setSmsCode(res.data);
     navigation.navigate("Signup");
     setIsSmsCodeNotValid(false);

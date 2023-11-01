@@ -47,7 +47,6 @@ const NicknameContinueBtn: React.FC<NicknameContinueBtnProps> = ({
     if (isActive) {
       if (pageStatus === "set your account") {
         const res = await checkDupIdApi({ username: username! });
-        console.log(res);
         // if it does not exist
         if (!res.data) {
           setIsUsernameNotValid(false);
