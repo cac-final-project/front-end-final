@@ -32,19 +32,19 @@ export const editProfileApi = async ({
 }: EditProfileApiProps) => {
   try {
     const formData = new FormData();
+    console.log(file);
+    if (bio) {
+      formData.append("bio", bio);
+    }
     if (file) {
       const fileType = file.match(/\.(jpeg|jpg|png|gif|bmp)$/i);
-      const fileName = `profile_picture.${fileType ? fileType[1] : "jpg"}`;
+      const fileName = `image_${0}.${fileType ? fileType[1] : "jpg"}`;
 
-      console.log(file);
-      formData.append("file", {
+      formData.append("files", {
         uri: file,
         type: `image/${fileType ? fileType[1] : "jpeg"}`,
         name: fileName,
       } as any);
-    }
-    if (bio) {
-      formData.append("bio", bio);
     }
 
     const res = await api.post("/profile", formData, {

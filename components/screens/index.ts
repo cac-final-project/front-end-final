@@ -14,3 +14,4 @@ export { default as EditLocationScreen } from "./postEdit/EditLocationScreen";
 export { default as PostDetailScreen } from "./postDetail/PostDetailScreen";
 export { default as PostDetailMapViewScreen } from "./postDetail/PostDetailMapView";
 export { default as OtherProfileScreen } from "./otherProfile/OtherProfile";
+export { default as CommentScreen } from "./commentWrite/CommentScreen";

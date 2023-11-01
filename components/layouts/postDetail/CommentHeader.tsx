@@ -2,6 +2,8 @@ import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { Colors } from "@/constants/Colors";
 import { IPostDetail } from "@/typings/post";
+import { useNavigation } from "@react-navigation/native";
+import { ScreenNavigationProp } from "@/typings/StackParam";
 
 interface CommentHeaderProps {
   post: IPostDetail;
@@ -9,10 +11,14 @@ interface CommentHeaderProps {
 
 const CommentHeader: React.FC<CommentHeaderProps> = ({ post }) => {
   const { comments } = post;
+  const navigation = useNavigation<ScreenNavigationProp>();
+  const handleCommentWrite = () => {
+    navigation.navigate("CommentWrite");
+  };
   return (
     <View style={styles.container}>
       <Text style={styles.text}>Comments ({comments.length})</Text>
-      <TouchableOpacity>
+      <TouchableOpacity onPress={handleCommentWrite}>
         <Text style={styles.writeText}>Write Comment</Text>
       </TouchableOpacity>
     </View>

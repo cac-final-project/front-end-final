@@ -31,6 +31,7 @@ import {
   EditTagScreen,
   EditLocationScreen,
   OtherProfileScreen,
+  CommentScreen,
 } from "@/components/screens/index";
 import { RootStackParamList } from "@/typings/StackParam";
 type PostEditRouteProp = RouteProp<RootStackParamList, "PostEdit">;
@@ -186,6 +187,11 @@ const MainStackNavigator = () => {
       <Stack.Screen
         name="OtherProfile"
         component={OtherProfileScreen}
+        options={{ title: "My Tabs" }}
+      />
+      <Stack.Screen
+        name="CommentWrite"
+        component={CommentScreen}
         options={{ title: "My Tabs" }}
       />
     </Stack.Navigator>
