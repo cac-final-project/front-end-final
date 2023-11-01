@@ -11,6 +11,7 @@ interface SignupBtnProps {
 
 const SignupBtn: React.FC<SignupBtnProps> = ({ confirmNo, handleSignup }) => {
   const smsCode = useRecoilValue(smsCodeAtom);
+  console.log(smsCode);
   const setIsSmsCodeNotValid = useSetRecoilState(isSmsCodeNotValidAtom);
   const styles = getStyles(confirmNo);
   const handlePressBtn = async () => {
