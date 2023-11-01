@@ -33,6 +33,7 @@ import { isLoggedInAtom, tokenAtom, loginInfoAtom } from "@/state/atoms/login";
 import { loginApi } from "@/api/login";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { KEYS_AND_DEFAULT } from "@/storage/storageKeys";
+import { isLoadingAtom } from "@/state/atoms/loading";
 
 export type progress = 0 | 1 | 2 | 3;
 export type pageStatus =
@@ -49,7 +50,7 @@ type UserTypeState = "" | UserType;
 const SignupScreen: React.FC = () => {
   const [progress, setProgress] = useState<progress>(0);
   const [pageStatus, setPageStatus] = useState<pageStatus>("welcome");
-
+  const setIsLoading = useSetRecoilState(isLoadingAtom);
   const [userType, setUserType] = useState<UserTypeState>("");
 
   const handleSetUserType = (userType: UserTypeState) => {
@@ -75,6 +76,7 @@ const SignupScreen: React.FC = () => {
   const setIsLoggedIn = useSetRecoilState(isLoggedInAtom);
   const setloginInfo = useSetRecoilState(loginInfoAtom);
   const handleSignup = async () => {
+    setIsLoading(true);
     const res = await signupApi({
       type: userType as UserType,
       nickname,
@@ -109,7 +111,10 @@ const SignupScreen: React.FC = () => {
         [
           {
             text: "OK",
-            onPress: () => navigation.navigate("Resource"), // Navigate on "OK" press
+            onPress: () => {
+              setIsLoading(false);
+              navigation.navigate("Resource");
+            }, // Navigate on "OK" press
           },
         ],
         { cancelable: false } // Alert is not dismissible

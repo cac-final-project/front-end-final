@@ -17,10 +17,12 @@ import { tokenAtom, isLoggedInAtom, loginInfoAtom } from "@/state/atoms/login";
 import { useSetRecoilState } from "recoil";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { KEYS_AND_DEFAULT } from "@/storage/storageKeys";
+import { isLoadingAtom } from "@/state/atoms/loading";
 
 const LoginScreen: React.FC = () => {
   const navigation = useNavigation<ScreenNavigationProp>();
   const [keyboardVisible, setKeyboardVisible] = useState(false);
+  const setIsLoading = useSetRecoilState(isLoadingAtom);
 
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener(
@@ -46,6 +48,7 @@ const LoginScreen: React.FC = () => {
   const setIsLoggedIn = useSetRecoilState(isLoggedInAtom);
   const setloginInfo = useSetRecoilState(loginInfoAtom);
   const handleLoginApi = async () => {
+    setIsLoading(true);
     const res = await loginApi({ username, password });
     if (res !== false) {
       const {
@@ -68,7 +71,10 @@ const LoginScreen: React.FC = () => {
         [
           {
             text: "OK",
-            onPress: () => navigation.navigate("Resource"), // Navigate on "OK" press
+            onPress: () => {
+              setIsLoading(false);
+              navigation.navigate("Resource");
+            }, // Navigate on "OK" press
           },
         ],
         { cancelable: false } // Alert is not dismissible
