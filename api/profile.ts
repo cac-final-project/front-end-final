@@ -34,9 +34,9 @@ export const editProfileApi = async ({
     const formData = new FormData();
     if (file) {
       const fileType = file.match(/\.(jpeg|jpg|png|gif|bmp)$/i);
-      // Using a default file name in case the original name isn't available
       const fileName = `profile_picture.${fileType ? fileType[1] : "jpg"}`;
 
+      console.log(file);
       formData.append("file", {
         uri: file,
         type: `image/${fileType ? fileType[1] : "jpeg"}`,
@@ -55,7 +55,11 @@ export const editProfileApi = async ({
     });
     return res.data;
   } catch (err) {
-    console.error(err);
+    if (err instanceof AxiosError && err.response) {
+      console.error("API Error Response:", err.response.data);
+    } else {
+      console.error(err);
+    }
     return false;
   }
 };
