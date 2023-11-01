@@ -26,7 +26,8 @@ function AppContent() {
         if (status === "granted") {
           let { coords } = await Location.getCurrentPositionAsync({});
           // console.log(status);
-          setLocation({ lat: coords.latitude, lon: coords.longitude });
+          // setLocation({ lat: coords.latitude, lon: coords.longitude });
+          setLocation({ lat: 30.270398, lon: -97.74285 });
         } else {
           setLocation({ lat: 30.270398, lon: -97.74285 });
           console.log("Location permission not granted");
