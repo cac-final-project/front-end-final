@@ -2,8 +2,11 @@ import React, { useEffect, useState } from "react";
 import { useRoute } from "@react-navigation/native";
 import { View, Text, SafeAreaView, ScrollView, StyleSheet } from "react-native";
 import { Colors } from "@/constants/Colors";
-import { TopImage } from "@/components/common/profile/index";
-import { Contact, Bio } from "@/components/layouts/otherProfile/index";
+import {
+  Contact,
+  Bio,
+  TopImage,
+} from "@/components/layouts/otherProfile/index";
 import { OtherProfile } from "@/typings/profile";
 import { getAuthorProfile } from "@/api/profile";
 import { RouteNames } from "@/typings/StackParam";
@@ -38,12 +41,12 @@ const OtherProfileScreen: React.FC = () => {
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView>
-        <TopImage />
+        <TopImage profile_img={authorProfile?.profile_img} />
         <Contact
           nickname={authorProfile?.user.nickname}
           phone_no={authorProfile?.user.phone_no}
         />
-        <Bio />
+        <Bio bio={authorProfile?.bio} />
       </ScrollView>
     </SafeAreaView>
   );

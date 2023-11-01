@@ -11,33 +11,16 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import { editProfileAtom } from "@/state/atoms/profileEdit";
 import { profileAtom } from "@/state/atoms/profileEdit";
 
-const Bio: React.FC = () => {
-  const [editProfile, setEditProfile] = useRecoilState(editProfileAtom);
-  const profile = useRecoilValue(profileAtom);
+interface BioProps {
+  bio?: string;
+}
 
-  const handleOnChange = (text: string) => {
-    setEditProfile((prev) => {
-      return { ...prev, bio: text };
-    });
-  };
-
-  useEffect(() => {
-    if (profile.bio) {
-      setEditProfile((prev) => {
-        return { ...prev, bio: profile.bio };
-      });
-    }
-  }, []);
+const Bio: React.FC<BioProps> = ({ bio }) => {
   return (
     <View style={styles.container}>
       <Text style={styles.bioTitle}>Bio</Text>
       <View style={styles.bioTextContainer}>
-        <TextInput
-          style={styles.bioText}
-          multiline={true}
-          onChangeText={handleOnChange}
-          value={editProfile.bio}
-        />
+        <TextInput style={styles.bioText} multiline={true} value={bio} />
       </View>
     </View>
   );
