@@ -25,6 +25,10 @@ import {
   editselectedImagesAtom,
   editaddressNameAtom,
 } from "@/state/atoms/write";
+import {
+  selectedPlaceAtom,
+  selectedPlaceLocationAtom,
+} from "@/state/atoms/profileEdit";
 
 const backIconWhite = require("@/assets/images/BackIcon.png");
 const backIconBlack = require("@/assets/images/write/BackIcon.png");
@@ -41,6 +45,12 @@ const HeaderBackButton: React.FC<Props> = ({ routename, ...props }) => {
   const setContent = useSetRecoilState(editContentAtom);
   const setSelectedImages = useSetRecoilState(editselectedImagesAtom);
   const setAddress = useSetRecoilState(editaddressNameAtom);
+
+  const [selectedPlace, setSelectedPlace] = useRecoilState(selectedPlaceAtom);
+
+  const [selectedPlaceLocation, setSelectedPlaceLocation] = useRecoilState(
+    selectedPlaceLocationAtom
+  );
   const navigation = useNavigation<ScreenNavigationProp>();
   if (routename === "EditProfile" || routename === "PostEdit") {
     const setEditProfile = useSetRecoilState(editProfileAtom);
@@ -55,6 +65,8 @@ const HeaderBackButton: React.FC<Props> = ({ routename, ...props }) => {
         setTags([]);
         setTemporaryTags([]);
         setAddress("");
+        setSelectedPlaceLocation(null);
+        setSelectedPlace(null);
         setTipData(null);
         navigation.goBack();
       }

@@ -34,6 +34,13 @@ import { useRecoilState, useSetRecoilState, useRecoilValue } from "recoil";
 import { fetchPost } from "@/api/post";
 import { tokenAtom } from "@/state/atoms/login";
 import { IPostDetail } from "@/typings/post";
+import {
+  selectedPlaceAtom,
+  selectedPlaceLocationAtom,
+} from "@/state/atoms/profileEdit";
+import { locationAtom, neighborhoodAtom } from "@/state/atoms/location";
+import { getPlacesApi } from "@/api/google";
+import { PlacePrediction } from "@/typings/google";
 
 type RouteType = {
   key: string;
@@ -90,21 +97,71 @@ const PostEditScreen: React.FC = () => {
   // location for campaign
 
   const [addressName, setAddress] = useRecoilState(editaddressNameAtom);
+  const [selectedPlace, setSelectedPlace] = useRecoilState(selectedPlaceAtom);
+  console.log(selectedPlace);
+  const [selectedPlaceLocation, setSelectedPlaceLocation] = useRecoilState(
+    selectedPlaceLocationAtom
+  );
 
-  // for edit
+  const location = useRecoilValue(locationAtom);
+  const neighborhood = useRecoilValue(neighborhoodAtom);
+  useEffect(() => {
+    if (post_type === "campaign") {
+      setAddress(selectedPlace?.description || "");
+    } else {
+      setAddress(neighborhood || "");
+      setSelectedPlaceLocation({ lat: location?.lat!, lon: location?.lon! });
+    }
+  }, [post_type, selectedPlace]);
+
+  // edit campaign (initial value)
+  const findAndSetSelectedPlace = async () => {
+    try {
+      const res = await fetchPost({ postId: post_id!, token });
+      const post = res.data as IPostDetail;
+      const { title, content, tagItems, imageUrls, addressName, lat, lon } =
+        post;
+      setTitle(title);
+      setTags(tagItems);
+      setContent(content);
+      setSelectedImages(imageUrls);
+      setSelectedPlaceLocation({ lat: lat!, lon: lon! });
+      const latitude = lat!;
+      const longitude = lon!;
+      const radius = 5000;
+      const response = await getPlacesApi({
+        query: addressName!,
+        latitude,
+        longitude,
+        radius,
+      });
+      if (response.predictions && response.predictions.length > 0) {
+        const firstPrediction = response.predictions[0] as PlacePrediction;
+        setSelectedPlace(firstPrediction);
+      } else {
+        // Handle the case where no predictions are found
+        console.log("No predictions found for the address.");
+      }
+    } catch (err) {}
+  };
+
+  // edit tip (initial value)
   const handleFetchPostApi = async () => {
     const res = await fetchPost({ postId: post_id!, token });
     const post = res.data as IPostDetail;
-    const { title, content, tagItems, imageUrls, addressName } = post;
+    const { title, content, tagItems, imageUrls, addressName, lat, lon } = post;
     setTitle(title);
     setTags(tagItems);
     setContent(content);
     setSelectedImages(imageUrls);
+    setSelectedPlaceLocation({ lat: lat!, lon: lon! });
     setAddress(addressName ? addressName : "");
   };
   useEffect(() => {
-    if (write_type === "edit") {
+    if (write_type === "edit" && post_type === "tip") {
       handleFetchPostApi();
+    } else if (write_type === "edit" && post_type === "campaign") {
+      findAndSetSelectedPlace();
     }
   }, []);
 

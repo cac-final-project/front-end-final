@@ -54,7 +54,14 @@ const Location: React.FC<LocationProps> = ({ addressName }) => {
         <Image source={LocationIcon} />
         <Text style={styles.categoryLocationTitle}>Location</Text>
         <View style={styles.locationContainer}>
-          {location ? (
+          <Text
+            numberOfLines={2}
+            ellipsizeMode="tail"
+            style={styles.locationText}
+          >
+            {addressName}
+          </Text>
+          {/* {location ? (
             <Text
               numberOfLines={2}
               ellipsizeMode="tail"
@@ -70,7 +77,7 @@ const Location: React.FC<LocationProps> = ({ addressName }) => {
             >
               Empty
             </Text>
-          )}
+          )} */}
         </View>
       </View>
     </TouchableOpacity>

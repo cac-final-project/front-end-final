@@ -1,22 +1,49 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { ScreenNavigationProp } from "@/typings/StackParam";
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { Colors } from "@/constants/Colors";
+import { PlacePrediction } from "@/typings/google";
+import { getPlaceDetails } from "@/api/google";
 
 const SearchIcon = require("@/assets/images/write/location/Search.png");
 
+interface ISelectedPlaceLocation {
+  lat: number;
+  lon: number;
+}
+
 interface ConfirmLocationProps {
   handleSearchIconClick: () => void;
+  selectedPlace: PlacePrediction | null;
+  setSelectedPlaceLocation: React.Dispatch<
+    React.SetStateAction<ISelectedPlaceLocation | null>
+  >;
 }
 
 const ConfirmLocation: React.FC<ConfirmLocationProps> = ({
   handleSearchIconClick,
+  selectedPlace,
+  setSelectedPlaceLocation,
 }) => {
   const navigation = useNavigation<ScreenNavigationProp>();
   const handleConfirmAddress = () => {
     navigation.goBack();
   };
+
+  const handlePlaceDetailApi = async () => {
+    if (selectedPlace) {
+      const res = await getPlaceDetails(selectedPlace.place_id);
+      setSelectedPlaceLocation({
+        lat: res.result.geometry.location.lat,
+        lon: res.result.geometry.location.lng,
+      });
+    }
+  };
+
+  useEffect(() => {
+    handlePlaceDetailApi();
+  }, [selectedPlace]);
   return (
     <View style={styles.container}>
       <View style={styles.locationInfoContainer}>
@@ -24,8 +51,16 @@ const ConfirmLocation: React.FC<ConfirmLocationProps> = ({
           <Image source={SearchIcon} style={styles.imageContainer} />
         </TouchableOpacity>
         <View style={styles.textContainer}>
-          <Text style={styles.locationText}>[Current location address]</Text>
-          <Text style={styles.detailText}>[Detailed address]</Text>
+          <Text style={styles.locationText}>
+            {selectedPlace
+              ? selectedPlace.structured_formatting.main_text
+              : "[Current location address]"}
+          </Text>
+          <Text style={styles.detailText}>
+            {selectedPlace
+              ? selectedPlace.structured_formatting.secondary_text
+              : "[Detailed address]"}
+          </Text>
         </View>
       </View>
       <TouchableOpacity

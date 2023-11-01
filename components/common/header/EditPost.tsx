@@ -22,6 +22,10 @@ import { fetchPosts, fetchPost } from "@/api/post";
 import { useRoute } from "@react-navigation/native";
 import { RouteNames } from "@/typings/StackParam";
 import { PostType } from "@/typings/heatLevels";
+import {
+  selectedPlaceAtom,
+  selectedPlaceLocationAtom,
+} from "@/state/atoms/profileEdit";
 
 interface EditPostProps {
   write_type: WriteType;
@@ -57,6 +61,12 @@ const EditPost: React.FC<EditPostProps> = ({ write_type }) => {
   const setPosts = useSetRecoilState(postsAtom);
   const setPost = useSetRecoilState(postAtom);
 
+  const [selectedPlace, setSelectedPlace] = useRecoilState(selectedPlaceAtom);
+
+  const [selectedPlaceLocation, setSelectedPlaceLocation] = useRecoilState(
+    selectedPlaceLocationAtom
+  );
+
   const handleEdit = async () => {
     const tipData = {
       type: post_type,
@@ -64,9 +74,12 @@ const EditPost: React.FC<EditPostProps> = ({ write_type }) => {
       tags,
       content,
       selectedImages,
-      post_id: String(post_id),
+      // post_id: String(post_id),
       addressName,
+      lat: selectedPlaceLocation?.lat,
+      lon: selectedPlaceLocation?.lon,
     };
+
     if (write_type === "write") {
       if (tipData) {
         setIsLoading(true);
@@ -83,13 +96,15 @@ const EditPost: React.FC<EditPostProps> = ({ write_type }) => {
         setSelectedImages([]);
         setTags([]);
         setTemporaryTags([]);
+        setSelectedPlaceLocation(null);
+        setSelectedPlace(null);
         setIsLoading(false);
         navigation.goBack();
       }
     } else {
       if (tipData) {
         setIsLoading(true);
-        await editPost({ token: token!, ...tipData });
+        await editPost({ token: token!, ...tipData, post_id: String(post_id) });
         const resPosts = await fetchPosts({
           page: 1,
           limit: 10,
@@ -98,7 +113,7 @@ const EditPost: React.FC<EditPostProps> = ({ write_type }) => {
         setPosts(resPosts.data);
         const resPost = await fetchPost({
           token,
-          postId: Number(tipData.post_id),
+          postId: Number(post_id),
         });
         setPost(resPost.data);
         setTitle("");
@@ -106,6 +121,8 @@ const EditPost: React.FC<EditPostProps> = ({ write_type }) => {
         setSelectedImages([]);
         setTags([]);
         setTemporaryTags([]);
+        setSelectedPlaceLocation(null);
+        setSelectedPlace(null);
         setIsLoading(false);
         navigation.goBack();
       }

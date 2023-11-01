@@ -25,13 +25,11 @@ const OtherProfileScreen: React.FC = () => {
   const {
     params: { author },
   } = route;
-  console.log(author);
 
   const [authorProfile, setAuthorProfile] = useState<OtherProfile | null>(null);
 
   const handleGetAuthorProfile = async () => {
     const res = await getAuthorProfile({ author });
-    console.log(res.data);
     setAuthorProfile(res.data);
   };
 

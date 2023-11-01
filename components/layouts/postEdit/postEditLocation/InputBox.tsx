@@ -38,7 +38,10 @@ const InputBox: React.FC<InputBoxProps> = ({
             />
           </View>
           {searchword !== "" && (
-            <TouchableOpacity onPress={handleDelete}>
+            <TouchableOpacity
+              onPress={handleDelete}
+              hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+            >
               <Image source={CloseIcon} style={styles.closeIcon} />
             </TouchableOpacity>
           )}

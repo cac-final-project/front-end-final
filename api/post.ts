@@ -8,6 +8,9 @@ interface WriteTipProps {
   tags: string[];
   content: string;
   selectedImages: string[];
+  lat?: number;
+  lon?: number;
+  addressName?: string;
 }
 
 export const writeTip = async ({
@@ -17,6 +20,9 @@ export const writeTip = async ({
   tags,
   content,
   selectedImages,
+  addressName,
+  lat,
+  lon,
 }: WriteTipProps) => {
   try {
     const formData = new FormData();
@@ -24,6 +30,16 @@ export const writeTip = async ({
     formData.append("title", title);
     formData.append("tags", tags.join(", "));
     formData.append("content", content);
+
+    if (addressName) {
+      formData.append("addressName", addressName);
+    }
+    if (lat) {
+      formData.append("lat", String(lat));
+    }
+    if (lon) {
+      formData.append("lon", String(lon));
+    }
 
     selectedImages.forEach((image, index) => {
       const fileType = image.match(/\.(jpeg|jpg|png|gif|bmp)$/i);
@@ -138,6 +154,8 @@ interface EditPostProps {
   selectedImages: string[];
   post_id: string;
   addressName?: string;
+  lat?: number;
+  lon?: number;
 }
 
 export const editPost = async ({
@@ -149,6 +167,8 @@ export const editPost = async ({
   selectedImages,
   post_id,
   addressName,
+  lat,
+  lon,
 }: EditPostProps) => {
   try {
     const formData = new FormData();
@@ -159,6 +179,12 @@ export const editPost = async ({
     formData.append("postId", post_id);
     if (addressName) {
       formData.append("addressName", addressName);
+    }
+    if (lat) {
+      formData.append("lat", String(lat));
+    }
+    if (lon) {
+      formData.append("lon", String(lon));
     }
 
     selectedImages.forEach((image, index) => {

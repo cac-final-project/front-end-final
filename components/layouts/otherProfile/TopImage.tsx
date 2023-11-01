@@ -9,7 +9,6 @@ interface TopImageProps {
 }
 
 const TopImage: React.FC<TopImageProps> = ({ profile_img }) => {
-  console.log(profile_img);
   const styles = getStyles(profile_img);
   return (
     <View style={styles.container}>

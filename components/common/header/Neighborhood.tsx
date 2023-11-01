@@ -19,8 +19,11 @@ const Neighborhood: React.FC = () => {
   const handleNeighborhoodApi = async () => {
     const res = await getNeighborHoodApi(locationValue!);
     if (res !== false) {
-      setNeighborhood(res.data.city || "Downtown");
-      setCounty(res.data.county || "Ellis");
+      setNeighborhood(
+        res.data.neighbourhood + ", " + res.data.city || "Downtown"
+      );
+      // setCounty(res.data.county || "Henderson");
+      setCounty("Kenedy Island");
     }
   };
 

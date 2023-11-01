@@ -1,19 +1,63 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet } from "react-native";
-import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
+import MapView, { Marker, PROVIDER_GOOGLE, Region } from "react-native-maps";
+import { MarkerIcon } from "@/components/common/map/index";
+import { useRecoilValue } from "recoil";
+import { locationAtom } from "@/state/atoms/location";
 
-const MainMap: React.FC = () => {
+interface ISelectedPlaceLocation {
+  lat: number;
+  lon: number;
+}
+
+interface MainMapProps {
+  mapRef: React.RefObject<MapView>;
+  selectedPlaceLocation: ISelectedPlaceLocation | null;
+  initialRegion: Region;
+}
+
+const MainMap: React.FC<MainMapProps> = ({
+  selectedPlaceLocation,
+  initialRegion,
+  mapRef,
+}) => {
+  const [region, setRegion] = useState<Region>(initialRegion);
+  const [key, setKey] = useState<number>(0);
+
+  useEffect(() => {
+    setRegion(initialRegion);
+    setKey((prev) => prev + 1); // Increment key to force re-render
+  }, [initialRegion]);
+
+  useEffect(() => {
+    if (selectedPlaceLocation) {
+      setRegion({
+        ...region,
+        latitude: selectedPlaceLocation.lat,
+        longitude: selectedPlaceLocation.lon,
+      });
+    }
+  }, [selectedPlaceLocation]);
+
   return (
     <MapView
-      initialRegion={{
-        latitude: 37.78825,
-        longitude: -122.4324,
-        latitudeDelta: 0.005,
-        longitudeDelta: 0.005,
-      }}
+      ref={mapRef}
+      initialRegion={region}
+      region={region}
       provider={PROVIDER_GOOGLE}
       style={styles.map}
-    ></MapView>
+    >
+      {selectedPlaceLocation && (
+        <Marker
+          coordinate={{
+            latitude: selectedPlaceLocation.lat,
+            longitude: selectedPlaceLocation.lon,
+          }}
+        >
+          <MarkerIcon />
+        </Marker>
+      )}
+    </MapView>
   );
 };
 

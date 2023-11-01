@@ -4,12 +4,14 @@ import { Colors } from "@/constants/Colors";
 
 const LocationArrowIcon = require("@/assets/images/LocationArrow.png");
 
-interface StickyNavProps {}
+interface StickyNavProps {
+  onLocationPress: () => void;
+}
 
-const StickyNav: React.FC<StickyNavProps> = () => {
+const StickyNav: React.FC<StickyNavProps> = ({ onLocationPress }) => {
   return (
     <View style={styles.container}>
-      <TouchableOpacity>
+      <TouchableOpacity onPress={onLocationPress}>
         <Image source={LocationArrowIcon} />
       </TouchableOpacity>
     </View>

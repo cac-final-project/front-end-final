@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import {
   View,
   Image,
@@ -12,14 +12,56 @@ import InputBox from "./InputBox";
 import LocationItem from "./LocationItem";
 import { BottomSheetScrollView } from "@gorhom/bottom-sheet";
 import { Colors } from "@/constants/Colors";
+import { PlacePrediction } from "@/typings/google";
+import { getPlacesApi, getPlaceDetails } from "@/api/google";
+import { useRecoilValue } from "recoil";
+import { locationAtom } from "@/state/atoms/location";
+
+interface SearchLocationProps {
+  setSelectedPlace: React.Dispatch<
+    React.SetStateAction<PlacePrediction | null>
+  >;
+  closeBottomSheet: () => void;
+}
 
 const NavIcon = require("@/assets/images/write/location/SmallNav.png");
 
-const SearachLocation: React.FC = () => {
+const SearchLocation: React.FC<SearchLocationProps> = ({
+  setSelectedPlace,
+  closeBottomSheet,
+}) => {
+  const location = useRecoilValue(locationAtom);
   const [searchword, setSearchWord] = useState("");
+  const [recommendedPlaces, setRecommendedPlaces] =
+    useState<PlacePrediction[]>();
+
   const handleDelete = () => {
     setSearchWord("");
   };
+
+  const handleGetPlacesApi = useCallback(async () => {
+    if (!searchword) return;
+
+    const res = await getPlacesApi({
+      query: searchword,
+      latitude: location?.lat!,
+      longitude: location?.lon!,
+      radius: 5000,
+    });
+    setRecommendedPlaces(res.predictions);
+  }, [searchword, location]);
+
+  // Debounce function
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      handleGetPlacesApi();
+    }, 1000); // 1 second delay
+
+    return () => {
+      clearTimeout(handler); // Clear the timeout if the search word changes
+    };
+  }, [searchword, handleGetPlacesApi]);
+
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.container}>
@@ -29,16 +71,23 @@ const SearachLocation: React.FC = () => {
           handleDelete={handleDelete}
         />
         <TouchableOpacity>
-          <View style={styles.myLocationContainer}>
+          {/* <View style={styles.myLocationContainer}>
             <Image source={NavIcon} />
             <Text style={styles.locationText}>My Location</Text>
-          </View>
+          </View> */}
         </TouchableOpacity>
         <View style={styles.line} />
         <BottomSheetScrollView style={styles.results}>
-          {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((item) => {
-            return <LocationItem key={item} />;
-          })}
+          {recommendedPlaces?.length !== 0 &&
+            recommendedPlaces?.map((place, index) => (
+              <LocationItem
+                key={index}
+                place={place}
+                searchword={searchword}
+                setSelectedPlace={setSelectedPlace}
+                closeBottomSheet={closeBottomSheet}
+              />
+            ))}
         </BottomSheetScrollView>
       </View>
     </TouchableWithoutFeedback>
@@ -65,4 +114,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SearachLocation;
+export default SearchLocation;
