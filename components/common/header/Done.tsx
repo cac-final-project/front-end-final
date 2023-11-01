@@ -26,7 +26,6 @@ const Done: React.FC = () => {
   const setProfile = useSetRecoilState(profileAtom);
 
   const temporaryTags = useRecoilValue(temporaryTagsAtom);
-  console.log(temporaryTags);
   const setTags = useSetRecoilState(tagsAtom);
 
   const handleEditClick = async () => {

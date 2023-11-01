@@ -22,7 +22,14 @@ import {
   StickyMenu,
   ImageList,
 } from "@/components/layouts/postEdit/index";
-import { tagsAtom, tipDataAtom } from "@/state/atoms/write";
+import {
+  tagsAtom,
+  tipDataAtom,
+  editTitleAtom,
+  editContentAtom,
+  editselectedImagesAtom,
+  editaddressNameAtom,
+} from "@/state/atoms/write";
 import { useRecoilState, useSetRecoilState, useRecoilValue } from "recoil";
 import { fetchPost } from "@/api/post";
 import { tokenAtom } from "@/state/atoms/login";
@@ -45,19 +52,19 @@ const PostEditScreen: React.FC = () => {
     params: { post_id, post_type, write_type },
   } = route;
 
-  console.log(typeof post_id);
-
   // 1. title
-  const [title, setTitle] = useState("");
+  const [title, setTitle] = useRecoilState(editTitleAtom);
 
   // 2. tags
   const [tags, setTags] = useRecoilState(tagsAtom);
 
   // 3 contents
-  const [content, setContent] = useState("");
+  const [content, setContent] = useRecoilState(editContentAtom);
 
   // 4 images (max two)
-  const [selectedImages, setSelectedImages] = useState<string[]>([]);
+  const [selectedImages, setSelectedImages] = useRecoilState(
+    editselectedImagesAtom
+  );
 
   const pickImage = async () => {
     if (selectedImages.length >= 2) {
@@ -82,7 +89,7 @@ const PostEditScreen: React.FC = () => {
 
   // location for campaign
 
-  const [addressName, setAddress] = useState("");
+  const [addressName, setAddress] = useRecoilState(editaddressNameAtom);
 
   // for edit
   const handleFetchPostApi = async () => {
@@ -96,15 +103,10 @@ const PostEditScreen: React.FC = () => {
     setAddress(addressName ? addressName : "");
   };
   useEffect(() => {
-    handleFetchPostApi();
+    if (write_type === "edit") {
+      handleFetchPostApi();
+    }
   }, []);
-
-  // write or edit
-  const setTipData = useSetRecoilState(tipDataAtom);
-
-  useEffect(() => {
-    setTipData({ title, tags, content, selectedImages, type: post_type });
-  }, [title, tags, content, selectedImages, post_type]);
 
   return (
     <SafeAreaView style={styles.container}>

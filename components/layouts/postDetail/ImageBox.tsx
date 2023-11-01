@@ -9,7 +9,6 @@ interface ImageBoxProps {
 
 const ImageBox: React.FC<ImageBoxProps> = ({ post }) => {
   const { imageUrls } = post;
-  console.log(imageUrls);
   return (
     <View>
       {imageUrls.map((item, idx) => {

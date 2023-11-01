@@ -71,7 +71,6 @@ const Post: React.FC<PostProps> = ({
       return alert("You must be logged in!");
     }
     e.stopPropagation();
-    console.log(isVoted);
     if (isVoted === vote) {
       alert("You have voted already!");
       return;

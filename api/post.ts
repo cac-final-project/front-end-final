@@ -64,15 +64,22 @@ export const fetchPosts = async ({
   token,
 }: FetchPostsProps) => {
   try {
-    const res = await api.get(
-      `/post?page=${page}&limit=${limit}&type=${type}`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
-    return res.data;
+    if (token) {
+      const res = await api.get(
+        `/post?page=${page}&limit=${limit}&type=${type}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      return res.data;
+    } else {
+      const res = await api.get(
+        `/post?page=${page}&limit=${limit}&type=${type}`
+      );
+      return res.data;
+    }
   } catch (err) {
     console.error(err);
     return false;
@@ -105,12 +112,74 @@ interface FetchPostProps {
 
 export const fetchPost = async ({ postId, token }: FetchPostProps) => {
   try {
-    const res = await api.get(`post/single?postId=${postId}`, {
+    if (token) {
+      const res = await api.get(`post/single?postId=${postId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      return res.data;
+    } else {
+      const res = await api.get(`post/single?postId=${postId}`);
+      return res.data;
+    }
+  } catch (err) {
+    console.error(err);
+    return false;
+  }
+};
+
+interface EditPostProps {
+  token: string;
+  type: PostType;
+  title: string;
+  tags: string[];
+  content: string;
+  selectedImages: string[];
+  post_id: string;
+  addressName?: string;
+}
+
+export const editPost = async ({
+  token,
+  type,
+  title,
+  tags,
+  content,
+  selectedImages,
+  post_id,
+  addressName,
+}: EditPostProps) => {
+  try {
+    const formData = new FormData();
+    formData.append("type", type);
+    formData.append("title", title);
+    formData.append("tags", tags.join(", "));
+    formData.append("content", content);
+    formData.append("postId", post_id);
+    if (addressName) {
+      formData.append("addressName", addressName);
+    }
+
+    selectedImages.forEach((image, index) => {
+      const fileType = image.match(/\.(jpeg|jpg|png|gif|bmp)$/i);
+      const fileName = `image_${index}.${fileType ? fileType[1] : "jpg"}`;
+
+      formData.append("files", {
+        uri: image,
+        type: `image/${fileType ? fileType[1] : "jpeg"}`,
+        name: fileName,
+      } as any);
+    });
+
+    // Make the POST request
+    const res = await api.post("/post/update", formData, {
       headers: {
+        "Content-Type": "multipart/form-data",
         Authorization: `Bearer ${token}`,
       },
     });
-    return res.data;
+    return res;
   } catch (err) {
     console.error(err);
     return false;

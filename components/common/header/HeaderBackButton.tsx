@@ -14,9 +14,17 @@ import { RouteNames, ScreenNavigationProp } from "@/typings/StackParam";
 import { Colors } from "@/constants/Colors";
 import { Feather } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import { useSetRecoilState } from "recoil";
+import { useSetRecoilState, useRecoilState } from "recoil";
 import { editProfileAtom } from "@/state/atoms/profileEdit";
-import { tagsAtom, temporaryTagsAtom, tipDataAtom } from "@/state/atoms/write";
+import {
+  tagsAtom,
+  temporaryTagsAtom,
+  tipDataAtom,
+  editTitleAtom,
+  editContentAtom,
+  editselectedImagesAtom,
+  editaddressNameAtom,
+} from "@/state/atoms/write";
 
 const backIconWhite = require("@/assets/images/BackIcon.png");
 const backIconBlack = require("@/assets/images/write/BackIcon.png");
@@ -29,7 +37,10 @@ const HeaderBackButton: React.FC<Props> = ({ routename, ...props }) => {
   const setTipData = useSetRecoilState(tipDataAtom);
   const setTags = useSetRecoilState(tagsAtom);
   const setTemporaryTags = useSetRecoilState(temporaryTagsAtom);
-
+  const setTitle = useSetRecoilState(editTitleAtom);
+  const setContent = useSetRecoilState(editContentAtom);
+  const setSelectedImages = useSetRecoilState(editselectedImagesAtom);
+  const setAddress = useSetRecoilState(editaddressNameAtom);
   const navigation = useNavigation<ScreenNavigationProp>();
   if (routename === "EditProfile" || routename === "PostEdit") {
     const setEditProfile = useSetRecoilState(editProfileAtom);
@@ -38,8 +49,12 @@ const HeaderBackButton: React.FC<Props> = ({ routename, ...props }) => {
         setEditProfile({});
         navigation.goBack();
       } else {
+        setTitle("");
+        setContent("");
+        setSelectedImages([]);
         setTags([]);
         setTemporaryTags([]);
+        setAddress("");
         setTipData(null);
         navigation.goBack();
       }

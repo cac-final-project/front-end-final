@@ -32,7 +32,7 @@ import { fetchPost } from "@/api/post";
 import { tokenAtom } from "@/state/atoms/login";
 import { useRecoilValue, useSetRecoilState, useRecoilState } from "recoil";
 import { isLoadingAtom } from "@/state/atoms/loading";
-import { postsAtom } from "@/state/atoms/post";
+import { postsAtom, postAtom } from "@/state/atoms/post";
 import { fetchPosts, deletePost } from "@/api/post";
 
 type RouteType = {
@@ -46,6 +46,7 @@ type RouteType = {
 
 const PostDetailScreen: React.FC = () => {
   const token = useRecoilValue(tokenAtom);
+  console.log(token);
   const navigation = useNavigation<ScreenNavigationProp>();
   const route = useRoute<RouteType>();
   const {
@@ -55,7 +56,7 @@ const PostDetailScreen: React.FC = () => {
   const setIsLoading = useSetRecoilState(isLoadingAtom);
   const [posts, setPosts] = useRecoilState(postsAtom);
 
-  const [post, setPost] = useState<IPostDetail>();
+  const [post, setPost] = useRecoilState(postAtom);
 
   const handleFetchPostApi = async () => {
     const res = await fetchPost({ token, postId: post_id });
@@ -64,7 +65,7 @@ const PostDetailScreen: React.FC = () => {
 
   useEffect(() => {
     handleFetchPostApi();
-  }, []);
+  }, [post_id]);
 
   const [isBottomSheetVisible, setIsBottomSheetVisible] = useState(false);
 
@@ -87,8 +88,8 @@ const PostDetailScreen: React.FC = () => {
   const handleOptionTap = async (toDo: "edit" | "delete") => {
     if (toDo === "edit") {
       navigation.navigate("PostEdit", {
-        post_id: 0,
-        post_type: "tip",
+        post_id: post_id,
+        post_type: post_type,
         write_type: "edit",
       });
     } else {

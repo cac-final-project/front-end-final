@@ -24,3 +24,20 @@ export const tipDataAtom = atom<TipDataAtomProps | null>({
   key: "tipDataAtom",
   default: null,
 });
+
+export const editTitleAtom = atom({
+  key: "editTitleAtom",
+  default: "",
+});
+export const editContentAtom = atom({
+  key: "editContentAtom",
+  default: "",
+});
+export const editselectedImagesAtom = atom<string[]>({
+  key: "editselectedImagesAtom",
+  default: [],
+});
+export const editaddressNameAtom = atom({
+  key: "editaddressNameAtom",
+  default: "",
+});
