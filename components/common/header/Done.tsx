@@ -9,10 +9,17 @@ import { editProfileAtom, profileAtom } from "@/state/atoms/profileEdit";
 import { tokenAtom } from "@/state/atoms/login";
 import { isLoadingAtom } from "@/state/atoms/loading";
 import { tagsAtom, temporaryTagsAtom } from "@/state/atoms/write";
+import { commentAtom } from "@/state/atoms/comment";
+import { fetchPost } from "@/api/post";
+import { postAtom } from "@/state/atoms/post";
+import { writeCommentApi } from "@/api/comment";
 
 type RouteType = {
   key: string;
   name: RouteNames;
+  params: {
+    post_id?: number;
+  };
 };
 
 const Done: React.FC = () => {
@@ -28,10 +35,29 @@ const Done: React.FC = () => {
   const temporaryTags = useRecoilValue(temporaryTagsAtom);
   const setTags = useSetRecoilState(tagsAtom);
 
+  const [comment, setComment] = useRecoilState(commentAtom);
+  const setPost = useSetRecoilState(postAtom);
+
   const handleEditClick = async () => {
     if (route.name === "PostEditTags") {
       navigation.goBack();
       setTags(temporaryTags);
+    } else if (route.name === "CommentWrite") {
+      setIsLoading(true);
+      const post_id = route.params.post_id;
+      await writeCommentApi({
+        token: tokenValue!,
+        postId: post_id!,
+        content: comment,
+      });
+      const res = await fetchPost({
+        token: tokenValue,
+        postId: Number(post_id),
+      });
+      setComment("");
+      setPost(res.data);
+      setIsLoading(false);
+      navigation.goBack();
     } else {
       setIsLoading(true);
       const res = await editProfileApi({

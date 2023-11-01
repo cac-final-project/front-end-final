@@ -7,3 +7,4 @@ export { default as Done } from "./Done";
 export { default as EditTitle } from "./EditTitle";
 export { default as WriteOrEdit } from "./WriteOrEdit";
 export { default as EditPost } from "./EditPost";
+export { default as CommentWrite } from "./CommentWrite";

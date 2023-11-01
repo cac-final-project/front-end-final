@@ -11,7 +11,8 @@ export const getCommonHeaderStyles = (
     routeName === "EditProfile" ||
     routeName === "PostEdit" ||
     routeName === "PostEditTags" ||
-    routeName === "PostEditLocation"
+    routeName === "PostEditLocation" ||
+    routeName === "CommentWrite"
   ) {
     backgroundColor = Colors.white;
   }

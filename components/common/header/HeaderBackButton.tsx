@@ -94,7 +94,11 @@ const HeaderBackButton: React.FC<Props> = ({ routename, ...props }) => {
         />
       </SafeAreaView>
     );
-  } else if (routename === "PostEditTags" || routename === "PostEditLocation") {
+  } else if (
+    routename === "PostEditTags" ||
+    routename === "PostEditLocation" ||
+    routename === "CommentWrite"
+  ) {
     const handleGoBack = () => {
       if (routename === "PostEditTags") {
         setTemporaryTags([]);

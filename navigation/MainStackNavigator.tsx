@@ -15,6 +15,7 @@ import {
   EditTitle,
   WriteOrEdit,
   EditPost,
+  CommentWrite,
 } from "@/components/common/header";
 import {
   LoginScreen,
@@ -71,6 +72,8 @@ const MainStackNavigator = () => {
               route.name === "ForgotPw"
             ) {
               return <></>;
+            } else if (route.name === "CommentWrite") {
+              return <CommentWrite />;
             }
             return <Neighborhood />;
           },
@@ -79,7 +82,8 @@ const MainStackNavigator = () => {
               return <Edit />;
             } else if (
               route.name === "EditProfile" ||
-              route.name === "PostEditTags"
+              route.name === "PostEditTags" ||
+              route.name === "CommentWrite"
             ) {
               return <Done />;
             } else if (route.name === "PostEdit") {

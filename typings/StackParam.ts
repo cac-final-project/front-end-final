@@ -27,7 +27,9 @@ export type RootStackParamList = {
   };
   PostDetailMapView: { lat: number; lon: number; streetname: string };
   OtherProfile: { author: string };
-  CommentWrite: undefined;
+  CommentWrite: {
+    post_id?: number;
+  };
   // Add other screen types if you have more than these
 };
 

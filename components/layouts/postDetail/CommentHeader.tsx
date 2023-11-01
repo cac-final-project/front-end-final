@@ -4,16 +4,23 @@ import { Colors } from "@/constants/Colors";
 import { IPostDetail } from "@/typings/post";
 import { useNavigation } from "@react-navigation/native";
 import { ScreenNavigationProp } from "@/typings/StackParam";
+import { isLoggedInAtom } from "@/state/atoms/login";
+import { useRecoilValue } from "recoil";
 
 interface CommentHeaderProps {
   post: IPostDetail;
 }
 
 const CommentHeader: React.FC<CommentHeaderProps> = ({ post }) => {
+  const isLoggedIn = useRecoilValue(isLoggedInAtom);
   const { comments } = post;
   const navigation = useNavigation<ScreenNavigationProp>();
   const handleCommentWrite = () => {
-    navigation.navigate("CommentWrite");
+    if (isLoggedIn) {
+      navigation.navigate("CommentWrite", { post_id: post.id });
+    } else {
+      alert("you need to log in!");
+    }
   };
   return (
     <View style={styles.container}>
